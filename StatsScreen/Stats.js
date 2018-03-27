@@ -25,7 +25,13 @@ export default class Stats extends React.Component {
       key: state.params.key,
       handedness: state.params.handedness,
       difficultyTypes: state.params.difficulty,
-      tableDataHand: [['1', ' ', '2', ' ', '3'], ['4', ' ', '5', ' ', '6'], [' ', ' ', ' ', ' ', ' ', ' '],['13', ' ', '14', ' ', '15']]
+
+      tableDataHand: [
+        ['1', '', '2', '', '3'], 
+        ['4', '', '5', '', '6']
+        ],
+      tableDataHand2: ['7', '8', '9', '10', '11', '12'],
+      tableDataHand3: ['13', '', '14', '', '15']
     };
   }
 
@@ -178,7 +184,11 @@ export default class Stats extends React.Component {
     const tableDataServe = [
       ['1', '1', '1', '1', '1', '1']
     ];
+
     const tableDataHand = this.state.tableDataHand;
+    const tableDataHand2 = this.state.tableDataHand2;
+    const tableDataHand3 = this.state.tableDataHand3;
+
     console.log(tableDataHand);
     if (!this.state.fontLoaded) { return null;}
     return (
@@ -213,9 +223,19 @@ export default class Stats extends React.Component {
   
             <Table style = {styles.tableHand}>
               <Rows data = {tableDataHand}
-              flexArr={[1, 1, 2, 1, 1]}
-              style = {styles.row}
-              textStyle = {styles.stats}/>
+                flexArr={[1, 1, 2, 1, 1]}
+                style = {styles.row}
+                textStyle = {styles.stats}/>
+
+              <Row data = {tableDataHand2}
+                flexArr={[1, 1, 1, 1, 1, 1]}
+                style = {styles.row2}
+                textStyle = {styles.stats}/>
+
+              <Row data = {tableDataHand3}
+                flexArr={[1, 1, 2, 1, 1]}
+                style = {styles.row3}
+                textStyle = {styles.stats}/>
             </Table>
 
             
@@ -269,6 +289,14 @@ const styles = StyleSheet.create({
   },
   row: {
     height: 50
+  },
+  row2: {
+    height: 50,
+    marginTop: 100
+  },
+  row3: {
+    height: 50,
+    marginTop: 0
   },
   stats: {
     textAlign: 'center',
