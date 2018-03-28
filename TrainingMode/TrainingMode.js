@@ -9,12 +9,12 @@ import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
   translateX = new Animated.Value(-173);
-  translateY = new Animated.Value(-200);
+  translateY = new Animated.Value(100);
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true,
      onPanResponderMove: (evt, gs) => {
       this.translateX.setValue(gs.dx-173);
-      this.translateY.setValue(gs.dy);
+      this.translateY.setValue(gs.dy+100);
       console.log(gs.dx);
       console.log("--");
       console.log(gs.dy);
@@ -35,8 +35,7 @@ export default class TrainingMode extends Component {
 
     this.state = {
       fontLoaded: false,
-      translateX:-200,
-      translateY: -200
+
     };
   }
 
@@ -175,7 +174,7 @@ export default class TrainingMode extends Component {
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
-            style = {[{left: this.translateX}, styles.ball]}
+            style = {[{left: this.translateX, top: this.translateY}, styles.ball]}
             source={require('../assets/images/tennisball.png')}
             
           />
@@ -238,8 +237,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     height: 16,
-    top: 100,
-    right: -181
   },
   box: {
     position: 'absolute',
