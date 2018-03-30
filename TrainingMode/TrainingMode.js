@@ -10,6 +10,7 @@ import Hidden from '../Components/Hidden';
 export default class TrainingMode extends Component {
   translateX = new Animated.Value(-173);
   translateY = new Animated.Value(100);
+
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true,
      onPanResponderMove: (evt, gs) => {
@@ -24,6 +25,10 @@ export default class TrainingMode extends Component {
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
        console.log("released");
+
+       // gs.vx and gs.vy give the x/y velocity upon
+       // release of the touch
+       
     }
   });
   static navigationOptions = {
