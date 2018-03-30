@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Font } from 'expo';
-import { TouchableOpacity, StyleSheet, View, Image } from 'react-native';
+import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder, Animated} from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
@@ -8,14 +8,39 @@ import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
+  translateX = new Animated.Value(-173);
+  translateY = new Animated.Value(100);
+
+  imagePanResponder = PanResponder.create({
+    onStartShouldSetPanResponder: (evt, gs) => true,
+     onPanResponderMove: (evt, gs) => {
+      this.translateX.setValue(gs.dx-173);
+      this.translateY.setValue(gs.dy+100);
+      console.log(gs.dx);
+      console.log("--");
+      console.log(gs.dy);
+
+     },
+    onPanResponderRelease: (evt, gs) => {
+        // The user has released all touches while this view is the
+        // responder. This typically means a gesture has succeeded
+       console.log("released");
+
+       // gs.vx and gs.vy give the x/y velocity upon
+       // release of the touch
+       
+    }
+  });
   static navigationOptions = {
     drawerLabel: <Hidden />,
   };
 
   constructor(props) {
     super(props);
+
     this.state = {
       fontLoaded: false,
+
     };
   }
 
@@ -50,8 +75,6 @@ export default class TrainingMode extends Component {
   }
 
 
-
-
   render() {
     const { navigation } = this.props;
     if (!this.state.fontLoaded) { return null;}
@@ -60,6 +83,18 @@ export default class TrainingMode extends Component {
        
 
     var targetLocations = [];
+
+
+    const onPress = () => {
+      Animated.timing(translateY, {
+        toValue:300,
+        duration:2000,
+        easing: Easing.bezier(0.4, 0,0.2,1),
+      }).start();
+
+    };
+
+
 
     if (a == 1) {
       view = <View style={styles.target}>
@@ -142,9 +177,13 @@ export default class TrainingMode extends Component {
             source={require('../assets/images/tenniscourt.png')}
           />
 
-          <Image style={styles.ball}
+          <Animated.Image
+            {...this.imagePanResponder.panHandlers}
+            style = {[{left: this.translateX, top: this.translateY}, styles.ball]}
             source={require('../assets/images/tennisball.png')}
+            
           />
+
           <Image style={styles.box}
             source={require('../assets/images/box.png')}
           />
@@ -154,6 +193,7 @@ export default class TrainingMode extends Component {
            onPress={() => this.props.navigation.navigate("EndGameScreen")}
           />
         </View>
+
 
       </Container>
     );
@@ -178,6 +218,7 @@ const styles = StyleSheet.create({
     left: 60
 
   },
+
   text: {
     fontFamily: 'bungee-inline',
     color: '#ffffff',
@@ -201,8 +242,6 @@ const styles = StyleSheet.create({
     zIndex: 2,
     position: 'absolute',
     height: 16,
-    top: 100,
-    right: -181
   },
   box: {
     position: 'absolute',

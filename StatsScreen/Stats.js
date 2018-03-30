@@ -27,9 +27,7 @@ export default class Stats extends React.Component {
       difficultyTypes: state.params.difficulty,
 
       tableDataHand: [
-        ['1', '', '2', '', '3'], 
-        ['4', '', '5', '', '6']
-        ],
+        ['1', '', '2', '', '3'], ['4', '', '5', '', '6']],
       tableDataHand2: ['7', '8', '9', '10', '11', '12'],
       tableDataHand3: ['13', '', '14', '', '15']
     };
@@ -86,37 +84,47 @@ export default class Stats extends React.Component {
       tempArr = []
       finalArr = []
       arrCounter = 0
-      for (var x = 0; x < 21; x++) {
-        if ((x < 10 || x > 16) && (x != 5 || x == 0)) {
-          if (x== 1 || x == 3 || x == 6 || x==8 || x == 17 || x == 19) {
+      for (var x = 0; x < 11; x++) {
+          if (x == 1 || x == 3 || x == 6 || x==8) {
             tempArr.push(" ");
-          } else { 
+          } else if (x == 0 || x == 2 || x == 4|| x == 7 || x == 9){ 
             tempArr.push(arr[arrCounter] + "%");
             arrCounter++;
-          }
-        } else if ((x > 9 && x < 16) && x != 10) {
-           tempArr.push(" ");
-        } else {
-          finalArr.push(tempArr)
-          tempArr = []
-          if (x == 10) {
-            tempArr.push(" ");
           } else {
+            finalArr.push(tempArr)
+            tempArr = []
+            if (x == 5) {
+              tempArr.push(arr[arrCounter] + "%");
+              arrCounter++;
+            }
+          }
+      }
+        console.log("final" + x + finalArr);
+      tempArr = []
+      finalArr2 = []
+      for (var x = 0; x < 6; x++) {
+          if (x == 1 || x == 3) {
+            tempArr.push(" ");
+          } else if (x == 0 || x == 2 || x ==4){ 
             tempArr.push(arr[arrCounter] + "%");
             arrCounter++;
           }
+         else {
+          finalArr2.push(tempArr)
+          tempArr = []
         }
         console.log("final" + x + finalArr);
-        if (x == 20) {
-            finalArr.push(tempArr);
-            resolve(finalArr);
+        if (x == 5) {
+          resolve([finalArr, finalArr2]);
         }
       } 
       reject(Error("it broke again"))
     })
       }).then((finalArray) => {
-          this.setState({tableDataHand: finalArray});
-          console.log("final", finalArray);
+          this.setState({tableDataHand: finalArray[0]});
+          this.setState({tableDataHand3: finalArray[1][0]});
+          this.setState({tableDataHand2: ['','','','','','']});
+          console.log("final", finalArray[1]);
       })
   }
   serveDisplay = (hand) => {
@@ -144,32 +152,24 @@ export default class Stats extends React.Component {
       tempArr = []
       finalArr = []
       arrCounter = 0
-      for (var x = 0; x < 21; x++) {
-        if (((x < 10 || x > 15) && (x%5 != 0) && (x != 16)) || x == 0 || x == 20) {
-            tempArr.push(" ");
-        } else if (x > 10 && x < 16) {
-            tempArr.push(arr[arrCounter] + "%");
+      for (var x = 0; x < 7; x++) {
+        if (x < 6) {
+          tempArr.push(arr[arrCounter] + "%");
             arrCounter++;
         } else {
           finalArr.push(tempArr)
-          tempArr = []
-          if (x == 16 || x == 5) {
-            tempArr.push(" ");
-          } else {
-            tempArr.push(arr[arrCounter] + "%");
-            arrCounter++;
           }
-        }
         console.log("final" + x + finalArr);
-        if (x == 20) {
-            finalArr.push(tempArr);
+        if (x == 6) {
             resolve(finalArr);
         }
       } 
       reject(Error("it broke again"))
     })
       }).then((finalArray) => {
-          this.setState({tableDataHand: finalArray});
+          this.setState({tableDataHand2: finalArray[0]});
+          this.setState({tableDataHand: [['','','','',''],['','','','','']]});
+          this.setState({tableDataHand3: ['','','','','']});
           console.log("final", finalArray);
       })
   }
