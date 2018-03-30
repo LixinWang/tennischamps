@@ -11,14 +11,51 @@ export default class TrainingMode extends Component {
   translateX = new Animated.Value(-173);
   translateY = new Animated.Value(100);
 
+  p1x = 0;
+  p1y = 0;
+  p2x = 0;
+  p2y = 0;
+
+  relAngle(x0, y0, x1, y1) {
+    return 180 * Math.atan2(y1 - y0, x1 - x0) / 3.14159;
+  }
+
+  segLen(x0, y0, x1, y1) {
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    return Math.sqrt(dx * dx + dy * dx);
+  }
+
+  headingAccumulate = 0;
+
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true,
      onPanResponderMove: (evt, gs) => {
+      p3x = gs.x0;
+      p3y = gs.y0;
+
+      // Figure out the heading of each segment
+      theta1 = this.relAngle(p3x, p3y, this.p2x, this.p2y);
+      theta2 = this.relAngle(this.p2x, this.p2y, this.p1x, this.p1y);
+      
+      // Heading difference between the previous and current
+      // line segments
+      headingChange = theta2 - theta1;
+
+      // Accumulate how much total heading change we've had
+      // since starting the gesture
+      // Ie if you draw 1/4 of a circle, we'll
+      // accumulate 90 degrees of heading change
+      this.headingAccumulate += headingChange;
+
       this.translateX.setValue(gs.dx-173);
       this.translateY.setValue(gs.dy+100);
       console.log(gs.dx);
       console.log("--");
       console.log(gs.dy);
+      console.log(" hdg ");
+      console.log(this.headingAccumulate);
 
      },
     onPanResponderRelease: (evt, gs) => {
@@ -28,7 +65,7 @@ export default class TrainingMode extends Component {
 
        // gs.vx and gs.vy give the x/y velocity upon
        // release of the touch
-       
+
     }
   });
   static navigationOptions = {
