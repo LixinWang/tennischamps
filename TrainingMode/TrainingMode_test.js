@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import React, { Component } from "react";
 import { Font } from 'expo';
 import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
@@ -11,15 +12,49 @@ export default class TrainingMode extends Component {
 
   translateX = new Animated.Value(-173);
   translateY = new Animated.Value(100);
+  p1x = 0;
+  p1y = 0;
+  p2x = 0;
+  p2y = 0;
+
+  relAngle(x0, y0, x1, y1) {
+    return 180 * Math.atan2(y1 - y0, x1 - x0) / 3.14159;
+  }
+
+  segLen(x0, y0, x1, y1) {
+    dx = x1 - x0;
+    dy = y1 - y0;
+
+    return Math.sqrt(dx * dx + dy * dx);
+  }
+
+  headingAccumulate = 0;
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond 
      onPanResponderMove: (evt, gs) => {
+      p3x = gs.x0;
+      p3y = gs.y0;
+
+      // Figure out the heading of each segment
+      theta1 = this.relAngle(p3x, p3y, this.p2x, this.p2y);
+      theta2 = this.relAngle(this.p2x, this.p2y, this.p1x, this.p1y);
+      
+      // Heading difference between the previous and current
+      // line segments
+      headingChange = theta2 - theta1;
+
+      // Accumulate how much total heading change we've had
+      // since starting the gesture
+      // Ie if you draw 1/4 of a circle, we'll
+      // accumulate 90 degrees of heading change
+      this.headingAccumulate += headingChange;
+
       this.translateX.setValue(gs.dx-173);
       this.translateY.setValue(gs.dy+100);
       console.log(gs.dx);
       console.log("--");
       console.log(gs.dy);
-      this.stopAnimation.setValue(true);
+      //this.stopAnimation.setValue(true);
       console.log("trigger onPanResponderMove");
 
      },
@@ -40,7 +75,6 @@ export default class TrainingMode extends Component {
       fontLoaded: false,
       // translateX: -173,
       // translateY: 100
-      stopAnimation: false
 
     };
   }
@@ -76,19 +110,6 @@ export default class TrainingMode extends Component {
     this.setState({ fontLoaded: true, stopAnimation: false });
 
   }
-
-   move()  {
-      Animated.timing(this.translateY, {
-        toValue:300,
-        duration:2000,
-        easing: Easing.bezier(0.4, 0,0.2,1),
-      }).start(
-
-      );
-
-    }
-
-
 
   render() {
     const { navigation } = this.props;
@@ -170,21 +191,38 @@ export default class TrainingMode extends Component {
     var counter = 1;
     const onPress = () => {
         console.log("check");
-    Animated.parallel([
+    let animation = Animated.parallel([
     Animated.timing(translateX, {
         toValue: 40,
-        duration: 70000,
+        duration: 10000,
         easing: Easing.bounce,
     }),
     Animated.timing(translateY, {
         toValue: 800,
-        duration: 70000,
+        duration: 10000,
         easing: Easing.bounce,
     })
-    ]).start(() => {
-          
-        }
-        );
+    ]);
+    let animation2 = Animated.parallel([
+      Animated.timing(translateX, {
+        toValue:0,
+        duration:700,
+        easing: Easing.bounce,
+      }),
+      Animated.timing(translateY, {
+        toValue:0,
+        duration:700,
+        easing:Easing.bounce,
+      })
+      ]);
+    if (counter ==1) {
+      animation.start();
+      counter = counter+1;
+    } else {
+      console.log(counter);
+      animation.stop();
+      //animation2.start();
+    }
     };
 
 
@@ -199,10 +237,11 @@ export default class TrainingMode extends Component {
         <View style={styles.textContainer}>
           <Text style={styles.text}> Shot: forehand </Text>
         </View>
+          <TouchableWithoutFeedback onPressIn ={onPress}>
           <Image style={styles.court}
             source={require('../assets/images/tenniscourt.png')}
           />
-          <TouchableWithoutFeedback onPressIn ={onPress}>
+          </TouchableWithoutFeedback>
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
@@ -210,11 +249,12 @@ export default class TrainingMode extends Component {
             source={require('../assets/images/tennisball.png')}
             
           />
-          </TouchableWithoutFeedback>
+          
 
           <Image style={styles.box}
             source={require('../assets/images/box.png')}
           />
+
           {view}
           <Button style={styles.button}
            label='End the game'
@@ -455,3 +495,4 @@ const styles = StyleSheet.create({
     fontSize: 10
   }
 });
+
