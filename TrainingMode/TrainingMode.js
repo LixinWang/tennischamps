@@ -8,6 +8,15 @@ import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fontLoaded: false,
+      translateX: new Animated.Value(-173),
+      translateY: new Animated.Value(100)
+
+    };
+  }
 
   translateX = new Animated.Value(-173);
   translateY = new Animated.Value(100);
@@ -55,6 +64,12 @@ export default class TrainingMode extends Component {
       console.log(gs.dy);
       //this.stopAnimation.setValue(true);
       console.log("trigger onPanResponderMove");
+      Animated.timing(this.state.translateX, {
+        toValue:200,
+        duration:700,
+        easing: Easing.bounce,
+      }).start();
+
 
      },
     onPanResponderRelease: (evt, gs) => {
@@ -66,19 +81,6 @@ export default class TrainingMode extends Component {
   static navigationOptions = {
     drawerLabel: <Hidden />,
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      fontLoaded: false,
-      // translateX: -173,
-      // translateY: 100
-
-    };
-  }
-
-
 
 
   getAccuracy(shotCoordinate, shotTarget) {
@@ -109,11 +111,18 @@ export default class TrainingMode extends Component {
     this.setState({ fontLoaded: true, stopAnimation: false });
 
   }
+  get(value) {
+    if (value == 'translateX') {
+      return this.state.translateX
+    } else {
+      return this.state.translateY
+    }
+  }
 
   render() {
     const { navigation } = this.props;
-    const translateX = new Animated.Value(-173);
-    const translateY = new Animated.Value(100);
+    // const translateX = new Animated.Value(-173);
+    // const translateY = new Animated.Value(100);
     var stopAnimation = false; 
 
 
@@ -191,29 +200,18 @@ export default class TrainingMode extends Component {
     const onPress = () => {
         console.log("check");
     let animation = Animated.parallel([
-    Animated.timing(translateX, {
+    Animated.timing(this.state.translateX, {
         toValue: 40,
         duration: 10000,
         easing: Easing.bounce,
     }),
-    Animated.timing(translateY, {
+    Animated.timing(this.state.translateY, {
         toValue: 800,
         duration: 10000,
         easing: Easing.bounce,
     })
     ]);
-    let animation2 = Animated.parallel([
-      Animated.timing(translateX, {
-        toValue:0,
-        duration:700,
-        easing: Easing.bounce,
-      }),
-      Animated.timing(translateY, {
-        toValue:0,
-        duration:700,
-        easing:Easing.bounce,
-      })
-      ]);
+
     if (counter ==1) {
       animation.start();
       counter = counter+1;
@@ -244,7 +242,7 @@ export default class TrainingMode extends Component {
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
-            style = {[styles.ball, {transform:[{translateX},{translateY}] }]}
+            style = {[styles.ball, {transform:[{translateX: this.state.translateX},{translateY: this.state.translateY}] }]}
             source={require('../assets/images/tennisball.png')}
             
           />
