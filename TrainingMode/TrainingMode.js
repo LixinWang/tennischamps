@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Font } from 'expo';
-import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder, Animated} from 'react-native';
+import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
@@ -8,9 +8,9 @@ import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
+
   translateX = new Animated.Value(-173);
   translateY = new Animated.Value(100);
-
   p1x = 0;
   p1y = 0;
   p2x = 0;
@@ -28,9 +28,8 @@ export default class TrainingMode extends Component {
   }
 
   headingAccumulate = 0;
-
   imagePanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: (evt, gs) => true,
+    onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond 
      onPanResponderMove: (evt, gs) => {
       p3x = gs.x0;
       p3y = gs.y0;
@@ -54,18 +53,14 @@ export default class TrainingMode extends Component {
       console.log(gs.dx);
       console.log("--");
       console.log(gs.dy);
-      console.log(" hdg ");
-      console.log(this.headingAccumulate);
+      //this.stopAnimation.setValue(true);
+      console.log("trigger onPanResponderMove");
 
      },
     onPanResponderRelease: (evt, gs) => {
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
        console.log("released");
-
-       // gs.vx and gs.vy give the x/y velocity upon
-       // release of the touch
-
     }
   });
   static navigationOptions = {
@@ -77,9 +72,12 @@ export default class TrainingMode extends Component {
 
     this.state = {
       fontLoaded: false,
+      // translateX: -173,
+      // translateY: 100
 
     };
   }
+
 
 
 
@@ -108,29 +106,23 @@ export default class TrainingMode extends Component {
       'Ionicons': require('native-base/Fonts/Ionicons.ttf'),
       'Roboto_medium': require("native-base/Fonts/Roboto_medium.ttf")
     });
-    this.setState({ fontLoaded: true });
-  }
+    this.setState({ fontLoaded: true, stopAnimation: false });
 
+  }
 
   render() {
     const { navigation } = this.props;
+    const translateX = new Animated.Value(-173);
+    const translateY = new Animated.Value(100);
+    var stopAnimation = false; 
+
+
     if (!this.state.fontLoaded) { return null;}
     var a = Math.floor(Math.random() * 15) + 1 ;
     var view = null
        
 
     var targetLocations = [];
-
-
-    const onPress = () => {
-      Animated.timing(translateY, {
-        toValue:300,
-        duration:2000,
-        easing: Easing.bezier(0.4, 0,0.2,1),
-      }).start();
-
-    };
-
 
 
     if (a == 1) {
@@ -195,8 +187,42 @@ export default class TrainingMode extends Component {
             <Text style={styles.targetText}>TARGET</Text>
           </View>
     }
-
-
+    var counter = 1;
+    const onPress = () => {
+        console.log("check");
+    let animation = Animated.parallel([
+    Animated.timing(translateX, {
+        toValue: 40,
+        duration: 10000,
+        easing: Easing.bounce,
+    }),
+    Animated.timing(translateY, {
+        toValue: 800,
+        duration: 10000,
+        easing: Easing.bounce,
+    })
+    ]);
+    let animation2 = Animated.parallel([
+      Animated.timing(translateX, {
+        toValue:0,
+        duration:700,
+        easing: Easing.bounce,
+      }),
+      Animated.timing(translateY, {
+        toValue:0,
+        duration:700,
+        easing:Easing.bounce,
+      })
+      ]);
+    if (counter ==1) {
+      animation.start();
+      counter = counter+1;
+    } else {
+      console.log(counter);
+      animation.stop();
+      //animation2.start();
+    }
+    };
 
 
     return (
@@ -210,20 +236,24 @@ export default class TrainingMode extends Component {
         <View style={styles.textContainer}>
           <Text style={styles.text}> Shot: forehand </Text>
         </View>
+          <TouchableWithoutFeedback onPressIn ={onPress}>
           <Image style={styles.court}
             source={require('../assets/images/tenniscourt.png')}
           />
+          </TouchableWithoutFeedback>
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
-            style = {[{left: this.translateX, top: this.translateY}, styles.ball]}
+            style = {[styles.ball, {transform:[{translateX},{translateY}] }]}
             source={require('../assets/images/tennisball.png')}
             
           />
+          
 
           <Image style={styles.box}
             source={require('../assets/images/box.png')}
           />
+
           {view}
           <Button style={styles.button}
            label='End the game'
@@ -464,3 +494,4 @@ const styles = StyleSheet.create({
     fontSize: 10
   }
 });
+
