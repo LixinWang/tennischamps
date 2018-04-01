@@ -12,9 +12,6 @@ import Instructions from "../InstructionsScreen/Instructions.js";
 import Preferences from "../PreferenceScreen/Preferences.js";
 import Mode from "../ModeScreen/Mode.js";
 import Training from "../TrainingMode/TrainingMode.js";
-import TrainingTutorial1 from "../TrainingMode/TrainingTutorial1.js";
-import TrainingTutorial2 from "../TrainingMode/TrainingTutorial2.js";
-import TrainingTutorial3 from "../TrainingMode/TrainingTutorial3.js";
 import Game from "../GameMode/GameMode.js";
 import Stats from "../StatsScreen/Stats.js";
 import EndGameScreen from "../EndGameScreen/EndGameScreen.js";
@@ -29,9 +26,6 @@ const RootStack = DrawerNavigator(
     Preferences: { screen: Preferences },
     Mode: { screen: Mode },
     Training: { screen: Training },
-    TrainingTutorial1: {screen: TrainingTutorial1 },
-    TrainingTutorial2: {screen: TrainingTutorial2 },
-    TrainingTutorial3: {screen: TrainingTutorial3 },
     Game: { screen: Game },
     Stats: {screen: Stats},
     EndGameScreen: {screen: EndGameScreen}

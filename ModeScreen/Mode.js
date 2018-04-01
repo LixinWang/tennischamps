@@ -55,7 +55,7 @@ export default class Mode extends React.Component {
           <SpecialButton style={styles.button}
            label='Training Mode'
            buttonText = 'Practice Your Shots and Accuracy'
-           onPress={() => this.props.navigation.navigate("TrainingTutorial1")}/>
+           onPress={() => this.props.navigation.navigate("Training")}/>
 
           <SpecialButton style={styles.button}
           label='Game Mode'
