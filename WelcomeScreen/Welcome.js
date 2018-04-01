@@ -3,8 +3,14 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
+import Hidden from '../Components/Hidden';
 
 export default class WelcomeScreen extends React.Component {
+  static navigationOptions = {
+    drawerLabel: <Hidden />,
+    drawerLockMode: 'locked-closed',
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -23,29 +29,21 @@ export default class WelcomeScreen extends React.Component {
     return (
       <View style={styles.container}>
 
+        <Image style={styles.image}
+          source={require('../assets/images/tennislogo.png')}
+        />
+
+        { this.state.fontLoaded ? (
+            <Text style={styles.titleText}>Tennis Champs</Text>
+          ) : null }
 
         <Button style={styles.button}
-         label='PLAY'
+         label='Log In'
          onPress={() => this.props.navigation.navigate("LogIn")}
         />
 
        <Button style={styles.button}
-        label='HOW TO PLAY'
-        onPress={() => this.props.navigation.navigate("Registration")}
-        />
-
-        <Button style={styles.button}
-        label='SET PREFERENCE'
-        onPress={() => this.props.navigation.navigate("Registration")}
-        />
-
-        <Button style={styles.button}
-        label='MY STATS'
-        onPress={() => this.props.navigation.navigate("Registration")}
-        />
-
-        <Button style={styles.button}
-        label='LOG OUT'
+        label='Create an Account'
         onPress={() => this.props.navigation.navigate("Registration")}
         />
 
@@ -63,23 +61,34 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   button: {
-    alignItems: 'center',
     backgroundColor: '#ffffff',
-    margin: 18,
-    width: 250,
-    paddingVertical: 10,
-    borderRadius: 5
+    margin: 18
   },
   image: {
     width: 180,
     height: 180,
-    margin: 40
+    margin: 40,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowRadius: 2,
+    shadowOpacity: 0.8
   },
   titleText: {
     fontFamily: 'bungee-inline',
     fontSize: 32,
     fontWeight: 'bold',
     color: '#ffffff',
-    marginBottom: 40
+    backgroundColor: 'transparent',
+    marginBottom: 40,
+    shadowColor: '#000000',
+    shadowOffset: {
+      width: 0,
+      height: 2
+    },
+    shadowRadius: 2,
+    shadowOpacity: 0.8
   }
 });

@@ -3,38 +3,75 @@ import * as firebase from 'firebase';
 import { Font } from 'expo';
 import { StyleSheet, TextInput, View, TouchableOpacity } from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
+
 import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
+import Hidden from '../Components/Hidden';
 
 export default class LogIn extends Component {
+  static navigationOptions = {
+      drawerLabel: <Hidden />,
+      drawerLockMode: 'locked-closed',
+  };
+
   constructor(props) {
     super(props);
-    this.itemsRef = firebaseApp.database().ref();
+    this.itemsRef = firebaseApp.database().ref('users');
     this.state = {
       username: '',
-      password: ''
+      password: '',
+      fontLoaded: false
     };
   }
+
   handleClick = () => {
-      var user = this.state.username;
-      var pass = this.state.password;
-      var nav = this.props.navigation;
-      this.itemsRef.orderByChild("username").equalTo(user).once("value").then(snapshot => {
+    const { username, password } = this.state;
+    const { navigation } = this.props;
+
+    if (username == '' || password == '') {
+      alert("Please enter username and password.");
+    } else {
+      this.itemsRef.orderByChild("username").equalTo(username).once("value").then(snapshot => {
       // key will be "ada" the first time and "alan" the second time
           if(snapshot.val()){
-            this.itemsRef.orderByChild("password").equalTo(pass).once("value").then(snapshot => {
+            var ref = snapshot.ref;
+            this.itemsRef.orderByChild("password").equalTo(password).once("value").then(snapshot => {
               if (snapshot.val()){
-                nav.navigate("homepage");
-
-              }
+                var key = Object.keys(snapshot.val())[0];
+                console.log(key);
+                var handedness = 0;
+                if (snapshot.val().righty == 'true') {
+                  handedness = 0
+                } else {
+                  handedness = 1;
+                }
+                firebaseApp.database().ref('/users/' + key).once("value").then(snapshot => {
+                  var difficulty = snapshot.val() && snapshot.val().difficulty;
+                   firebaseApp.database().ref('/users/' + key).once("value").then(snapshot => {
+                    var sound = snapshot.val() && snapshot.val().sound;
+                    firebaseApp.database().ref('/users/' + key).once("value").then(snapshot => {
+                    var handedness = snapshot.val() && snapshot.val().righty;
+                    if (handedness == false) {
+                       handedness = 1;
+                    } else {
+                      handedness = 0;
+                    }
+                    console.log(handedness);
+                    navigation.navigate("Home", {key: key, difficulty: difficulty, sound: sound, handedness: handedness});
+                  });
+                  });
+                 });
+                }
+                //console.log(Object.Object.keys(snapshot.val())[0]);
               else {
-                nav.navigate("WelcomeScreen");
+                alert("Invalid username or password.");
               }
            });
           } else {
-              nav.navigate("WelcomeScreen");
+              alert("Invalid username or password.");
           }
         });
+    }
   }
 
   async componentDidMount() {
@@ -49,29 +86,29 @@ export default class LogIn extends Component {
   render() {
     const { navigation } = this.props;
     if (!this.state.fontLoaded) { return null;}
-    
+
     return (
-      <Container>
+      <Container style={styles.container}>
         <Navbar
           title='LOG IN'
-          onPressBack={() => navigation.goBack(null)}/>
+          onPressBack={() => navigation.goBack(null)}
+          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
+
         <Content contentContainerStyle={styles.content}>
           <View style={styles.loginFields}>
             <TextInput
               style={styles.inputField}
               placeholder='Username'
-              onChangeText={(username) => this.setState({username})}
-            />
+              onChangeText={(username) => this.setState({username})}/>
 
             <TextInput
               style={styles.inputField}
               placeholder='Password'
-              onChangeText={(password) => this.setState({password})}
-            />
+              onChangeText={(password) => this.setState({password})}/>
 
             <TouchableOpacity
               style={styles.textLink}
-               onPress={() => navigation.navigate("Home")}
+               onPress={() => navigation.navigate("Welcome")}
              >
              <Text style={styles.text}> Forgot your password? </Text>
             </TouchableOpacity>
@@ -80,11 +117,10 @@ export default class LogIn extends Component {
 
         <Button style={styles.button}
          label='Log In'
-         onPress={(e) => this.handleClick(e)}
-        />
+         onPress={(e) => this.handleClick(e)}/>
           <TouchableOpacity
             style={styles.textLink}
-             onPress={() => this.props.navigation.navigate("Registration")}
+             onPress={() => navigation.navigate("Registration")}
            >
            <Text style={styles.text}> Don&#8217;t have an account? </Text>
           </TouchableOpacity>
@@ -96,19 +132,17 @@ export default class LogIn extends Component {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    backgroundColor: '#2A5D38'
+  },
   content: {
     flex: 1,
-    backgroundColor: '#2A5D38',
     alignItems: 'center',
     justifyContent: 'flex-start'
   },
   button: {
-    alignItems: 'center',
     backgroundColor: '#ffffff',
-    marginTop: 18,
-    width: 250,
-    paddingVertical: 10,
-    borderRadius: 5
+    marginTop: 18
   },
   inputField: {
     height: 40,
