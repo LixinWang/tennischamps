@@ -64,11 +64,16 @@ export default class TrainingMode extends Component {
       console.log(gs.dy);
       //this.stopAnimation.setValue(true);
       console.log("trigger onPanResponderMove");
-      Animated.timing(this.state.translateX, {
-        toValue:200,
-        duration:700,
-        easing: Easing.bounce,
-      }).start();
+      Animated.parallel([
+      Animated.decay(this.state.translateX, {
+          velocity: gs.vx,
+          deceleration: 0.997
+      }),
+      Animated.decay(this.state.translateY, {
+          velocity: gs.vy,
+          deceleration: 0.997
+      })
+      ]).start();
 
 
      },
