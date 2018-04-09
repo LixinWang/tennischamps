@@ -7,7 +7,7 @@ import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
-export default class TrainingTutorial1 extends Component {
+export default class Instructions1 extends Component {
   static navigationOptions = {
     drawerLabel: <Hidden />,
   };
@@ -38,9 +38,10 @@ export default class TrainingTutorial1 extends Component {
       <Container style={styles.container}>
         <Image style={styles.court}
           source={require('../assets/images/Tutorial1.png')}/>
+
         <Button style={styles.button}
          label='Next'
-         onPress={() => this.props.navigation.navigate("TrainingTutorial2")}/>
+         onPress={() => this.props.navigation.navigate("Instructions2")}/>
       </Container>
     );
   }

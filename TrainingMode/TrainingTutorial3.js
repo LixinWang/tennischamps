@@ -36,16 +36,11 @@ export default class TrainingTutorial3 extends Component {
 
     return (
       <Container style={styles.container}>
-
-        <View>
-          <Image style={styles.court}
-            source={require('../assets/images/TrainingTut3.png')}/>
-
-          <Button style={styles.button}
-           label='Next'
-           onPress={() => this.props.navigation.navigate("Training")}/>
-
-        </View>
+        <Image style={styles.court}
+          source={require('../assets/images/Tutorial3.png')}/>
+        <Button style={styles.button}
+         label='Next'
+         onPress={() => this.props.navigation.navigate("TrainingTutorial4")}/>
       </Container>
     );
   }
@@ -54,18 +49,17 @@ export default class TrainingTutorial3 extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#2A5D38',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     backgroundColor: '#ffffff',
-    position: 'absolute',
+    alignSelf: 'center',
     zIndex: 3,
-    bottom: 40,
-    left: 60
   },
   court: {
-    height: '100%',
+    width: '100%',
     alignSelf: 'center',
-    resizeMode: 'contain',
     zIndex: 0,
   },
 });
