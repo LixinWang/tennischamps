@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { Font } from 'expo';
+import * as firebase from 'firebase';
 import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
@@ -10,6 +11,7 @@ import Hidden from '../Components/Hidden';
 export default class TrainingMode extends Component {
   constructor(props) {
     super(props);
+    this.itemsRef = firebaseApp.database().ref('users');
     this.state = {
       fontLoaded: false,
       translateX: new Animated.Value(-173),
@@ -74,13 +76,15 @@ export default class TrainingMode extends Component {
           deceleration: 0.997
       })
       ]).start();
-
+      console.log("xValF", gs.moveX);
+      console.log("yValF", gs.moveY);
 
      },
     onPanResponderRelease: (evt, gs) => {
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
-       console.log("released");
+      console.log("xVal", gs.moveX);
+      console.log("yVal", gs.moveY);
     }
   });
   static navigationOptions = {
@@ -202,8 +206,10 @@ export default class TrainingMode extends Component {
           </View>
     }
     var counter = 1;
+    var anotherCount = 0;
     const onPress = () => {
         console.log("check");
+        anotherCount += 1;
     let animation = Animated.parallel([
     Animated.timing(this.state.translateX, {
         toValue: 40,
@@ -218,6 +224,7 @@ export default class TrainingMode extends Component {
     ]);
 
     if (counter ==1) {
+      console.log("im about to start");
       animation.start();
       counter = counter+1;
     } else {
@@ -225,6 +232,7 @@ export default class TrainingMode extends Component {
       animation.stop();
       //animation2.start();
     }
+    console.log("temp", anotherCount);
     };
 
 
