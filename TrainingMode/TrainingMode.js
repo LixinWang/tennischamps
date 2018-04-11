@@ -8,6 +8,14 @@ import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      fontLoaded: false,
+      targetCoord: null,
+      target: null
+    };
+  }
   translateX = new Animated.Value(-173);
   translateY = new Animated.Value(100);
 
@@ -62,7 +70,7 @@ export default class TrainingMode extends Component {
         // The user has released all touches while this view is the
         // responder. This typically means a gesture has succeeded
        console.log("released");
-
+       console.log(this.state.targetCoord);
        // gs.vx and gs.vy give the x/y velocity upon
        // release of the touch
 
@@ -71,16 +79,6 @@ export default class TrainingMode extends Component {
   static navigationOptions = {
     drawerLabel: <Hidden />,
   };
-
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      fontLoaded: false,
-
-    };
-  }
-
 
 
   getAccuracy(shotCoordinate, shotTarget) {
@@ -101,7 +99,6 @@ export default class TrainingMode extends Component {
     }
 
   }
-
   async componentDidMount() {
     await Expo.Font.loadAsync({
       'bungee-inline': require('../assets/fonts/BungeeInline-Regular.ttf'),
@@ -109,18 +106,18 @@ export default class TrainingMode extends Component {
       'Roboto_medium': require("native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ fontLoaded: true });
+    var a = 1
+    var view = null
+    var targetLocations = [];
+    this.setState({target: a});
+    this.setState({targetCoord: [(90+ 100/3, 121 + 140/3), ((90 + 100/3) + 140/3, 121 + 140/3), (90 + 100/3, (121 + 140/3) + 100/3), ((90 + 100/3) + 140/3, (121 + 140/3) + 100/3)]});
+
   }
 
 
   render() {
     const { navigation } = this.props;
     if (!this.state.fontLoaded) { return null;}
-    var a = Math.floor(Math.random() * 15) + 1 ;
-    var view = null
-       
-
-    var targetLocations = [];
-
 
     const onPress = () => {
       Animated.timing(translateY, {
@@ -133,60 +130,60 @@ export default class TrainingMode extends Component {
 
 
 
-    if (a == 1) {
+    if (this.state.target == 1) {
       view = <View style={styles.target}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 2) {
+    } else if (this.state.target == 2) {
             view = <View style={styles.target2}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
 
-    } else if (a == 3) {
+    } else if (this.state.target == 3) {
             view = <View style={styles.target3}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 4) {
+    } else if (this.state.target == 4) {
             view = <View style={styles.target4}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 5) {
+    } else if (this.state.target == 5) {
             view = <View style={styles.target5}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    }  else if (a == 6) {
+    }  else if (this.state.target == 6) {
             view = <View style={styles.target6}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 7) {
+    } else if (this.state.target == 7) {
             view = <View style={styles.target7}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 8) {
+    } else if (this.state.target == 8) {
             view = <View style={styles.target8}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 9) {
+    } else if (this.state.target == 9) {
             view = <View style={styles.target9}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 10) {
+    } else if (this.state.target == 10) {
             view = <View style={styles.target10}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 11) {
+    } else if (this.state.target == 11) {
             view = <View style={styles.target11}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 12) {
+    } else if (this.state.target == 12) {
             view = <View style={styles.target12}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 13) {
+    } else if (this.state.target == 13) {
             view = <View style={styles.target13}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 14) {
+    } else if (this.state.target == 14) {
             view = <View style={styles.target14}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
