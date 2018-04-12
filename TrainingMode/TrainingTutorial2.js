@@ -14,8 +14,10 @@ export default class TrainingTutorial2 extends Component {
 
   constructor(props) {
     super(props);
+    const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
+      key: state.params.key
     };
   }
 
@@ -40,7 +42,7 @@ export default class TrainingTutorial2 extends Component {
           source={require('../assets/images/Tutorial2.png')}/>
         <Button style={styles.button}
          label='Next'
-         onPress={() => this.props.navigation.navigate("TrainingTutorial3")}/>
+         onPress={() => this.props.navigation.navigate("TrainingTutorial3", {key: this.state.key})}/>
       </Container>
     );
   }

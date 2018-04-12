@@ -12,11 +12,17 @@ export default class TrainingMode extends Component {
   constructor(props) {
     super(props);
     this.itemsRef = firebaseApp.database().ref('users');
+    const {state} = this.props.navigation;
+    window.currUser = state.params.key;
     this.state = {
       fontLoaded: false,
+      targetCoord: null,
+      target: null,
       translateX: new Animated.Value(-173),
-      translateY: new Animated.Value(100)
-
+      translateY: new Animated.Value(100),
+      key: state.params.key, 
+      hand: 'backhand',
+      moves: []
     };
   }
 
@@ -38,6 +44,77 @@ export default class TrainingMode extends Component {
     return Math.sqrt(dx * dx + dy * dx);
   }
 
+  getTrainingResult = (value, gs) => {
+    var shotStart = [gs.x0, gs.y0];
+    var shotCoordinate = [gs.moveX, gs.moveY];
+    var shotTarget = this.state.targetCoord;
+    let [startXCoord, startYCoord] = shotStart;
+    let [xCoord, yCoord] = shotCoordinate;
+    let [xCoordTar, yCoordTar] = shotTarget;
+    startDistance = (((startXCoord - xCoordTar)**2) + ((startYCoord - (yCoordTar))**2))**0.5
+    endDistance = (((xCoord - xCoordTar) **2) + ((yCoord - (yCoordTar + 100)) **2))**0.5
+    startDistanceX = startXCoord - xCoordTar;
+    startDistanceY = startYCoord - yCoordTar;
+    endDistanceX = xCoord - xCoordTar;
+    endDistanceY = yCoord - yCoordTar;
+    if (gs.vx < -1 || gs.vy < -1) {
+          alert("far");
+    }
+    else if (this.state.hand == 'backhand') {
+        var midpt = Math.ceil(value.length/2);
+        console.log(value[midpt]);
+        var val = value[midpt].split(",");
+        var initial = value[1].split(",");
+        console.log("val", value);
+        console.log("first", val[0]);
+        console.log("second", initial[0]);
+        console.log("end", endDistance);
+        if (!(val[0] < initial[0])) {
+          alert("Not backhand!")
+        } else if (!(val[1] < initial[1])) {
+          alert("Oops, shot in the wrong direction!");
+        } else {
+            console.log(endDistance);
+            if (endDistance < 100 && endDistance >= 50){
+              alert("ok");
+            }
+           else if (endDistance < 50 && endDistance >= 30) {
+              alert("close");
+            }
+          else if (endDistance < 30){
+            alert("on target!");
+            firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand).once("value").then(snapshot => {
+              snapshot.forEach(function(childSnapshot) {
+              var hits = (childSnapshot.val() && childSnapshot.val().hits) + 1;
+              var shots = (childSnapshot.val() && childSnapshot.val().shots) + 1;
+            })
+            });
+          }
+          else {
+            alert("far");
+          }
+        }
+    }
+  }
+ addToStats = (value) => {
+      var updates = {};
+      console.log("diff", value);
+      console.log(this.state.key);
+      if (value == 0) {
+        updates['/users/' + this.state.key + '/righty'] = true;
+        updates['/users/' + this.state.key + '/lefty'] = false;
+        this.setState({handedness: 0})
+        return this.itemsRef.update(updates);
+      } else {
+        updates['/users/' + this.state.key + '/righty'] = false;
+        updates['/users/' + this.state.key + '/lefty'] = true;
+        this.setState({handedness: 1})
+        return this.itemsRef.update(updates);
+      }
+      // console.log('/users/' + this.state.key + '/h');
+      console.log(updates);
+      // key will be "ada" the first time and "alan" the second time
+  }
   headingAccumulate = 0;
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond 
@@ -76,8 +153,12 @@ export default class TrainingMode extends Component {
           deceleration: 0.997
       })
       ]).start();
-      console.log("xValF", gs.moveX);
-      console.log("yValF", gs.moveY);
+      Animated.delay(10000);
+      console.log("x", gs.moveX);
+      console.log("y", gs.moveY);
+      this.setState({moves: this.state.mover += [[gs.moveX + "," + gs.moveY + " "]]});
+      console.log("loc", gs.dx);
+      console.log("loc", gs.dy);
 
      },
     onPanResponderRelease: (evt, gs) => {
@@ -85,31 +166,30 @@ export default class TrainingMode extends Component {
         // responder. This typically means a gesture has succeeded
       console.log("xVal", gs.moveX);
       console.log("yVal", gs.moveY);
-    }
+      console.log("released");
+      var s = this.state.mover;
+      s = s.split(" ");
+      this.getTrainingResult(s, gs);
+      console.log(this.state.targetCoord);
+      var shotStart = [gs.x0, gs.y0]
+      console.log('start', shotStart);
+      var shotCoordinate = [gs.moveX, gs.moveY];
+      var shotTarget = this.state.targetCoord;
+      let [startXCoord, startYCoord] = shotStart;
+      let [xCoord, yCoord] = shotCoordinate
+      let [xCoordTar, yCoordTar] = shotTarget
+      console.log("coord", shotCoordinate);
+      console.log("target", shotTarget);
+      console.log("velocity", gs.vx);
+      console.log("velocity", gs.vy);
+       // gs.vx and gs.vy give the x/y velocity upon
+       // release of the touch
+     }
+
   });
   static navigationOptions = {
     drawerLabel: <Hidden />,
   };
-
-
-  getAccuracy(shotCoordinate, shotTarget) {
-    let [xCoord, yCoord] = shotCoordinate
-    let [xCoordTar, yCoordTar] = shotTarget
-    distance = (((xCoord - xCoordTar)**2) + ((yCoord - yCoordTar)**2))**0.5
-    if (distance < 5) {
-      return "veryclose"
-    }
-    if (distance > 5 && distance <= 15) {
-      return "close"
-    }
-    if (distance > 15 && distance <= 25) {
-      return "average"
-    }
-    if (distance > 25) {
-      return "far"
-    }
-
-  }
 
   async componentDidMount() {
     await Expo.Font.loadAsync({
@@ -118,8 +198,20 @@ export default class TrainingMode extends Component {
       'Roboto_medium': require("native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ fontLoaded: true, stopAnimation: false });
-
+    //var a = Math.floor(Math.random() * 15) + 1 ;
+    var a = 1;
+    var view = null
+    var targetLocations = [];
+    if (a == 1) {
+      this.setState({target: 1});
+      this.setState({targetCoord: [((121 + 140/3) + ((121 + 140/3) + 140/3))/2, ((90+ 100/3) + ((90 + 100/3) + (90 + 100/3)))/2]});
+    }
+    if (a == 2) {
+      this.setState({target: 2});
+      this.setState({targetCoord: [((121 + 140/3) + ((121 + 140/3) + 140/3))/2, ((130+ 100/3) + ((130 + 100/3) + (90 + 100/3)))/2]});
+    }
   }
+
   get(value) {
     if (value == 'translateX') {
       return this.state.translateX
@@ -136,67 +228,61 @@ export default class TrainingMode extends Component {
 
 
     if (!this.state.fontLoaded) { return null;}
-    var a = Math.floor(Math.random() * 15) + 1 ;
-    var view = null
-       
 
-    var targetLocations = [];
-
-
-    if (a == 1) {
+    if (this.state.target == 1) {
       view = <View style={styles.target}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 2) {
+    } else if (this.state.target == 2) {
             view = <View style={styles.target2}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
 
-    } else if (a == 3) {
+    } else if (this.state.target == 3) {
             view = <View style={styles.target3}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 4) {
+    } else if (this.state.target == 4) {
             view = <View style={styles.target4}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 5) {
+    } else if (this.state.target == 5) {
             view = <View style={styles.target5}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    }  else if (a == 6) {
+    }  else if (this.state.target == 6) {
             view = <View style={styles.target6}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 7) {
+    } else if (this.state.target == 7) {
             view = <View style={styles.target7}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 8) {
+    } else if (this.state.target == 8) {
             view = <View style={styles.target8}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 9) {
+    } else if (this.state.target == 9) {
             view = <View style={styles.target9}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 10) {
+    } else if (this.state.target == 10) {
             view = <View style={styles.target10}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 11) {
+    } else if (this.state.target == 11) {
             view = <View style={styles.target11}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 12) {
+    } else if (this.state.target == 12) {
             view = <View style={styles.target12}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 13) {
+    } else if (this.state.target == 13) {
             view = <View style={styles.target13}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
-    } else if (a == 14) {
+    } else if (this.state.target == 14) {
             view = <View style={styles.target14}>
             <Text style={styles.targetText}>TARGET</Text>
           </View>
@@ -366,7 +452,7 @@ const styles = StyleSheet.create({
 
   },
   target4: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -378,7 +464,7 @@ const styles = StyleSheet.create({
 
   },
   target5: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -389,7 +475,7 @@ const styles = StyleSheet.create({
     left: 50 + 140/3
   },
   target6: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -400,7 +486,7 @@ const styles = StyleSheet.create({
     left: 50 + 140/3
   },
   target7: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -411,7 +497,7 @@ const styles = StyleSheet.create({
     left: 215 + 140/3
   },
   target8: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -422,7 +508,7 @@ const styles = StyleSheet.create({
     left: 215 + 140/3
   },
   target9: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -433,7 +519,7 @@ const styles = StyleSheet.create({
     left: 215 + 140/3
   },
   target10: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -444,7 +530,7 @@ const styles = StyleSheet.create({
     left: 75 + 140/3
   },
   target11: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -456,7 +542,7 @@ const styles = StyleSheet.create({
 
   },
   target12: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -467,7 +553,7 @@ const styles = StyleSheet.create({
     left: 120 + 140/3
   },
     target13: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -478,7 +564,7 @@ const styles = StyleSheet.create({
     left: 147 + 140/3
   },
   target14: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
@@ -489,7 +575,7 @@ const styles = StyleSheet.create({
     left: 170 + 140/3
   },
   target15: {
-    width: 140/6,
+    width: 140/3,
     height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
