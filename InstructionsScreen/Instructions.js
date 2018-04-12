@@ -41,14 +41,19 @@ export default class Instructions extends React.Component {
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <Content contentContainerStyle={styles.content}>
-          <Text style={styles.firsttext}>1. Select play mode</Text>
+          <Text style={styles.firsttext}>1. Select 'play' to begin</Text>
 
-          <Text style={styles.text}>2. Tap 'Ready' to begin</Text>
+          <Text style={styles.text}>2. Tap the screen to launch the ball</Text>
 
           <Text style={styles.text}>3. Swipe to hit the ball</Text>
 
           <Text style={styles.text}>4. To pause/quit, tap the menu in the top right corner</Text>
         </Content>
+
+        <Button style={styles.button}
+         label='Next'
+         onPress={() => this.props.navigation.navigate("Instructions1")}/>
+
       </Container>
     );
   }
@@ -78,5 +83,11 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginTop: 60,
     fontSize: 22
-  }
+  },
+  button: {
+    backgroundColor: '#ffffff',
+    alignSelf: 'center',
+    bottom: '5%',
+    zIndex: 3,
+  },
 });

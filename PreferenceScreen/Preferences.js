@@ -17,7 +17,6 @@ export default class Preferences extends Component {
     this.itemsRef = firebaseApp.database().ref();
     this.state = {
       fontLoaded: false,
-      sound: state.params.sound,
       key: state.params.key,
       handedness: state.params.handedness,
       difficultyTypes: state.params.difficulty
@@ -38,16 +37,16 @@ export default class Preferences extends Component {
       return this.itemsRef.update(updates);
       // key will be "ada" the first time and "alan" the second time
   }
-  handleSound = (value) => {
-      var updates = {};
-      console.log("diff", value);
-      console.log(this.state.key);
-      updates['/users/' + this.state.key + '/sound'] = value;
-      console.log(updates);
-      this.setState({sound: value})
-      return this.itemsRef.update(updates);
-      // key will be "ada" the first time and "alan" the second time
-  }
+  // handleSound = (value) => {
+  //     var updates = {};
+  //     console.log("diff", value);
+  //     console.log(this.state.key);
+  //     updates['/users/' + this.state.key + '/sound'] = value;
+  //     console.log(updates);
+  //     this.setState({sound: value})
+  //     return this.itemsRef.update(updates);
+  //     // key will be "ada" the first time and "alan" the second time
+  // }
  handleHandedness = (value) => {
       var updates = {};
       console.log("diff", value);
@@ -129,7 +128,6 @@ componentWillMount = async() => {
     if (!this.state.fontLoaded) { return null;}
     const radio_props = [{label: 'Easy ', value: 0 }, {label: 'Medium ', value: 1 }, {label: 'Hard ', value: 2 }];
     const dominance_props = [{label: 'Right-Handed ', value: 0 }, {label: 'Left-Handed ', value: 1 }];
-    console.log(this.state.sound);
     console.log("true");
     console.log("false");
 
@@ -137,18 +135,8 @@ componentWillMount = async() => {
       <Container style={styles.container}>
         <Navbar
           title='PREFERENCES'
-          onPressBack={() => navigation.navigate("Home", {key: this.state.key, difficulty: this.state.difficultyTypes, sound: this.state.sound, handedness: this.state.handedness})}/>
+          onPressBack={() => navigation.navigate("Home", {key: this.state.key, difficulty: this.state.difficultyTypes, handedness: this.state.handedness})}/>
         <Content contentContainerStyle={styles.content}>
-
-        <View style={styles.contentButtons}>
-          <Text style={styles.text}>SOUND:
-            <Switch
-              value={this.state.sound}
-              onValueChange={ (sound) => {this.handleSound(sound)}}
-              onTintColor= {"#0198E1"}
-              marginLeft= {15}
-          /></Text>
-        </View>
 
         <View style={styles.contentButtons}>
           <Text style={styles.text}>DIFFICULTY: </Text>
