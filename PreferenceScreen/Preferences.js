@@ -132,6 +132,7 @@ componentWillMount = async() => {
     console.log(this.state.sound);
     console.log("true");
     console.log("false");
+    global.difficulty = this.state.difficultyTypes;
 
     return (
       <Container style={styles.container}>

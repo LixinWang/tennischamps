@@ -131,10 +131,11 @@ export default class TrainingMode extends Component {
     var stopAnimation = false; 
 
 
+
     if (!this.state.fontLoaded) { return null;}
     var a = Math.floor(Math.random() * 15) + 1 ;
     var view = null
-       
+
 
     var targetLocations = [];
 
@@ -204,18 +205,49 @@ export default class TrainingMode extends Component {
     var counter = 1;
     const onPress = () => {
         console.log("check");
-    let animation = Animated.parallel([
-    Animated.timing(this.state.translateX, {
-        toValue: 40,
-        duration: 10000,
-        easing: Easing.bounce,
-    }),
-    Animated.timing(this.state.translateY, {
-        toValue: 800,
-        duration: 10000,
-        easing: Easing.bounce,
-    })
-    ]);
+        var animation;
+    console.log("--------diff: "+ global.difficulty);
+    if (global.difficulty == 1) {
+       animation = Animated.parallel([
+      Animated.timing(this.state.translateX, {
+          toValue: 40,
+          duration: 12000,
+          easing: Easing.bounce,
+      }),
+      Animated.timing(this.state.translateY, {
+          toValue: 800,
+          duration: 12000,
+          easing: Easing.bounce,
+      })
+      ]);
+    } else if (global.difficulty == 2) {
+         animation = Animated.parallel([
+        Animated.timing(this.state.translateX, {
+          toValue: 40,
+          duration: 7000,
+          easing: Easing.bounce,
+      }),
+        Animated.timing(this.state.translateY, {
+          toValue: 800,
+          duration: 7000,
+          easing: Easing.bounce,
+      })
+      ]);
+    } else {
+         animation = Animated.parallel([
+        Animated.timing(this.state.translateX, {
+          toValue: 40,
+          duration: 20000,
+          easing: Easing.bounce,
+      }),
+        Animated.timing(this.state.translateY, {
+          toValue: 800,
+          duration: 20000,
+          easing: Easing.bounce,
+      })
+      ]);
+
+    }
 
     if (counter ==1) {
       animation.start();
