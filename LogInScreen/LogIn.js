@@ -55,8 +55,7 @@ export default class LogIn extends Component {
               console.log(handedness);
               navigation.navigate("Home", {key: key, difficulty: difficulty, sound: sound, handedness: handedness});
             })
-            .catch(() => { alert("Invalid username or password."); });
-      });
+      }).catch(() => { alert("Invalid username or password."); });;
     }
   }
 
@@ -84,7 +83,7 @@ export default class LogIn extends Component {
           <View style={styles.loginFields}>
             <TextInput
               style={styles.inputField}
-              placeholder='Username'
+              placeholder='Email'
               onChangeText={(username) => this.setState({username})}/>
 
             <TextInput
