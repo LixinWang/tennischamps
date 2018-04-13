@@ -42,6 +42,7 @@ export default class Registration extends Component {
           righty: righty,
           lefty: lefty,
           difficulty: 0,
+          email: email,
         });
 
         navigation.navigate("Welcome");
