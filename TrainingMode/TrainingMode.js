@@ -18,9 +18,9 @@ export default class TrainingMode extends Component {
       fontLoaded: false,
       targetCoord: null,
       target: null,
-      translateX: new Animated.Value(-173),
-      translateY: new Animated.Value(100),
-      key: state.params.key, 
+      translateX: new Animated.Value(-177),
+      translateY: new Animated.Value(80),
+      key: state.params.key,
       hand: 'backhand',
       moves: []
     };
@@ -117,7 +117,7 @@ export default class TrainingMode extends Component {
   }
   headingAccumulate = 0;
   imagePanResponder = PanResponder.create({
-    onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond 
+    onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond
      onPanResponderMove: (evt, gs) => {
       p3x = gs.x0;
       p3y = gs.y0;
@@ -125,7 +125,7 @@ export default class TrainingMode extends Component {
       // Figure out the heading of each segment
       theta1 = this.relAngle(p3x, p3y, this.p2x, this.p2y);
       theta2 = this.relAngle(this.p2x, this.p2y, this.p1x, this.p1y);
-      
+
       // Heading difference between the previous and current
       // line segments
       headingChange = theta2 - theta1;
@@ -224,7 +224,7 @@ export default class TrainingMode extends Component {
     const { navigation } = this.props;
     // const translateX = new Animated.Value(-173);
     // const translateY = new Animated.Value(100);
-    var stopAnimation = false; 
+    var stopAnimation = false;
 
 
     if (!this.state.fontLoaded) { return null;}
@@ -343,12 +343,7 @@ export default class TrainingMode extends Component {
             {...this.imagePanResponder.panHandlers}
             style = {[styles.ball, {transform:[{translateX: this.state.translateX},{translateY: this.state.translateY}] }]}
             source={require('../assets/images/tennisball.png')}
-            
-          />
-          
 
-          <Image style={styles.box}
-            source={require('../assets/images/box.png')}
           />
 
           {view}
@@ -591,4 +586,3 @@ const styles = StyleSheet.create({
     fontSize: 10
   }
 });
-
