@@ -19,7 +19,6 @@ export default class Registration extends Component {
     //this.itemsRef2 = firebase.firestore().collection('users');
     this.state = {
       email: '',
-      username: '',
       password: '',
       repeatpass: '',
       righty: true,
@@ -30,9 +29,9 @@ export default class Registration extends Component {
 
   handleClick = () => {
     const { navigation } = this.props;
-    const {email, username, password, repeatpass, righty, lefty} = this.state;
+    const {email, password, repeatpass, righty, lefty} = this.state;
 
-    if (email == '' || username == '' || password == '') {
+    if (email == '' || password == '') {
       alert("Please enter missing information.");
     } else if (password != repeatpass){
       alert("Repeated password does not match.");
@@ -96,11 +95,6 @@ export default class Registration extends Component {
           <TextInput style={styles.inputField}
             placeholder='Email'
             onChangeText={(email) => this.setState({email})}
-          />
-
-          <TextInput style={styles.inputField}
-            placeholder='Username'
-            onChangeText={(username) => this.setState({username})}
           />
 
           <TextInput style={styles.inputField}
