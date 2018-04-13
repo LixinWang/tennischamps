@@ -42,8 +42,6 @@ export default class LogIn extends Component {
 
           firebaseApp.database().ref('/users2/' + key).once("value")
             .then(snapshot => {
-              debugger;
-
               var difficulty = snapshot.val() && snapshot.val().difficulty;
               var sound = snapshot.val() && snapshot.val().sound;
               var handedness = snapshot.val() && snapshot.val().righty;
