@@ -75,19 +75,35 @@ export default class TrainingMode extends Component {
           alert("Oops, shot in the wrong direction!");
         } else {
             console.log(endDistance);
-            if (endDistance < 100 && endDistance >= 50){
+          if (endDistance < 100 && endDistance >= 50){
               alert("ok");
             }
-           else if (endDistance < 50 && endDistance >= 30) {
+          else if (endDistance < 50 && endDistance >= 30) {
               alert("close");
             }
-          else if (endDistance < 30){
+          if (endDistance < 200){
             alert("on target!");
+            var arr = []
+            var promise = new Promise((resolve, reject) => {
             firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand).once("value").then(snapshot => {
-              snapshot.forEach(function(childSnapshot) {
-              var hits = (childSnapshot.val() && childSnapshot.val().hits) + 1;
-              var shots = (childSnapshot.val() && childSnapshot.val().shots) + 1;
-            })
+              hits = (snapshot.val() && snapshot.val().hits) + 1;
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(hits);
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+                firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand + '/2/hits').push(arr[0]);
+                firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand + '/2/shots').push(arr[1]);
             });
           }
           else {
@@ -167,7 +183,7 @@ export default class TrainingMode extends Component {
       console.log("xVal", gs.moveX);
       console.log("yVal", gs.moveY);
       console.log("released");
-      var s = this.state.mover;
+      var s = this.state.moves;
       s = s.split(" ");
       this.getTrainingResult(s, gs);
       console.log(this.state.targetCoord);
@@ -327,6 +343,8 @@ export default class TrainingMode extends Component {
         <Navbar
           title='TRAINING'
           onPressBack={() => navigation.goBack("Home", {key: this.state.key})}
+          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
+
         <View contentContainerStyle={styles.content}>
         <View style={styles.textContainer}>
           <Text style={styles.text}> Shot: forehand </Text>
