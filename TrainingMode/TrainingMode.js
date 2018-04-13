@@ -326,9 +326,7 @@ export default class TrainingMode extends Component {
       <Container style={styles.container}>
         <Navbar
           title='TRAINING'
-          onPressBack={() => navigation.goBack("Home")}
-          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
-
+          onPressBack={() => navigation.goBack("Home", {key: this.state.key})}
         <View contentContainerStyle={styles.content}>
         <View style={styles.textContainer}>
           <Text style={styles.text}> Shot: forehand </Text>
@@ -354,7 +352,7 @@ export default class TrainingMode extends Component {
           {view}
           <Button style={styles.button}
            label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen")}
+           onPress={() => this.props.navigation.navigate("EndGameScreen", {key: this.state.key})}
           />
         </View>
 
