@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import * as firebase from 'firebase';
+import firebase from 'firebase';
 import { Font } from 'expo';
 import { StyleSheet, TextInput, View, TouchableOpacity } from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
@@ -31,46 +31,32 @@ export default class LogIn extends Component {
     if (username == '' || password == '') {
       alert("Please enter username and password.");
     } else {
-      this.itemsRef.orderByChild("username").equalTo(username).once("value").then(snapshot => {
-      // key will be "ada" the first time and "alan" the second time
-          if(snapshot.val()){
-            var ref = snapshot.ref;
-            this.itemsRef.orderByChild("password").equalTo(password).once("value").then(snapshot => {
-              if (snapshot.val()){
-                var key = Object.keys(snapshot.val())[0];
-                console.log(key);
-                var handedness = 0;
-                if (snapshot.val().righty == 'true') {
-                  handedness = 0
-                } else {
-                  handedness = 1;
-                }
-                firebaseApp.database().ref('/users/' + key).once("value").then(snapshot => {
-                  var difficulty = snapshot.val() && snapshot.val().difficulty;
-                   firebaseApp.database().ref('/users/' + key).once("value").then(snapshot => {
-                    var sound = snapshot.val() && snapshot.val().sound;
-                    firebaseApp.database().ref('/users/' + key).once("value").then(snapshot => {
-                    var handedness = snapshot.val() && snapshot.val().righty;
-                    if (handedness == false) {
-                       handedness = 1;
-                    } else {
-                      handedness = 0;
-                    }
-                    console.log(handedness);
-                    navigation.navigate("Home", {key: key, difficulty: difficulty, sound: sound, handedness: handedness});
-                  });
-                  });
-                 });
-                }
-                //console.log(Object.Object.keys(snapshot.val())[0]);
-              else {
-                alert("Invalid username or password.");
+      firebase.auth().signInWithEmailAndPassword(username, password)
+        .then(() => 
+        { 
+          // Ok, we've successfully signed in!
+          // Let's fetch the user's info from the DB.
+          
+          var key = firebase.auth().currentUser.uid;
+          console.log(key);
+
+          firebaseApp.database().ref('/users2/' + key).once("value")
+            .then(snapshot => {
+              debugger;
+
+              var difficulty = snapshot.val() && snapshot.val().difficulty;
+              var sound = snapshot.val() && snapshot.val().sound;
+              var handedness = snapshot.val() && snapshot.val().righty;
+              if (handedness == false) {
+                handedness = 1;
+              } else {
+                handedness = 0;
               }
-           });
-          } else {
-              alert("Invalid username or password.");
-          }
-        });
+              console.log(handedness);
+              navigation.navigate("Home", {key: key, difficulty: difficulty, sound: sound, handedness: handedness});
+            })
+            .catch(() => { alert("Invalid username or password."); });
+      });
     }
   }
 
