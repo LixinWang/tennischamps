@@ -16,7 +16,6 @@ export default class Registration extends Component {
   constructor(props) {
     super(props);
     this.itemsRef = firebaseApp.database().ref('users2');
-    //this.itemsRef2 = firebase.firestore().collection('users');
     this.state = {
       email: '',
       password: '',
@@ -37,19 +36,16 @@ export default class Registration extends Component {
       alert("Repeated password does not match.");
     } else {
       firebase.auth().createUserWithEmailAndPassword(email, password).then((t) => {
-        debugger;
-
         let uid = firebase.auth().currentUser.uid;
 
-        this.itemsRef.push({
-          uid: uid,
+        this.itemsRef.child(uid).set({
           righty: righty,
           lefty: lefty,
           difficulty: 0,
         });
+
         navigation.navigate("Welcome");
       }).catch((error) => {
-        debugger;
         alert("registration failed?");
         alert(error.code);
       });
