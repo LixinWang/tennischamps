@@ -49,7 +49,7 @@ export default class Home extends React.Component {
         <Content contentContainerStyle={styles.content}>
           <Button style={styles.button}
            label='PLAY'
-           onPress={() => this.props.navigation.navigate("Mode")}/>
+           onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
 
          <Button style={styles.button}
           label='HOW TO PLAY'
