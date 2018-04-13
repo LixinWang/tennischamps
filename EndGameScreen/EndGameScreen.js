@@ -79,54 +79,46 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start'
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   text: {
     color: '#ffffff',
     fontFamily: 'bungee-inline',
-    marginLeft: 20,
     marginTop: 30,
     fontSize: 22
   },
   texta: {
     color: '#ffffff',
     fontFamily: 'bungee-inline',
-    marginLeft: 110,
     marginTop: 30,
     fontSize: 22
   },
   textb: {
     color: '#ffffff',
     fontFamily: 'bungee-inline',
-    marginLeft: 120,
-
     fontSize: 22
   },
   textc: {
     color: '#ffffff',
     fontFamily: 'bungee-inline',
-    marginLeft: 90,
     marginTop: 30,
     fontSize: 22
   },
   textd: {
     color: '#ffffff',
     fontFamily: 'bungee-inline',
-    marginLeft: 130,
     fontSize: 50
   },
   firsttext: {
     color: '#ffffff',
     margin: 3,
     fontFamily: 'bungee-inline',
-    marginLeft: 110,
     marginTop: 5,
     fontSize: 28
   },
     button: {
     backgroundColor: '#ffffff',
-    marginLeft: 65,
     marginTop: 20,
     fontSize: 28
 

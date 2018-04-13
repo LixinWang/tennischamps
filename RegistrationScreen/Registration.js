@@ -86,23 +86,21 @@ export default class Registration extends Component {
         <Content contentContainerStyle={styles.content}>
           <TextInput style={styles.inputField}
             placeholder='Email'
-            onChangeText={(email) => this.setState({email})}
-          />
+            onChangeText={(email) => this.setState({email})}/>
 
           <TextInput style={styles.inputField}
             placeholder='Username'
-            onChangeText={(username) => this.setState({username})}
-          />
+            onChangeText={(username) => this.setState({username})}/>
 
           <TextInput style={styles.inputField}
+            secureTextEntry={true}
             placeholder='Password'
-            onChangeText={(password) => this.setState({password})}
-          />
+            onChangeText={(password) => this.setState({password})}/>
 
           <TextInput style={styles.inputField}
+            secureTextEntry={true}
             placeholder='Re-Type Password'
-            onChangeText={(repeatpass) => this.setState({repeatpass})}
-          />
+            onChangeText={(repeatpass) => this.setState({repeatpass})}/>
 
           <View style={styles.toggles}>
           <Text style={styles.text}>Hand Dominance:</Text>
