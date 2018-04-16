@@ -3,8 +3,11 @@ import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-n
 import { Container, Content } from 'native-base';
 import { Font } from 'expo';
 
+import { Dropdown } from 'react-native-material-dropdown';
+
+
 import Button from '../Components/Button';
-import SpecialButton from '../Components/SpecialButton'
+import SpecialButton from '../Components/SpecialButton';
 import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
@@ -19,8 +22,17 @@ export default class Mode extends React.Component {
     this.state = {
       fontLoaded: false,
       key: state.params.key,
+<<<<<<< Updated upstream
       selected: '1',
+=======
+      value: '1'
+>>>>>>> Stashed changes
     };
+    data = [{value: 1}, {value: 2}, {value: 3}, {value: 4},
+      {value: 5}, {value: 6}, {value: 7}, {value: 8},
+      {value: 9}, {value: 10}, {value: 11}, {value: 12}, 
+      {value: 13}, {value: 14}, {value: 15}, {value: 16}, 
+      {value: 17}, {value: 18}, {value: 19}, {value: 20}];
   }
 
   async componentDidMount() {
@@ -38,6 +50,7 @@ export default class Mode extends React.Component {
     });
     this.setState({ fontLoaded: true });
   }
+
 
   render() {
     const { navigation } = this.props;
@@ -57,10 +70,20 @@ export default class Mode extends React.Component {
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Text style={styles.headertext}>Choose your mode:</Text>
+        <Text style={styles.headertext}>Choose how many balls to hit:</Text>
 
         <Content contentContainerStyle={styles.content}>
+   
+          <Dropdown style = {styles.dropdown}
+            label= {this.state.value}
+            data={data}
+            baseColor = '#ffffff'
+            itemCount = '8' 
+            labelFontSize = '20'
+            value = {this.state.value}
+            onChangeText = {(value) => this.setState({value})} />    
 
+<<<<<<< Updated upstream
           <Picker
             selectedValue={this.state.selected}
             mode = 'dropdown'
@@ -76,13 +99,17 @@ export default class Mode extends React.Component {
             label='Next'
             onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
 
+=======
+          <Button style={styles.button}
+           label='Play'
+           onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
+>>>>>>> Stashed changes
 
         </Content>
       </Container>
     );
   }
 }
-
 
 const styles = StyleSheet.create({
   container: {
@@ -109,5 +136,15 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 60,
     textAlign: 'center'
+  },
+  dropdown: {
+    backgroundColor: '#ffffff',
+    margin: 35,
+    marginTop: 50
+  },
+  picker: {
+    backgroundColor: '#ffffff',
+    margin: 35,
+    marginTop: 50
   }
 });
