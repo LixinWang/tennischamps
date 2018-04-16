@@ -72,8 +72,8 @@ export default class Mode extends React.Component {
           </Picker>
 
 
-          <SpecialButton style={styles.button}
-            label='Next'
+          <Button style={styles.button}
+            label='Play'
             onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
 
 
