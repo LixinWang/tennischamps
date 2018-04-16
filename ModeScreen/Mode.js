@@ -22,11 +22,7 @@ export default class Mode extends React.Component {
     this.state = {
       fontLoaded: false,
       key: state.params.key,
-<<<<<<< Updated upstream
-      selected: '1',
-=======
       value: '1'
->>>>>>> Stashed changes
     };
     data = [{value: 1}, {value: 2}, {value: 3}, {value: 4},
       {value: 5}, {value: 6}, {value: 7}, {value: 8},
@@ -83,27 +79,9 @@ export default class Mode extends React.Component {
             value = {this.state.value}
             onChangeText = {(value) => this.setState({value})} />    
 
-<<<<<<< Updated upstream
-          <Picker
-            selectedValue={this.state.selected}
-            mode = 'dropdown'
-            style={{ height: 50, width: 100 }}
-            onValueChange={(itemValue, itemIndex) => this.setState({selected: itemValue})}>
-            {data.map((item, index) => {
-                return (<Picker.Item label={item} value={index} key={index}/>) 
-            })}
-          </Picker>
-
-
-          <SpecialButton style={styles.button}
-            label='Next'
-            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
-
-=======
           <Button style={styles.button}
            label='Play'
            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
->>>>>>> Stashed changes
 
         </Content>
       </Container>
