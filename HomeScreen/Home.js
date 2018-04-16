@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
 import { Container, Content } from 'native-base';
 import { Font } from 'expo';
 
@@ -49,7 +49,7 @@ export default class Home extends React.Component {
         <Content contentContainerStyle={styles.content}>
           <Button style={styles.button}
            label='PLAY'
-           onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
+           onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}/>
 
          <Button style={styles.button}
           label='HOW TO PLAY'
