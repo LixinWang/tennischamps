@@ -15,10 +15,9 @@ export default class Registration extends Component {
 
   constructor(props) {
     super(props);
-    this.itemsRef = firebaseApp.database().ref('users');
+    this.itemsRef = firebaseApp.database().ref('users2');
     this.state = {
       email: '',
-      username: '',
       password: '',
       repeatpass: '',
       righty: true,
@@ -29,22 +28,28 @@ export default class Registration extends Component {
 
   handleClick = () => {
     const { navigation } = this.props;
-    const {email, username, password, repeatpass, righty, lefty} = this.state;
+    const {email, password, repeatpass, righty, lefty} = this.state;
 
-    if (email == '' || username == '' || password == '') {
+    if (email == '' || password == '') {
       alert("Please enter missing information.");
     } else if (password != repeatpass){
       alert("Repeated password does not match.");
     } else {
-      this.itemsRef.push({
-       email: email,
-       username: username,
-       password: password,
-       righty: righty,
-       lefty: lefty, 
-       difficulty: 0
-      })
-      navigation.navigate("Welcome");
+      firebase.auth().createUserWithEmailAndPassword(email, password).then((t) => {
+        let uid = firebase.auth().currentUser.uid;
+
+        this.itemsRef.child(uid).set({
+          righty: righty,
+          lefty: lefty,
+          difficulty: 0,
+          email: email,
+        });
+
+        navigation.navigate("Welcome");
+      }).catch((error) => {
+        alert("registration failed?");
+        alert(error.code);
+      });
     }
   }
 
@@ -87,10 +92,6 @@ export default class Registration extends Component {
           <TextInput style={styles.inputField}
             placeholder='Email'
             onChangeText={(email) => this.setState({email})}/>
-
-          <TextInput style={styles.inputField}
-            placeholder='Username'
-            onChangeText={(username) => this.setState({username})}/>
 
           <TextInput style={styles.inputField}
             secureTextEntry={true}
