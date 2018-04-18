@@ -16,12 +16,16 @@ export default class LogIn extends Component {
 
   constructor(props) {
     super(props);
-    this.itemsRef = firebaseApp.database().ref('users');
     this.state = {
       username: '',
       password: '',
       fontLoaded: false
     };
+  }
+
+  handleClickForgot = () => {
+    const { username } = this.state;
+    firebase.auth().sendPasswordResetEmail(username).then(() => { alert("Check your email for a password reset link!")});
   }
 
   handleClick = () => {
@@ -93,7 +97,7 @@ export default class LogIn extends Component {
 
             <TouchableOpacity
               style={styles.textLink}
-               onPress={() => navigation.navigate("Welcome")}
+               onPress={() => this.handleClickForgot()}
              >
              <Text style={styles.text}> Forgot your password? </Text>
             </TouchableOpacity>
