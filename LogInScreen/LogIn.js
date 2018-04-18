@@ -25,7 +25,9 @@ export default class LogIn extends Component {
 
   handleClickForgot = () => {
     const { username } = this.state;
-    firebase.auth().sendPasswordResetEmail(username).then(() => { alert("Check your email for a password reset link!")});
+    firebase.auth().sendPasswordResetEmail(username)
+      .then(() => { alert("If your email is valid, a reset link has been sent!")})
+      .catch(() => { alert("If your email is valid, a reset link has been sent!") });
   }
 
   handleClick = () => {
