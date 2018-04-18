@@ -130,6 +130,7 @@ componentWillMount = async() => {
     const dominance_props = [{label: 'Right-Handed ', value: 0 }, {label: 'Left-Handed ', value: 1 }];
     console.log("true");
     console.log("false");
+    global.difficulty = this.state.difficultyTypes;
 
     return (
       <Container style={styles.container}>
