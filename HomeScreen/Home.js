@@ -66,7 +66,7 @@ export default class Home extends React.Component {
           <Button style={styles.button}
           label='LOG OUT'
           onPress={() => {
-            firebase.auth().signOut().then(() => this.props.navigation.navigate("Welcome")) 
+            firebase.auth().signOut().then(() => this.props.navigation.navigate("Welcome"))
           }}/>
         </Content>
       </Container>

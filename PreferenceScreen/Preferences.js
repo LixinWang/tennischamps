@@ -145,11 +145,11 @@ componentWillMount = async() => {
             style={styles.radio}
             radio_props={radio_props}
             initial={this.state.difficultyTypes}
-            formHorizontal={true}
+            formHorizontal={false}
             labelHorizontal={true}
+            labelStyle={{fontFamily: 'bungee-inline', fontSize: 20, color: '#ffffff'}}
             buttonColor={'#ffffff'}
             buttonSize= {18}
-            animation={true}
             onPress={(value) => {this.handleDifficulty(value)}}
           />
         </View>
@@ -160,10 +160,11 @@ componentWillMount = async() => {
             style={styles.radio}
             radio_props={dominance_props}
             initial={this.state.handedness}
-            formHorizontal={true}
+            formHorizontal={false}
             labelHorizontal={true}
+            labelStyle={{fontFamily: 'bungee-inline', fontSize: 20, color: '#ffffff'}}
             buttonColor={'#ffffff'}
-            animation={true}
+            buttonSize= {18}
             onPress={(value) => {this.handleHandedness(value)}}
           />
         </View>
