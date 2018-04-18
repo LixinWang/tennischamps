@@ -57,7 +57,7 @@ export default class Mode extends React.Component {
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Text style={styles.headertext}>Select number of balls:</Text>
+        <Text style={styles.headertext}>Select Number of Balls:</Text>
 
         <Container style={styles.content}>
 
@@ -73,7 +73,7 @@ export default class Mode extends React.Component {
 
           <Button style={styles.button}
             label='Play'
-            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
+            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key, selected: this.state.selected})}/>
 
 
         </Container>

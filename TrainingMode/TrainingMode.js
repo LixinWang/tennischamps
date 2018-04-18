@@ -22,7 +22,8 @@ export default class TrainingMode extends Component {
       translateY: new Animated.Value(80),
       key: state.params.key,
       hand: 'backhand',
-      moves: []
+      moves: [],
+      selected: state.params.selected
     };
   }
 
