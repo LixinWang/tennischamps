@@ -227,7 +227,15 @@ export default class TrainingMode extends Component {
     var stopAnimation = false;
 
 
+
     if (!this.state.fontLoaded) { return null;}
+
+    var a = Math.floor(Math.random() * 15) + 1 ;
+    var view = null
+
+
+    var targetLocations = [];
+
 
     if (this.state.target == 1) {
       view = <View style={styles.target}>
@@ -294,20 +302,53 @@ export default class TrainingMode extends Component {
     var counter = 1;
     var anotherCount = 0;
     const onPress = () => {
-        console.log("check");
-        anotherCount += 1;
-    let animation = Animated.parallel([
-    Animated.timing(this.state.translateX, {
-        toValue: 40,
-        duration: 10000,
-        easing: Easing.bounce,
-    }),
-    Animated.timing(this.state.translateY, {
-        toValue: 800,
-        duration: 10000,
-        easing: Easing.bounce,
-    })
-    ]);
+
+        
+        var animation;
+    console.log("--------diff: "+ global.difficulty);
+    if (global.difficulty == 1) {
+       animation = Animated.parallel([
+      Animated.timing(this.state.translateX, {
+          toValue: -171,
+          duration: 12000,
+          easing: Easing.bounce,
+      }),
+      Animated.timing(this.state.translateY, {
+          toValue: 800,
+          duration: 12000,
+          easing: Easing.bounce,
+      })
+      ]);
+    } else if (global.difficulty == 2) {
+         animation = Animated.parallel([
+        Animated.timing(this.state.translateX, {
+          toValue: -171,
+          duration: 7000,
+          easing: Easing.bounce,
+      }),
+        Animated.timing(this.state.translateY, {
+          toValue: 800,
+          duration: 7000,
+          easing: Easing.bounce,
+      })
+      ]);
+    } else {
+        console.log("easy");
+        animation = Animated.parallel([
+        Animated.timing(this.state.translateX, {
+          toValue: -171,
+          duration: 20000,
+          easing: Easing.bounce,
+      }),
+        Animated.timing(this.state.translateY, {
+          toValue: 800,
+          duration: 20000,
+          easing: Easing.bounce,
+      })
+      ]);
+
+    }
+
 
     if (counter ==1) {
       console.log("im about to start");
