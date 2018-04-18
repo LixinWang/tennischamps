@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
+import { Container } from 'native-base';
 import { Font } from 'expo';
 import firebase from 'firebase';
 
@@ -46,10 +46,10 @@ export default class Home extends React.Component {
           onPressBack={() => this.props.navigation.goBack(null)}
           handleHamburger={() => this.props.navigation.navigate('DrawerOpen')}/>
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <Button style={styles.button}
            label='PLAY'
-           onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
+           onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}/>
 
          <Button style={styles.button}
           label='HOW TO PLAY'
@@ -68,7 +68,7 @@ export default class Home extends React.Component {
           onPress={() => {
             firebase.auth().signOut().then(() => this.props.navigation.navigate("Welcome"))
           }}/>
-        </Content>
+        </Container>
       </Container>
     );
   }

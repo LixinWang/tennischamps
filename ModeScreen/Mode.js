@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
+import { Container} from 'native-base';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
@@ -18,7 +18,8 @@ export default class Mode extends React.Component {
     const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
-      key: state.params.key
+      key: state.params.key,
+      selected: '1',
     };
   }
 
@@ -40,32 +41,42 @@ export default class Mode extends React.Component {
 
   render() {
     const { navigation } = this.props;
+
+    var data = ['1', '2', '3', '4',
+        '5', '6', '7', '8', '9', '10',
+        '11', '12', '13', '14', '15', '16',
+        '17', '18', '19', '20'];
+
     if (!this.state.fontLoaded) { return null;}
 
     return (
       <Container style={styles.container}>
-      
+
         <Navbar
-          title='Mode'
+          title='Select Balls'
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Text style={styles.headertext}>Choose your mode:</Text>
+        <Text style={styles.headertext}>Select number of balls:</Text>
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
 
-          <SpecialButton style={styles.button}
-           label='Training Mode'
-           buttonText = 'Practice Your Shots and Accuracy'
-           onPress={() => this.props.navigation.navigate("TrainingTutorial1")}/>
+          <Picker style={styles.picker}
+            selectedValue={this.state.selected}
+            mode = 'dropdown'
+            onValueChange={(itemValue, itemIndex) => this.setState({selected: itemValue})}>
+            {data.map((item, index) => {
+                return (<Picker.Item label={item} value={index} key={index}/>)
+            })}
+          </Picker>
 
-          <SpecialButton style={styles.button}
-          label='Game Mode'
-          buttonText = 'Play a Match'
-          onPress={() => this.props.navigation.navigate("Game")}/>
+
+          <Button style={styles.button}
+            label='Play'
+            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
 
 
-        </Content>
+        </Container>
       </Container>
     );
   }
@@ -84,7 +95,7 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#ffffff',
     margin: 18,
-    marginTop: 50
+    marginTop: 250
   },
   text: {
     justifyContent: 'center',
@@ -97,5 +108,9 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 60,
     textAlign: 'center'
+  },
+  picker: {
+    height: 50,
+    width: 100
   }
 });

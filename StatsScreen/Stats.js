@@ -198,7 +198,7 @@ export default class Stats extends React.Component {
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <View style={styles.contentButtons}>
             <Text style={styles.text}> Shot Type: </Text>
             <RadioForm
@@ -242,7 +242,7 @@ export default class Stats extends React.Component {
 
           </Image>
 
-        </Content>
+        </Container>
       </Container>
     );
   }
