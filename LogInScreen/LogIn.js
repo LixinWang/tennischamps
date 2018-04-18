@@ -82,6 +82,7 @@ export default class LogIn extends Component {
             <TextInput
               style={styles.inputField}
               placeholder='Email'
+              keyboardType='email-address'
               onChangeText={(username) => this.setState({username})}/>
 
             <TextInput
