@@ -91,6 +91,7 @@ export default class Registration extends Component {
         <Content contentContainerStyle={styles.content}>
           <TextInput style={styles.inputField}
             placeholder='Email'
+            keyboardType='email-address'
             onChangeText={(email) => this.setState({email})}/>
 
           <TextInput style={styles.inputField}

@@ -16,12 +16,18 @@ export default class LogIn extends Component {
 
   constructor(props) {
     super(props);
-    this.itemsRef = firebaseApp.database().ref('users');
     this.state = {
       username: '',
       password: '',
       fontLoaded: false
     };
+  }
+
+  handleClickForgot = () => {
+    const { username } = this.state;
+    firebase.auth().sendPasswordResetEmail(username)
+      .then(() => { alert("If your email is valid, a reset link has been sent!")})
+      .catch(() => { alert("If your email is valid, a reset link has been sent!") });
   }
 
   handleClick = () => {
@@ -82,6 +88,7 @@ export default class LogIn extends Component {
             <TextInput
               style={styles.inputField}
               placeholder='Email'
+              keyboardType='email-address'
               onChangeText={(username) => this.setState({username})}/>
 
             <TextInput
@@ -92,7 +99,7 @@ export default class LogIn extends Component {
 
             <TouchableOpacity
               style={styles.textLink}
-               onPress={() => navigation.navigate("Welcome")}
+               onPress={() => this.handleClickForgot()}
              >
              <Text style={styles.text}> Forgot your password? </Text>
             </TouchableOpacity>
