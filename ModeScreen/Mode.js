@@ -57,11 +57,11 @@ export default class Mode extends React.Component {
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Text style={styles.headertext}>Choose your mode:</Text>
+        <Text style={styles.headertext}>Select Number of Balls:</Text>
 
         <Content contentContainerStyle={styles.content}>
 
-          <Picker
+          <Picker 
             selectedValue={this.state.selected}
             mode = 'dropdown'
             style={{ height: 50, width: 100 }}
@@ -74,7 +74,7 @@ export default class Mode extends React.Component {
 
           <Button style={styles.button}
             label='Play'
-            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
+            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key, selected: this.state.selected})}/>
 
 
         </Content>
@@ -109,5 +109,5 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 60,
     textAlign: 'center'
-  }
+  },
 });
