@@ -13,63 +13,62 @@ export default class Preferences extends Component {
     super(props);
     const {state} = this.props.navigation;
     console.log(state.params);
-    window.currUser = state.params.key;
+    window.currUser = firebase.auth().currentUser.uid;
     this.itemsRef = firebaseApp.database().ref();
     this.state = {
       fontLoaded: false,
-      sound: state.params.sound,
-      key: state.params.key,
       handedness: state.params.handedness,
       difficultyTypes: state.params.difficulty
     }
 
-    //const {key} = this.itemsRef.child(state.params.username);
     //console.log(this.state.difficultyTypes);
   }
 
   handleDifficulty = (value) => {
       var updates = {};
+      let key = firebase.auth().currentUser.uid;
       console.log("diff", value);
-      console.log(this.state.key);
-      console.log('/users/' + this.state.key + '/difficulty');
-      updates['/users/' + this.state.key + '/difficulty'] = value;
+      console.log(key);
+      console.log('/users2/' + key + '/difficulty');
+      updates['/users2/' + key + '/difficulty'] = value;
       console.log(updates);
       this.setState({difficultyTypes: value});
       return this.itemsRef.update(updates);
       // key will be "ada" the first time and "alan" the second time
   }
-  handleSound = (value) => {
-      var updates = {};
-      console.log("diff", value);
-      console.log(this.state.key);
-      updates['/users/' + this.state.key + '/sound'] = value;
-      console.log(updates);
-      this.setState({sound: value})
-      return this.itemsRef.update(updates);
-      // key will be "ada" the first time and "alan" the second time
-  }
+  // handleSound = (value) => {
+  //     var updates = {};
+  //     console.log("diff", value);
+  //     console.log(this.state.key);
+  //     updates['/users/' + this.state.key + '/sound'] = value;
+  //     console.log(updates);
+  //     this.setState({sound: value})
+  //     return this.itemsRef.update(updates);
+  //     // key will be "ada" the first time and "alan" the second time
+  // }
  handleHandedness = (value) => {
       var updates = {};
+      let key = firebase.auth().currentUser.uid;
       console.log("diff", value);
-      console.log(this.state.key);
+      console.log(key);
       if (value == 0) {
-        updates['/users/' + this.state.key + '/righty'] = true;
-        updates['/users/' + this.state.key + '/lefty'] = false;
+        updates['/users2/' + key + '/righty'] = true;
+        updates['/users2/' + key + '/lefty'] = false;
         this.setState({handedness: 0})
         return this.itemsRef.update(updates);
       } else {
-        updates['/users/' + this.state.key + '/righty'] = false;
-        updates['/users/' + this.state.key + '/lefty'] = true;
+        updates['/users2/' + key + '/righty'] = false;
+        updates['/users2/' + key + '/lefty'] = true;
         this.setState({handedness: 1})
         return this.itemsRef.update(updates);
       }
-      // console.log('/users/' + this.state.key + '/h');
+      // console.log('/users2/' + this.state.key + '/h');
       console.log(updates);
       // key will be "ada" the first time and "alan" the second time
   }
   getDiff = async() => {
     return new Promise((resolve, reject) => {
-      firebaseApp.database().ref('/users/' + currUser).once('value').then(function(snapshot) {
+      firebaseApp.database().ref('/users2/' + currUser).once('value').then(function(snapshot) {
         return snapshot.val().difficulty;
       }),
       function(err, tick) {
@@ -85,7 +84,7 @@ export default class Preferences extends Component {
 componentWillMount = async() => {
   /* var difficulty = false;
    let promise = new Promise((resolve, reject) => {
-      firebaseApp.database().ref('/users/' + currUser).once('value').then(function(snapshot) {
+      firebaseApp.database().ref('/users2/' + currUser).once('value').then(function(snapshot) {
         difficulty = snapshot.val().difficulty;
         console.log(difficulty);
       });
@@ -129,7 +128,6 @@ componentWillMount = async() => {
     if (!this.state.fontLoaded) { return null;}
     const radio_props = [{label: 'Easy ', value: 0 }, {label: 'Medium ', value: 1 }, {label: 'Hard ', value: 2 }];
     const dominance_props = [{label: 'Right-Handed ', value: 0 }, {label: 'Left-Handed ', value: 1 }];
-    console.log(this.state.sound);
     console.log("true");
     console.log("false");
     global.difficulty = this.state.difficultyTypes;
@@ -138,18 +136,8 @@ componentWillMount = async() => {
       <Container style={styles.container}>
         <Navbar
           title='PREFERENCES'
-          onPressBack={() => navigation.navigate("Home", {key: this.state.key, difficulty: this.state.difficultyTypes, sound: this.state.sound, handedness: this.state.handedness})}/>
+          onPressBack={() => navigation.navigate("Home", {difficulty: this.state.difficultyTypes, handedness: this.state.handedness})}/>
         <Content contentContainerStyle={styles.content}>
-
-        <View style={styles.contentButtons}>
-          <Text style={styles.text}>SOUND:
-            <Switch
-              value={this.state.sound}
-              onValueChange={ (sound) => {this.handleSound(sound)}}
-              onTintColor= {"#0198E1"}
-              marginLeft= {15}
-          /></Text>
-        </View>
 
         <View style={styles.contentButtons}>
           <Text style={styles.text}>DIFFICULTY: </Text>

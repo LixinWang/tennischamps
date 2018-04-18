@@ -15,8 +15,10 @@ export default class Mode extends React.Component {
 
   constructor(props) {
     super(props);
+    const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
+      key: state.params.key
     };
   }
 

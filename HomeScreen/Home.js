@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Container, Content } from 'native-base';
 import { Font } from 'expo';
+import firebase from 'firebase';
 
 import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
@@ -13,7 +14,6 @@ export default class Home extends React.Component {
     const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
-      key: state.params.key,
       sound: state.params.sound,
       difficulty: state.params.difficulty,
       handedness: state.params.handedness
@@ -49,7 +49,7 @@ export default class Home extends React.Component {
         <Content contentContainerStyle={styles.content}>
           <Button style={styles.button}
            label='PLAY'
-           onPress={() => this.props.navigation.navigate("Mode")}/>
+           onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
 
          <Button style={styles.button}
           label='HOW TO PLAY'
@@ -57,15 +57,17 @@ export default class Home extends React.Component {
 
           <Button style={styles.button}
           label='PREFERENCES'
-          onPress={() => this.props.navigation.navigate("Preferences", {key: this.state.key, sound: this.state.sound, difficulty: this.state.difficulty, handedness: this.state.handedness})}/>
+          onPress={() => this.props.navigation.navigate("Preferences", {sound: this.state.sound, difficulty: this.state.difficulty, handedness: this.state.handedness})}/>
 
           <Button style={styles.button}
           label='MY STATS'
-          onPress={() => this.props.navigation.navigate("Stats", {key: this.state.key, sound: this.state.sound, difficulty: this.state.difficulty, handedness: this.state.handedness})}/>
+          onPress={() => this.props.navigation.navigate("Stats", {sound: this.state.sound, difficulty: this.state.difficulty, handedness: this.state.handedness})}/>
 
           <Button style={styles.button}
           label='LOG OUT'
-          onPress={() => this.props.navigation.navigate("Welcome")}/>
+          onPress={() => {
+            firebase.auth().signOut().then(() => this.props.navigation.navigate("Welcome")) 
+          }}/>
         </Content>
       </Container>
     );

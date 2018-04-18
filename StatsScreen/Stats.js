@@ -62,7 +62,7 @@ export default class Stats extends React.Component {
     forehandBackhandDisplay = (hand) => {
       var promise = new Promise((resolve, reject) => {
         arr = []
-        firebaseApp.database().ref('/users/' + currUser + "/stats/" + hand).once("value").then(snapshot => {
+        firebaseApp.database().ref('/users2/' + currUser + "/stats/" + hand).once("value").then(snapshot => {
         snapshot.forEach(function(childSnapshot) {
           var hits = childSnapshot.val() && childSnapshot.val().hits;
           var shots = childSnapshot.val() && childSnapshot.val().shots;
@@ -130,7 +130,7 @@ export default class Stats extends React.Component {
   serveDisplay = (hand) => {
       var promise = new Promise((resolve, reject) => {
         arr = []
-        firebaseApp.database().ref('/users/' + currUser + "/stats/" + hand).once("value").then(snapshot => {
+        firebaseApp.database().ref('/users2/' + currUser + "/stats/" + hand).once("value").then(snapshot => {
         snapshot.forEach(function(childSnapshot) {
           var hits = childSnapshot.val() && childSnapshot.val().hits;
           var shots = childSnapshot.val() && childSnapshot.val().shots;
