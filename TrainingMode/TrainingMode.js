@@ -204,13 +204,13 @@ export default class TrainingMode extends Component {
     }
     var counter = 1;
     const onPress = () => {
-        console.log("check");
+        
         var animation;
     console.log("--------diff: "+ global.difficulty);
     if (global.difficulty == 1) {
        animation = Animated.parallel([
       Animated.timing(this.state.translateX, {
-          toValue: 40,
+          toValue: -171,
           duration: 12000,
           easing: Easing.bounce,
       }),
@@ -223,7 +223,7 @@ export default class TrainingMode extends Component {
     } else if (global.difficulty == 2) {
          animation = Animated.parallel([
         Animated.timing(this.state.translateX, {
-          toValue: 40,
+          toValue: -171,
           duration: 7000,
           easing: Easing.bounce,
       }),
@@ -234,9 +234,10 @@ export default class TrainingMode extends Component {
       })
       ]);
     } else {
-         animation = Animated.parallel([
+        console.log("easy");
+        animation = Animated.parallel([
         Animated.timing(this.state.translateX, {
-          toValue: 40,
+          toValue: -171,
           duration: 20000,
           easing: Easing.bounce,
       }),
