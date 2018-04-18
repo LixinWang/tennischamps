@@ -62,6 +62,7 @@ export default class Mode extends React.Component {
         <Container style={styles.content}>
 
           <Picker style={styles.picker}
+            itemStyle={{ color: 'white'}}
             selectedValue={this.state.selected}
             mode = 'dropdown'
             onValueChange={(itemValue, itemIndex) => this.setState({selected: itemValue})}>
@@ -72,7 +73,7 @@ export default class Mode extends React.Component {
 
 
           <Button style={styles.button}
-            label='Play'
+            label='Next'
             onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key, selected: this.state.selected})}/>
 
 
