@@ -50,7 +50,7 @@ export default class Stats extends React.Component {
       if (value == 0) {
         hand = 'forehand'
         this.forehandBackhandDisplay(hand);
-      } 
+      }
       else if (value == 1) {
         hand = "backhand"
         this.forehandBackhandDisplay(hand);
@@ -80,14 +80,14 @@ export default class Stats extends React.Component {
         });
       });
       promise.then((arr) => {
-      return new Promise((resolve, reject) => {  
+      return new Promise((resolve, reject) => {
       tempArr = []
       finalArr = []
       arrCounter = 0
       for (var x = 0; x < 11; x++) {
           if (x == 1 || x == 3 || x == 6 || x==8) {
             tempArr.push(" ");
-          } else if (x == 0 || x == 2 || x == 4|| x == 7 || x == 9){ 
+          } else if (x == 0 || x == 2 || x == 4|| x == 7 || x == 9){
             tempArr.push(arr[arrCounter] + "%");
             arrCounter++;
           } else {
@@ -105,7 +105,7 @@ export default class Stats extends React.Component {
       for (var x = 0; x < 6; x++) {
           if (x == 1 || x == 3) {
             tempArr.push(" ");
-          } else if (x == 0 || x == 2 || x ==4){ 
+          } else if (x == 0 || x == 2 || x ==4){
             tempArr.push(arr[arrCounter] + "%");
             arrCounter++;
           }
@@ -117,7 +117,7 @@ export default class Stats extends React.Component {
         if (x == 5) {
           resolve([finalArr, finalArr2]);
         }
-      } 
+      }
       reject(Error("it broke again"))
     })
       }).then((finalArray) => {
@@ -148,7 +148,7 @@ export default class Stats extends React.Component {
         });
       });
       promise.then((arr) => {
-      return new Promise((resolve, reject) => {  
+      return new Promise((resolve, reject) => {
       tempArr = []
       finalArr = []
       arrCounter = 0
@@ -163,7 +163,7 @@ export default class Stats extends React.Component {
         if (x == 6) {
             resolve(finalArr);
         }
-      } 
+      }
       reject(Error("it broke again"))
     })
       }).then((finalArray) => {
@@ -176,8 +176,8 @@ export default class Stats extends React.Component {
   render() {
     const { navigation } = this.props;
     const radio_props = [
-      {label: 'Forehand ', value: 0 }, 
-      {label: 'Backhand ', value: 1 }, 
+      {label: 'Forehand ', value: 0 },
+      {label: 'Backhand ', value: 1 },
       {label: 'Serve ', value: 2 }
     ];
 
@@ -216,12 +216,12 @@ export default class Stats extends React.Component {
           </View>
 
 
-          
+
 
           <Image style={styles.court}
             source={require('../assets/images/tenniscourt.png')}>
-  
-            <Table style = {styles.tableHand}>
+
+            <Table style = {styles.tableHand} borderStyle={{borderWidth: 1, borderColor: '#ffffff'}}>
               <Rows data = {tableDataHand}
                 flexArr={[1, 1, 2, 1, 1]}
                 style = {styles.row}
@@ -238,10 +238,10 @@ export default class Stats extends React.Component {
                 textStyle = {styles.stats}/>
             </Table>
 
-            
+
 
           </Image>
-          
+
         </Content>
       </Container>
     );
@@ -300,7 +300,8 @@ const styles = StyleSheet.create({
   },
   stats: {
     textAlign: 'center',
-    fontSize: 10
+    fontSize: 10,
+    color: '#ffffff'
   },
   tableHand: {
     width: 135,
@@ -310,6 +311,6 @@ const styles = StyleSheet.create({
   tableServe: {
     width: 135,
     marginLeft: '34%',
-    marginTop: '20%' 
+    marginTop: '20%'
   }
 });
