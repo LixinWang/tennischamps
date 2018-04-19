@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, TextInput, View } from 'react-native';
-import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
+import { Container, Left, Right, Text, ListItem, Radio } from 'native-base';
 import * as firebase from 'firebase';
 import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
@@ -137,7 +137,7 @@ componentWillMount = async() => {
         <Navbar
           title='PREFERENCES'
           onPressBack={() => navigation.navigate("Home", {difficulty: this.state.difficultyTypes, handedness: this.state.handedness})}/>
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
 
         <View style={styles.contentButtons}>
           <Text style={styles.text}>DIFFICULTY: </Text>
@@ -145,11 +145,11 @@ componentWillMount = async() => {
             style={styles.radio}
             radio_props={radio_props}
             initial={this.state.difficultyTypes}
-            formHorizontal={true}
+            formHorizontal={false}
             labelHorizontal={true}
+            labelStyle={{fontFamily: 'bungee-inline', fontSize: 20, color: '#ffffff'}}
             buttonColor={'#ffffff'}
             buttonSize= {18}
-            animation={true}
             onPress={(value) => {this.handleDifficulty(value)}}
           />
         </View>
@@ -160,15 +160,16 @@ componentWillMount = async() => {
             style={styles.radio}
             radio_props={dominance_props}
             initial={this.state.handedness}
-            formHorizontal={true}
+            formHorizontal={false}
             labelHorizontal={true}
+            labelStyle={{fontFamily: 'bungee-inline', fontSize: 20, color: '#ffffff'}}
             buttonColor={'#ffffff'}
-            animation={true}
+            buttonSize= {18}
             onPress={(value) => {this.handleHandedness(value)}}
           />
         </View>
 
-        </Content>
+        </Container>
       </Container>
     );
   }

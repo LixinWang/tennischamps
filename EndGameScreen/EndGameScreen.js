@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Container } from 'native-base';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
@@ -15,8 +15,10 @@ export default class Instructions extends React.Component {
 
   constructor(props) {
     super(props);
+    const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
+      key: state.params.key
     };
   }
 
@@ -41,7 +43,7 @@ export default class Instructions extends React.Component {
     if (!this.state.fontLoaded) { return null;}
     return (
       <Container style={styles.container}>
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <Text style={styles.firsttext}>Training</Text>
           <Text style={styles.firsttext}>Session</Text>
           <Text style={styles.firsttext}>Complete</Text>
@@ -58,13 +60,13 @@ export default class Instructions extends React.Component {
 
           <Button style={styles.button}
            label='Train Again'
-           onPress={() => this.props.navigation.navigate("Training")}
+           onPress={() => this.props.navigation.navigate("Training", {key: this.state.key})}
           />
           <Button style={styles.button}
            label='End Training'
-           onPress={() => this.props.navigation.navigate("Mode")}
+           onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}
           />
-        </Content>
+        </Container>
       </Container>
     );
   }
