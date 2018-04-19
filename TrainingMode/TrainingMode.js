@@ -354,15 +354,10 @@ putTrainingDB = (value) => {
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
-<<<<<<< HEAD
-            style = {[styles.ball, {transform:[{translateX: this.state.translateX},{translateY: this.state.translateY}] }]}
-            source={require('../assets/images/tennisball.png')}/>
-=======
-            style = {[styles.ball, {transform:[{translateX: this.state.ballXpx},{translateY: this.state.ballYpx}] }]}
-            source={require('../assets/images/tennisball.png')}
 
-          />
->>>>>>> 94277d936d1150ab9667c8d51cf6026579a16afe
+            style = {[styles.ball, {transform:[{translateX: this.state.ballXpx},{translateY: this.state.ballYpx}] }]}
+            source={require('../assets/images/tennisball.png')}/>
+
 
           <View style={[styles.target, {width: this.state.targetWidth, height: this.state.targetHeight, top: this.state.targetYpx, left: this.state.targetXpx}]} >
             <Text style={styles.targetText}>TARGET</Text>
