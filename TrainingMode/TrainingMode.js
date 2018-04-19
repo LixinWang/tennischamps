@@ -494,14 +494,12 @@ export default class TrainingMode extends Component {
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
             style = {[styles.ball, {transform:[{translateX: this.state.translateX},{translateY: this.state.translateY}] }]}
-            source={require('../assets/images/tennisball.png')}
-
-          />
+            source={require('../assets/images/tennisball.png')}/>
 
           {view}
           <Button style={styles.button}
            label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen")}
+           onPress={() => this.props.navigation.navigate("EndGameScreen", {selected: this.state.selected})}
           />
         </View>
 

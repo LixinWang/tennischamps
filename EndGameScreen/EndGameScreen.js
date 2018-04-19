@@ -18,7 +18,8 @@ export default class Instructions extends React.Component {
     const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
-      key: state.params.key
+      key: state.params.key,
+      selected: state.params.selected
     };
   }
 
