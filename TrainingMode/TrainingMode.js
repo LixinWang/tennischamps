@@ -11,16 +11,15 @@ import Hidden from '../Components/Hidden';
 export default class TrainingMode extends Component {
   constructor(props) {
     super(props);
-    this.itemsRef = firebaseApp.database().ref('users');
-    const {state} = this.props.navigation;
-    window.currUser = state.params.key;
+    this.itemsRef = firebaseApp.database().ref('users2');
+    window.currUser = firebase.auth().currentUser.uid;
     this.state = {
       fontLoaded: false,
       targetCoord: null,
       target: null,
       translateX: new Animated.Value(-177),
       translateY: new Animated.Value(80),
-      key: state.params.key,
+      key: window.currUser,
       hand: 'backhand',
       moves: []
     };
@@ -65,27 +64,101 @@ export default class TrainingMode extends Component {
         console.log(value[midpt]);
         var val = value[midpt].split(",");
         var initial = value[1].split(",");
-        console.log("val", value);
-        console.log("first", val[0]);
-        console.log("second", initial[0]);
-        console.log("end", endDistance);
         if (!(val[0] < initial[0])) {
-          alert("Not backhand!")
+          alert("Not backhand!");
+          var arr = [];
+          var promise = new Promise((resolve, reject) => {
+              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              alert(arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+            });
         } else if (!(val[1] < initial[1])) {
           alert("Oops, shot in the wrong direction!");
+          var arr = [];
+          var promise = new Promise((resolve, reject) => {
+              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
+              hits = (snapshot.val() && snapshot.val().hits);
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              });
         } else {
             console.log(endDistance);
           if (endDistance < 100 && endDistance >= 50){
               alert("ok");
-            }
+              var arr = [];
+              var promise = new Promise((resolve, reject) => {
+              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+            });
+          }
           else if (endDistance < 50 && endDistance >= 30) {
               alert("close");
+              var arr = [];
+              var promise = new Promise((resolve, reject) => {
+              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+            });
+
             }
-          if (endDistance < 200){
+          else if (endDistance < 30){
             alert("on target!");
             var arr = []
             var promise = new Promise((resolve, reject) => {
-            firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand).once("value").then(snapshot => {
+            firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
               hits = (snapshot.val() && snapshot.val().hits) + 1;
               shots = (snapshot.val() && snapshot.val().shots) + 1;
               arr.push(hits);
@@ -102,12 +175,32 @@ export default class TrainingMode extends Component {
             //make sure to change the 2 here to the current target
             promise.then((arr) => {
               console.log("arr", arr);
-                firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand + '/2/hits').push(arr[0]);
-                firebaseApp.database().ref('/users/' + currUser + "/stats/" + this.state.hand + '/2/shots').push(arr[1]);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0]});
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[1]});
+              
             });
           }
           else {
             alert("far");
+            var arr = [];
+            var promise = new Promise((resolve, reject) => {
+              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+            });
           }
         }
     }
@@ -200,6 +293,7 @@ export default class TrainingMode extends Component {
       console.log("velocity", gs.vy);
        // gs.vx and gs.vy give the x/y velocity upon
        // release of the touch
+
      }
 
   });
@@ -214,8 +308,7 @@ export default class TrainingMode extends Component {
       'Roboto_medium': require("native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ fontLoaded: true, stopAnimation: false });
-    //var a = Math.floor(Math.random() * 15) + 1 ;
-    var a = 1;
+    var a = Math.floor(Math.random() * 2) + 1 ;
     var view = null
     var targetLocations = [];
     if (a == 1) {
