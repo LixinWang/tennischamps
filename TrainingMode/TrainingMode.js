@@ -166,8 +166,17 @@ targetPositions = [
     setTimeout(() => this.foo(), 16.6667);    
   }
 
+  relAngle(x0, y0, x1, y1) {
+    return 180 * Math.atan2(y1 - y0, x1 - x0) / 3.14159;
+  }
 
   headingAccumulate = 0;
+  p2x = 0;
+  p2y = 0;
+  lastHeading = 0;
+
+  cnt = 1;
+
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond
      onPanResponderMove: (evt, gs) => {
@@ -175,6 +184,8 @@ targetPositions = [
         if(this.gamephase == 1 && this.ballY > 12)
         {
           this.gamephase = 2;
+          this.p2x = gs.moveX;
+          this.p2y = gs.moveY;
         }
 
         if(this.gamephase == 2)
@@ -184,8 +195,22 @@ targetPositions = [
           this.fingerdX = gs.vx;
           this.fingerdY = gs.vy;
 
-          //console.log(gs.dx);
-          console.log(gs.vy);
+          p1x = gs.moveX;
+          p1y = gs.moveY;
+
+          if(this.cnt++ % 2000 == 0) debugger;
+
+          // Figure out the heading of each segment
+          theta1 = this.relAngle(p1x, p1y, this.p2x, this.p2y);
+
+          this.p2x = p1x;
+          this.p2y = p1y;
+
+          this.headingAccumulate += this.lastHeading - theta1;
+
+          this.lastHeading = theta1;
+
+          console.log(this.headingAccumulate);
         }
      },
     onPanResponderRelease: (evt, gs) => {
@@ -212,7 +237,8 @@ targetPositions = [
     this.setState({ fontLoaded: true, stopAnimation: false });
     //var a = Math.floor(Math.random() * 15) + 1 ;
 
-
+    // start off the periodic UI updates
+    // this gets re-called at the end of
     setTimeout(() => this.foo(), 16.6667);
 
 
