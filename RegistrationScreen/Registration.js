@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, TextInput, View } from 'react-native';
-import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
+import { Container, Left, Right, Text, ListItem, Radio } from 'native-base';
 import * as firebase from 'firebase';
 
 import Button from '../Components/Button';
@@ -88,7 +88,7 @@ export default class Registration extends Component {
           title='CREATE AN ACCOUNT'
           onPressBack={() => navigation.goBack(null)}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <TextInput style={styles.inputField}
             placeholder='Email'
             keyboardType='email-address'
@@ -142,7 +142,7 @@ export default class Registration extends Component {
            label='Register'
            onPress={(e) => this.handleClick(e)}
           />
-        </Content>
+        </Container>
       </Container>
     );
   }

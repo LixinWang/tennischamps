@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Container } from 'native-base';
 import { Font } from 'expo';
 import firebase from 'firebase';
 
@@ -12,11 +12,13 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     const {state} = this.props.navigation;
+    window.currUser = state.params.key;
     this.state = {
       fontLoaded: false,
       sound: state.params.sound,
       difficulty: state.params.difficulty,
-      handedness: state.params.handedness
+      handedness: state.params.handedness,
+      key: state.params.key
     };
   }
 
@@ -43,10 +45,10 @@ export default class Home extends React.Component {
       <Container>
         <Navbar
           title='HOME'
-          onPressBack={() => this.props.navigation.goBack(null)}
-          handleHamburger={() => this.props.navigation.navigate('DrawerOpen')}/>
+          onPressBack={() => this.props.navigation.goBack(null, {key: this.state.key})}
+        />
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <Button style={styles.button}
            label='PLAY'
            onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}/>
@@ -68,7 +70,7 @@ export default class Home extends React.Component {
           onPress={() => {
             firebase.auth().signOut().then(() => this.props.navigation.navigate("Welcome"))
           }}/>
-        </Content>
+        </Container>
       </Container>
     );
   }

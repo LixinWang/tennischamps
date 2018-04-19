@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View, Picker } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Container} from 'native-base';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
@@ -43,7 +43,7 @@ export default class Mode extends React.Component {
     const { navigation } = this.props;
 
     var data = ['1', '2', '3', '4',
-        '5', '6', '7', '8', '9', '10', 
+        '5', '6', '7', '8', '9', '10',
         '11', '12', '13', '14', '15', '16',
         '17', '18', '19', '20'];
 
@@ -51,33 +51,33 @@ export default class Mode extends React.Component {
 
     return (
       <Container style={styles.container}>
-      
+
         <Navbar
-          title='Mode'
+          title='Select Balls'
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Text style={styles.headertext}>Choose your mode:</Text>
+        <Text style={styles.headertext}>Select Number of Balls:</Text>
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
 
-          <Picker
+          <Picker style={styles.picker}
+            itemStyle={{ color: 'white'}}
             selectedValue={this.state.selected}
             mode = 'dropdown'
-            style={{ height: 50, width: 100 }}
             onValueChange={(itemValue, itemIndex) => this.setState({selected: itemValue})}>
             {data.map((item, index) => {
-                return (<Picker.Item label={item} value={index} key={index}/>) 
+                return (<Picker.Item label={item} value={index} key={index}/>)
             })}
           </Picker>
 
 
           <Button style={styles.button}
-            label='Play'
-            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key})}/>
+            label='Next'
+            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key, selected: this.state.selected})}/>
 
 
-        </Content>
+        </Container>
       </Container>
     );
   }
@@ -109,5 +109,9 @@ const styles = StyleSheet.create({
     color: "white",
     marginTop: 60,
     textAlign: 'center'
+  },
+  picker: {
+    height: 50,
+    width: 100
   }
 });

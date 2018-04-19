@@ -17,7 +17,8 @@ export default class TrainingTutorial2 extends Component {
     const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
-      key: state.params.key
+      key: state.params.key,
+      selected: state.params.selected
     };
   }
 
@@ -42,7 +43,7 @@ export default class TrainingTutorial2 extends Component {
           source={require('../assets/images/Tutorial2.png')}/>
         <Button style={styles.button}
          label='Next'
-         onPress={() => this.props.navigation.navigate("TrainingTutorial3", {key: this.state.key})}/>
+         onPress={() => this.props.navigation.navigate("TrainingTutorial3", {selected: this.state.selected})}/>
       </Container>
     );
   }

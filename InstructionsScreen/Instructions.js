@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { Container, Content } from 'native-base';
+import { Container} from 'native-base';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
@@ -40,7 +40,7 @@ export default class Instructions extends React.Component {
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <Text style={styles.firsttext}>1. Select 'play' to begin</Text>
 
           <Text style={styles.text}>2. Tap the screen to launch the ball</Text>
@@ -48,7 +48,7 @@ export default class Instructions extends React.Component {
           <Text style={styles.text}>3. Swipe to hit the ball</Text>
 
           <Text style={styles.text}>4. To pause/quit, tap the menu in the top right corner</Text>
-        </Content>
+        </Container>
 
         <Button style={styles.button}
          label='Next'

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import firebase from 'firebase';
 import { Font } from 'expo';
 import { StyleSheet, TextInput, View, TouchableOpacity } from 'react-native';
-import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
+import { Container, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
@@ -38,11 +38,11 @@ export default class LogIn extends Component {
       alert("Please enter username and password.");
     } else {
       firebase.auth().signInWithEmailAndPassword(username, password)
-        .then(() => 
-        { 
+        .then(() =>
+        {
           // Ok, we've successfully signed in!
           // Let's fetch the user's info from the DB.
-          
+
           var key = firebase.auth().currentUser.uid;
           console.log(key);
 
@@ -83,7 +83,7 @@ export default class LogIn extends Component {
           onPressBack={() => navigation.goBack(null)}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
-        <Content contentContainerStyle={styles.content}>
+        <Container style={styles.content}>
           <View style={styles.loginFields}>
             <TextInput
               style={styles.inputField}
@@ -116,7 +116,7 @@ export default class LogIn extends Component {
            <Text style={styles.text}> Don&#8217;t have an account? </Text>
           </TouchableOpacity>
 
-        </Content>
+        </Container>
       </Container>
     );
   }

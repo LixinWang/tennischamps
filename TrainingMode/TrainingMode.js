@@ -11,14 +11,17 @@ import Hidden from '../Components/Hidden';
 export default class TrainingMode extends Component {
   constructor(props) {
     super(props);
-    const {state} = this.props.navigation;
+    this.itemsRef = firebaseApp.database().ref('users2');
     window.currUser = firebase.auth().currentUser.uid;
+    const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
       targetCoord: null,
       target: null,
       translateX: new Animated.Value(-177),
       translateY: new Animated.Value(80),
+      key: window.currUser,
+      selected: state.params.selected,
       hand: 'backhand',
       moves: [],
       ballXpx: 0,
@@ -332,21 +335,6 @@ putTrainingDB = (value) => {
     // start off the periodic UI updates
     // this gets re-called at the end of
     setTimeout(() => this.foo(), 16.6667);
-
-
-
-
-    var a = 1;
-    var view = null
-    var targetLocations = [];
-    if (a == 1) {
-      this.setState({target: 1});
-      this.setState({targetCoord: [((121 + 140/3) + ((121 + 140/3) + 140/3))/2, ((90+ 100/3) + ((90 + 100/3) + (90 + 100/3)))/2]});
-    }
-    if (a == 2) {
-      this.setState({target: 2});
-      this.setState({targetCoord: [((121 + 140/3) + ((121 + 140/3) + 140/3))/2, ((130+ 100/3) + ((130 + 100/3) + (90 + 100/3)))/2]});
-    }
   }
 
   get(value) {
