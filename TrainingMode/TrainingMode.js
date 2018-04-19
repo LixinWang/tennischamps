@@ -11,9 +11,8 @@ import Hidden from '../Components/Hidden';
 export default class TrainingMode extends Component {
   constructor(props) {
     super(props);
-    this.itemsRef = firebaseApp.database().ref('users');
     const {state} = this.props.navigation;
-    
+    window.currUser = firebase.auth().currentUser.uid;
     this.state = {
       fontLoaded: false,
       targetCoord: null,
@@ -27,10 +26,86 @@ export default class TrainingMode extends Component {
       targetXpx: 90+ 100/3,
       targetYpx: 121 + 140/3,
       targetWidth: 45,
-      targetHeight: 30
+      targetHeight: 30,
+      shotTypeMade: 'backhand'
     };
   }
 
+putTrainingDB = (value) => {
+  if (!value){
+    var arr = []
+   var promise = new Promise((resolve, reject) => {
+              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
+              hits = (snapshot.val() && snapshot.val().hits);
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
+              });
+  } else {
+    var arr = []
+            var promise = new Promise((resolve, reject) => {
+            firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
+              hits = (snapshot.val() && snapshot.val().hits) + 1;
+              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              arr.push(hits);
+              arr.push(shots);
+              if (arr.length > 0) {
+                resolve(arr);
+              }
+              else {
+                console.log("arr" + arr.length);
+                reject(Error("It broke"));
+              }
+            });
+            });
+            //make sure to change the 2 here to the current target
+            promise.then((arr) => {
+              console.log("arr", arr);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0]});
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[1]});
+              this.props.navigation.navigate("Training", {numBalls: balls});   
+            });
+  }
+}
+getTrainingResult = (endDistance) => {
+  if (this.state.hand == 'backhand') {
+        if (this.state.shotTypeMade != this.state.hand) {
+          alert("Not the right shot type!");
+          this.putTrainingDB(false);
+        } else {
+          if (endDistance < 100 && endDistance >= 50){
+              alert("ok");
+             this.putTrainingDB(false);
+          }
+          else if (endDistance < 50 && endDistance >= 30) {
+              alert("close");
+              this.putTrainingDB(false);
+
+            }
+          else if (endDistance < 30){
+            alert("on target!");
+            this.putTrainingDB(true);
+          }
+          else {
+            alert("far");
+            this.putTrainingDB(false);
+          }
+        }
+    }
+  }
   gamephase = 0;
 
   targetX = 5.5;
@@ -123,7 +198,7 @@ export default class TrainingMode extends Component {
         // pythagorus
         dist = ((this.ballX - this.targetX)**2 + (this.ballY - this.targetY)**2);
         dist = dist ** (1/2);
-        alert(dist);
+        this.getTrainingResult(dist);
         this.gamephase = 5;
         break;
     }
