@@ -233,10 +233,25 @@ putTrainingDB = (value) => {
         // pythagorus
         dist = ((this.ballX - this.targetX)**2 + (this.ballY - this.targetY)**2);
         dist = dist ** (1/2);
-        this.getTrainingResult(dist);
+        //this.getTrainingResult(dist);
         this.gamephase = 5;
+        debugger;
         break;
       case 5:
+        debugger;
+        this.state.selected--;
+
+        // If there are more rounds to play, go back to state 0
+        if(this.state.selected > 0)
+        {
+          this.gamephase = 0;
+        }
+        else
+        {
+          // what do?
+        }
+
+
         // nothing to do here, we're done!
         // TODO: we should
         break;
