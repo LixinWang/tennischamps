@@ -31,6 +31,24 @@ export default class TrainingMode extends Component {
     };
   }
 
+targetPositions = [
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+  ];
+
   gamephase = 0;
 
   targetX = 5.5;
@@ -83,6 +101,17 @@ export default class TrainingMode extends Component {
     this.setState({targetXpx: 320 + x, targetYpx: y});
   }
 
+  configTarget(idx) {
+    tgt = this.targetPositions[idx];
+    this.setState({targetWidth: tgt.w});
+    this.setState({targetHeight: tgt.h});
+    
+    this.targetX = tgt.x;
+    this.targetY = tgt.y;
+
+    this.placeTarget(tgt.x, tgt.y);
+  }
+
   stepcnt = 0;
 
   foo() {
@@ -92,7 +121,8 @@ export default class TrainingMode extends Component {
         this.ballX = 5.5;
         this.ballY = 0;
         this.stepcnt = 120;
-        this.placeTarget(this.targetX, this.targetY);
+        
+        this.configTarget(0);
         break;
       case 1: // shot is flying thru air
         this.ballY += 8 / 60;  // move at 3 m/s
@@ -125,6 +155,10 @@ export default class TrainingMode extends Component {
         dist = dist ** (1/2);
         alert(dist);
         this.gamephase = 5;
+        break;
+      case 5:
+        // nothing to do here, we're done!
+        // TODO: we should
         break;
     }
 
