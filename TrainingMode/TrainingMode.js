@@ -109,7 +109,6 @@ putTrainingDB = (value) => {
             });
             //make sure to change the 2 here to the current target
             promise.then((arr) => {
-              alert(arr[0][0]);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0][0], shots: arr[0][1]});
             });
     }
