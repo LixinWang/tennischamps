@@ -3,7 +3,6 @@ import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Container, Content } from 'native-base';
 import { Font } from 'expo';
 import * as firebase from 'firebase';
-
 import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
