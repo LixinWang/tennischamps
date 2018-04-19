@@ -31,6 +31,24 @@ export default class TrainingMode extends Component {
     };
   }
 
+targetPositions = [
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+  ];
+
 putTrainingDB = (value) => {
   if (!value){
     var arr = []
@@ -94,10 +112,11 @@ putTrainingDB = (value) => {
               alert(arr[0][0]);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0][0], shots: arr[0][1]});
             });
+    }
   }
-}
-getTrainingResult = (endDistance) => {
-  if (this.state.hand == 'backhand') {
+  
+  getTrainingResult = (endDistance) => {
+    if (this.state.hand == 'backhand') {
         if (this.state.shotTypeMade != this.state.hand) {
           alert("Not the right shot type!");
           this.putTrainingDB(false);
@@ -122,6 +141,7 @@ getTrainingResult = (endDistance) => {
         }
     }
   }
+
   gamephase = 0;
 
   targetX = 5.5;
@@ -174,6 +194,17 @@ getTrainingResult = (endDistance) => {
     this.setState({targetXpx: 320 + x, targetYpx: y});
   }
 
+  configTarget(idx) {
+    tgt = this.targetPositions[idx];
+    this.setState({targetWidth: tgt.w});
+    this.setState({targetHeight: tgt.h});
+    
+    this.targetX = tgt.x;
+    this.targetY = tgt.y;
+
+    this.placeTarget(tgt.x, tgt.y);
+  }
+
   stepcnt = 0;
 
   foo() {
@@ -183,7 +214,8 @@ getTrainingResult = (endDistance) => {
         this.ballX = 5.5;
         this.ballY = 0;
         this.stepcnt = 120;
-        this.placeTarget(this.targetX, this.targetY);
+        
+        this.configTarget(0);
         break;
       case 1: // shot is flying thru air
         this.ballY += 8 / 60;  // move at 3 m/s
@@ -217,14 +249,27 @@ getTrainingResult = (endDistance) => {
         this.getTrainingResult(dist);
         this.gamephase = 5;
         break;
+      case 5:
+        // nothing to do here, we're done!
+        // TODO: we should
+        break;
     }
 
     this.placeBall(this.ballX, this.ballY);
     setTimeout(() => this.foo(), 16.6667);    
   }
 
+  relAngle(x0, y0, x1, y1) {
+    return 180 * Math.atan2(y1 - y0, x1 - x0) / 3.14159;
+  }
 
   headingAccumulate = 0;
+  p2x = 0;
+  p2y = 0;
+  lastHeading = 0;
+
+  cnt = 1;
+
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond
      onPanResponderMove: (evt, gs) => {
@@ -232,6 +277,8 @@ getTrainingResult = (endDistance) => {
         if(this.gamephase == 1 && this.ballY > 12)
         {
           this.gamephase = 2;
+          this.p2x = gs.moveX;
+          this.p2y = gs.moveY;
         }
 
         if(this.gamephase == 2)
@@ -241,8 +288,22 @@ getTrainingResult = (endDistance) => {
           this.fingerdX = gs.vx;
           this.fingerdY = gs.vy;
 
-          //console.log(gs.dx);
-          console.log(gs.vy);
+          p1x = gs.moveX;
+          p1y = gs.moveY;
+
+          if(this.cnt++ % 2000 == 0) debugger;
+
+          // Figure out the heading of each segment
+          theta1 = this.relAngle(p1x, p1y, this.p2x, this.p2y);
+
+          this.p2x = p1x;
+          this.p2y = p1y;
+
+          this.headingAccumulate += this.lastHeading - theta1;
+
+          this.lastHeading = theta1;
+
+          console.log(this.headingAccumulate);
         }
      },
     onPanResponderRelease: (evt, gs) => {
@@ -269,7 +330,8 @@ getTrainingResult = (endDistance) => {
     this.setState({ fontLoaded: true, stopAnimation: false });
     //var a = Math.floor(Math.random() * 15) + 1 ;
 
-
+    // start off the periodic UI updates
+    // this gets re-called at the end of
     setTimeout(() => this.foo(), 16.6667);
 
 
