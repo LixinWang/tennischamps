@@ -37,7 +37,17 @@ putTrainingDB = (value) => {
    var promise = new Promise((resolve, reject) => {
               firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
               hits = (snapshot.val() && snapshot.val().hits);
-              shots = (snapshot.val() && snapshot.val().shots) + 1;
+              if (hits) {
+                hits = hits + 1
+              } else {
+                hits = 1
+              }
+              shots = (snapshot.val() && snapshot.val().shots);
+              if (shots) {
+                shots = shots + 1;
+              } else {
+                shots = 1
+              }
               arr.push(shots);
               if (arr.length > 0) {
                 resolve(arr);
@@ -52,16 +62,24 @@ putTrainingDB = (value) => {
             promise.then((arr) => {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
-              this.props.navigation.navigate("Training", {numBalls: balls});
               });
   } else {
     var arr = []
             var promise = new Promise((resolve, reject) => {
             firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
-              hits = (snapshot.val() && snapshot.val().hits) + 1;
-              shots = (snapshot.val() && snapshot.val().shots) + 1;
-              arr.push(hits);
-              arr.push(shots);
+              hits = (snapshot.val() && snapshot.val().hits);
+              if (hits) {
+                hits = hits + 1
+              } else {
+                hits = 1
+              }
+              shots = (snapshot.val() && snapshot.val().shots);
+              if (shots) {
+                shots = shots + 1;
+              } else {
+                shots = 1
+              }
+              arr.push([hits, shots])
               if (arr.length > 0) {
                 resolve(arr);
               }
@@ -73,10 +91,8 @@ putTrainingDB = (value) => {
             });
             //make sure to change the 2 here to the current target
             promise.then((arr) => {
-              console.log("arr", arr);
-              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0]});
-              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[1]});
-              this.props.navigation.navigate("Training", {numBalls: balls});   
+              alert(arr[0][0]);
+              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0][0], shots: arr[0][1]});
             });
   }
 }
@@ -86,16 +102,16 @@ getTrainingResult = (endDistance) => {
           alert("Not the right shot type!");
           this.putTrainingDB(false);
         } else {
-          if (endDistance < 100 && endDistance >= 50){
+          if (endDistance < 30 && endDistance >= 20){
               alert("ok");
              this.putTrainingDB(false);
           }
-          else if (endDistance < 50 && endDistance >= 30) {
+          else if (endDistance < 20 && endDistance >= 10) {
               alert("close");
               this.putTrainingDB(false);
 
             }
-          else if (endDistance < 30){
+          else if (endDistance < 10){
             alert("on target!");
             this.putTrainingDB(true);
           }

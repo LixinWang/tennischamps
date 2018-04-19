@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Container, Content } from 'native-base';
 import { Font } from 'expo';
-
+import * as firebase from 'firebase';
 import Button from '../Components/Button';
 import Navbar from '../Components/Navbar';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
@@ -18,7 +18,7 @@ export default class Stats extends React.Component {
     super(props);
     this.itemsRef = firebaseApp.database().ref('users');
     const {state} = this.props.navigation;
-    window.currUser = state.params.key;
+    window.currUser = firebase.auth().currentUser.uid;
     this.state = {
       fontLoaded: false,
       sound: state.params.sound,
