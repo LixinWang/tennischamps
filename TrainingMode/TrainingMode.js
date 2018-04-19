@@ -500,7 +500,7 @@ export default class TrainingMode extends Component {
           {view}
           <Button style={styles.button}
            label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen", {key: this.state.key})}
+           onPress={() => this.props.navigation.navigate("EndGameScreen")}
           />
         </View>
 

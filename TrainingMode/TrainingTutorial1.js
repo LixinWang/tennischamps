@@ -43,7 +43,7 @@ export default class TrainingTutorial1 extends Component {
           source={require('../assets/images/Tutorial1.png')}/>
         <Button style={styles.button}
          label='Next'
-         onPress={() => this.props.navigation.navigate("TrainingTutorial2", {key: this.state.key, selected: this.state.selected})}/>
+         onPress={() => this.props.navigation.navigate("TrainingTutorial2", {selected: this.state.selected})}/>
       </Container>
     );
   }
