@@ -369,17 +369,17 @@ putTrainingDB = (value) => {
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
-            style = {[styles.ball, {transform:[{translateX: this.state.ballXpx},{translateY: this.state.ballYpx}] }]}
-            source={require('../assets/images/tennisball.png')}
 
-          />
+            style = {[styles.ball, {transform:[{translateX: this.state.ballXpx},{translateY: this.state.ballYpx}] }]}
+            source={require('../assets/images/tennisball.png')}/>
+
 
           <View style={[styles.target, {width: this.state.targetWidth, height: this.state.targetHeight, top: this.state.targetYpx, left: this.state.targetXpx}]} >
             <Text style={styles.targetText}>TARGET</Text>
           </View>
           <Button style={styles.button}
            label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen")}
+           onPress={() => this.props.navigation.navigate("EndGameScreen", {selected: this.state.selected})}
           />
         </View>
 
