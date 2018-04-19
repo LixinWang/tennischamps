@@ -190,6 +190,8 @@ putTrainingDB = (value) => {
     this.targetY = tgt.y;
 
     this.placeTarget(tgt.x, tgt.y);
+
+    this.setState({target: idx + 1});
   }
 
   stepcnt = 0;
