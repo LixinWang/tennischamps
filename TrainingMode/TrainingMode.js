@@ -13,6 +13,7 @@ export default class TrainingMode extends Component {
     super(props);
     this.itemsRef = firebaseApp.database().ref('users2');
     window.currUser = firebase.auth().currentUser.uid;
+    const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
       targetCoord: null,
