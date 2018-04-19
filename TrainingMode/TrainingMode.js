@@ -21,76 +21,41 @@ export default class TrainingMode extends Component {
       translateX: new Animated.Value(-177),
       translateY: new Animated.Value(80),
       key: window.currUser,
+      selected: state.params.selected,
       hand: 'backhand',
       moves: [],
-      selected: state.params.selected
+      ballXpx: 0,
+      ballYpx: 0,
+      targetXpx: 90+ 100/3,
+      targetYpx: 121 + 140/3,
+      targetWidth: 45,
+      targetHeight: 30,
+      shotTypeMade: 'backhand'
     };
   }
 
-  translateX = new Animated.Value(-173);
-  translateY = new Animated.Value(100);
-  p1x = 0;
-  p1y = 0;
-  p2x = 0;
-  p2y = 0;
+targetPositions = [
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+    { x: 0, y: 0, w: 45, h: 30},
+  ];
 
-  relAngle(x0, y0, x1, y1) {
-    return 180 * Math.atan2(y1 - y0, x1 - x0) / 3.14159;
-  }
-
-  segLen(x0, y0, x1, y1) {
-    dx = x1 - x0;
-    dy = y1 - y0;
-
-    return Math.sqrt(dx * dx + dy * dx);
-  }
-
-  getTrainingResult = (value, gs) => {
-    var shotStart = [gs.x0, gs.y0];
-    var shotCoordinate = [gs.moveX, gs.moveY];
-    var shotTarget = this.state.targetCoord;
-    let [startXCoord, startYCoord] = shotStart;
-    let [xCoord, yCoord] = shotCoordinate;
-    let [xCoordTar, yCoordTar] = shotTarget;
-    startDistance = (((startXCoord - xCoordTar)**2) + ((startYCoord - (yCoordTar))**2))**0.5
-    endDistance = (((xCoord - xCoordTar) **2) + ((yCoord - (yCoordTar + 100)) **2))**0.5
-    startDistanceX = startXCoord - xCoordTar;
-    startDistanceY = startYCoord - yCoordTar;
-    endDistanceX = xCoord - xCoordTar;
-    endDistanceY = yCoord - yCoordTar;
-    if (gs.vx < -1 || gs.vy < -1) {
-          alert("far");
-    }
-    else if (this.state.hand == 'backhand') {
-        var midpt = Math.ceil(value.length/2);
-        console.log(value[midpt]);
-        var val = value[midpt].split(",");
-        var initial = value[1].split(",");
-        if (!(val[0] < initial[0])) {
-          alert("Not backhand!");
-          var arr = [];
-          var promise = new Promise((resolve, reject) => {
-              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
-              shots = (snapshot.val() && snapshot.val().shots) + 1;
-              arr.push(shots);
-              if (arr.length > 0) {
-                resolve(arr);
-              }
-              else {
-                console.log("arr" + arr.length);
-                reject(Error("It broke"));
-              }
-            });
-            });
-            //make sure to change the 2 here to the current target
-            promise.then((arr) => {
-              alert(arr);
-              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
-            });
-        } else if (!(val[1] < initial[1])) {
-          alert("Oops, shot in the wrong direction!");
-          var arr = [];
-          var promise = new Promise((resolve, reject) => {
+putTrainingDB = (value) => {
+  if (!value){
+    var arr = []
+   var promise = new Promise((resolve, reject) => {
               firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
               hits = (snapshot.val() && snapshot.val().hits);
               shots = (snapshot.val() && snapshot.val().shots) + 1;
@@ -108,57 +73,10 @@ export default class TrainingMode extends Component {
             promise.then((arr) => {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
               });
-        } else {
-            console.log(endDistance);
-          if (endDistance < 100 && endDistance >= 50){
-              alert("ok");
-              var arr = [];
-              var promise = new Promise((resolve, reject) => {
-              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + "/" + this.state.target).once("value").then(snapshot => {
-              shots = (snapshot.val() && snapshot.val().shots) + 1;
-              arr.push(shots);
-              if (arr.length > 0) {
-                resolve(arr);
-              }
-              else {
-                console.log("arr" + arr.length);
-                reject(Error("It broke"));
-              }
-            });
-            });
-            //make sure to change the 2 here to the current target
-            promise.then((arr) => {
-              console.log("arr", arr);
-              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
-            });
-          }
-          else if (endDistance < 50 && endDistance >= 30) {
-              alert("close");
-              var arr = [];
-              var promise = new Promise((resolve, reject) => {
-              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
-              shots = (snapshot.val() && snapshot.val().shots) + 1;
-              arr.push(shots);
-              if (arr.length > 0) {
-                resolve(arr);
-              }
-              else {
-                console.log("arr" + arr.length);
-                reject(Error("It broke"));
-              }
-            });
-            });
-            //make sure to change the 2 here to the current target
-            promise.then((arr) => {
-              console.log("arr", arr);
-              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
-            });
-
-            }
-          else if (endDistance < 30){
-            alert("on target!");
-            var arr = []
+  } else {
+    var arr = []
             var promise = new Promise((resolve, reject) => {
             firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
               hits = (snapshot.val() && snapshot.val().hits) + 1;
@@ -179,123 +97,210 @@ export default class TrainingMode extends Component {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0]});
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[1]});
-              
+              this.props.navigation.navigate("Training", {numBalls: balls});   
             });
+    }
+  }
+  
+  getTrainingResult = (endDistance) => {
+    if (this.state.hand == 'backhand') {
+        if (this.state.shotTypeMade != this.state.hand) {
+          alert("Not the right shot type!");
+          this.putTrainingDB(false);
+        } else {
+          if (endDistance < 100 && endDistance >= 50){
+              alert("ok");
+             this.putTrainingDB(false);
+          }
+          else if (endDistance < 50 && endDistance >= 30) {
+              alert("close");
+              this.putTrainingDB(false);
+
+            }
+          else if (endDistance < 30){
+            alert("on target!");
+            this.putTrainingDB(true);
           }
           else {
             alert("far");
-            var arr = [];
-            var promise = new Promise((resolve, reject) => {
-              firebaseApp.database().ref('/users2/' + currUser + "/stats/" + this.state.hand + '/' + this.state.target).once("value").then(snapshot => {
-              shots = (snapshot.val() && snapshot.val().shots) + 1;
-              arr.push(shots);
-              if (arr.length > 0) {
-                resolve(arr);
-              }
-              else {
-                console.log("arr" + arr.length);
-                reject(Error("It broke"));
-              }
-            });
-            });
-            //make sure to change the 2 here to the current target
-            promise.then((arr) => {
-              console.log("arr", arr);
-              firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
-            });
+            this.putTrainingDB(false);
           }
         }
     }
   }
- addToStats = (value) => {
-      var updates = {};
-      console.log("diff", value);
-      console.log(this.state.key);
-      if (value == 0) {
-        updates['/users/' + this.state.key + '/righty'] = true;
-        updates['/users/' + this.state.key + '/lefty'] = false;
-        this.setState({handedness: 0})
-        return this.itemsRef.update(updates);
-      } else {
-        updates['/users/' + this.state.key + '/righty'] = false;
-        updates['/users/' + this.state.key + '/lefty'] = true;
-        this.setState({handedness: 1})
-        return this.itemsRef.update(updates);
-      }
-      // console.log('/users/' + this.state.key + '/h');
-      console.log(updates);
-      // key will be "ada" the first time and "alan" the second time
+
+  gamephase = 0;
+
+  targetX = 5.5;
+  targetY = 3;
+
+  ballX = 0;
+  ballY = 0;
+  balldX = 0;
+  balldY = 0;
+
+  fingerX = 0;
+  fignerY = 0;
+  fingerdX = 0;
+  fingerdY = 0;
+
+  courtToPxX(x) {
+    return 17 * (x - 5.5) - 176;
   }
+
+  courtToPxY(y) {
+    return 17 * (y) + 100;
+  }
+
+  pxToCourtX(x) {
+    pxFromCourtCenter = x - 192;
+    distFromCourtCenter = pxFromCourtCenter / 17;
+
+    return distFromCourtCenter + 5.5;
+  }
+
+  pxToCourtY(y) {
+    return (y - 160) / 17;
+  }
+
+  placeBall(x, y) {
+    x = this.courtToPxX(x);
+    y = this.courtToPxY(y);
+
+    this.setState({ballXpx: x, ballYpx: y});
+  }
+
+  placeTarget(x, y) {
+    x = this.courtToPxX(x);
+    y = this.courtToPxY(y);
+
+    // Correct from center to top left corner
+    x = x + this.state.targetWidth / 2;
+    y = y - this.state.targetHeight / 2;
+
+    this.setState({targetXpx: 320 + x, targetYpx: y});
+  }
+
+  configTarget(idx) {
+    tgt = this.targetPositions[idx];
+    this.setState({targetWidth: tgt.w});
+    this.setState({targetHeight: tgt.h});
+    
+    this.targetX = tgt.x;
+    this.targetY = tgt.y;
+
+    this.placeTarget(tgt.x, tgt.y);
+  }
+
+  stepcnt = 0;
+
+  foo() {
+    // Here's where we move the ball
+    switch(this.gamephase) {
+      case 0: // before shot fired
+        this.ballX = 5.5;
+        this.ballY = 0;
+        this.stepcnt = 120;
+        
+        this.configTarget(0);
+        break;
+      case 1: // shot is flying thru air
+        this.ballY += 8 / 60;  // move at 3 m/s
+        break;
+      case 2: // In the process of hitting it back
+        this.ballX = this.pxToCourtX(this.fingerX);
+        this.ballY = this.pxToCourtY(this.fingerY);
+
+        this.balldX = this.fingerdX / 17;
+        this.balldY = this.fingerdY / 17;
+        /*console.log(" ");
+        console.log(this.ballY);
+        console.log(this.fingerY);*/
+        break;
+      case 3: // ball is flying back
+        this.ballX += this.balldX * 5;
+        this.ballY += this.balldY * 7;
+
+        this.balldX *= 0.97;
+        this.balldY *= 0.97;
+
+        if(this.stepcnt-- == 0)
+        {
+          this.gamephase = 4;
+        }
+        break;
+      case 4: // Ball has hit target and is now static, game over
+        // pythagorus
+        dist = ((this.ballX - this.targetX)**2 + (this.ballY - this.targetY)**2);
+        dist = dist ** (1/2);
+        this.getTrainingResult(dist);
+        this.gamephase = 5;
+        break;
+      case 5:
+        // nothing to do here, we're done!
+        // TODO: we should
+        break;
+    }
+
+    this.placeBall(this.ballX, this.ballY);
+    setTimeout(() => this.foo(), 16.6667);    
+  }
+
+  relAngle(x0, y0, x1, y1) {
+    return 180 * Math.atan2(y1 - y0, x1 - x0) / 3.14159;
+  }
+
   headingAccumulate = 0;
+  p2x = 0;
+  p2y = 0;
+  lastHeading = 0;
+
+  cnt = 1;
+
   imagePanResponder = PanResponder.create({
     onStartShouldSetPanResponder: (evt, gs) => true, // make PanResponder repond
      onPanResponderMove: (evt, gs) => {
-      p3x = gs.x0;
-      p3y = gs.y0;
+        // If your finger is down, you're presently moving the ball, we don't do anything special until release
+        if(this.gamephase == 1 && this.ballY > 12)
+        {
+          this.gamephase = 2;
+          this.p2x = gs.moveX;
+          this.p2y = gs.moveY;
+        }
 
-      // Figure out the heading of each segment
-      theta1 = this.relAngle(p3x, p3y, this.p2x, this.p2y);
-      theta2 = this.relAngle(this.p2x, this.p2y, this.p1x, this.p1y);
+        if(this.gamephase == 2)
+        {
+          this.fingerX = gs.moveX;
+          this.fingerY = gs.moveY;
+          this.fingerdX = gs.vx;
+          this.fingerdY = gs.vy;
 
-      // Heading difference between the previous and current
-      // line segments
-      headingChange = theta2 - theta1;
+          p1x = gs.moveX;
+          p1y = gs.moveY;
 
-      // Accumulate how much total heading change we've had
-      // since starting the gesture
-      // Ie if you draw 1/4 of a circle, we'll
-      // accumulate 90 degrees of heading change
-      this.headingAccumulate += headingChange;
+          if(this.cnt++ % 2000 == 0) debugger;
 
-      this.translateX.setValue(gs.dx-173);
-      this.translateY.setValue(gs.dy+100);
-      console.log(gs.dx);
-      console.log("--");
-      console.log(gs.dy);
-      //this.stopAnimation.setValue(true);
-      console.log("trigger onPanResponderMove");
-      Animated.parallel([
-      Animated.decay(this.state.translateX, {
-          velocity: gs.vx,
-          deceleration: 0.997
-      }),
-      Animated.decay(this.state.translateY, {
-          velocity: gs.vy,
-          deceleration: 0.997
-      })
-      ]).start();
-      Animated.delay(10000);
-      console.log("x", gs.moveX);
-      console.log("y", gs.moveY);
-      this.setState({moves: this.state.mover += [[gs.moveX + "," + gs.moveY + " "]]});
-      console.log("loc", gs.dx);
-      console.log("loc", gs.dy);
+          // Figure out the heading of each segment
+          theta1 = this.relAngle(p1x, p1y, this.p2x, this.p2y);
 
+          this.p2x = p1x;
+          this.p2y = p1y;
+
+          this.headingAccumulate += this.lastHeading - theta1;
+
+          this.lastHeading = theta1;
+
+          console.log(this.headingAccumulate);
+        }
      },
     onPanResponderRelease: (evt, gs) => {
-        // The user has released all touches while this view is the
-        // responder. This typically means a gesture has succeeded
-      console.log("xVal", gs.moveX);
-      console.log("yVal", gs.moveY);
-      console.log("released");
-      var s = this.state.moves;
-      s = s.split(" ");
-      this.getTrainingResult(s, gs);
-      console.log(this.state.targetCoord);
-      var shotStart = [gs.x0, gs.y0]
-      console.log('start', shotStart);
-      var shotCoordinate = [gs.moveX, gs.moveY];
-      var shotTarget = this.state.targetCoord;
-      let [startXCoord, startYCoord] = shotStart;
-      let [xCoord, yCoord] = shotCoordinate
-      let [xCoordTar, yCoordTar] = shotTarget
-      console.log("coord", shotCoordinate);
-      console.log("target2", shotTarget);
-      console.log("velocity", gs.vx);
-      console.log("velocity", gs.vy);
-       // gs.vx and gs.vy give the x/y velocity upon
-       // release of the touch
-
+      // Upon release, we transition to the 3rd state
+      //debugger;
+      
+      if(this.gamephase == 2)
+      {
+        this.gamephase = 3;
+      }
      }
 
   });
@@ -310,7 +315,16 @@ export default class TrainingMode extends Component {
       'Roboto_medium': require("native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ fontLoaded: true, stopAnimation: false });
-    var a = Math.floor(Math.random() * 2) + 1 ;
+    //var a = Math.floor(Math.random() * 15) + 1 ;
+
+    // start off the periodic UI updates
+    // this gets re-called at the end of
+    setTimeout(() => this.foo(), 16.6667);
+
+
+
+
+    var a = 1;
     var view = null
     var targetLocations = [];
     if (a == 1) {
@@ -333,165 +347,8 @@ export default class TrainingMode extends Component {
 
   render() {
     const { navigation } = this.props;
-    // const translateX = new Animated.Value(-173);
-    // const translateY = new Animated.Value(100);
-    var stopAnimation = false;
-
-
 
     if (!this.state.fontLoaded) { return null;}
-
-    var a = Math.floor(Math.random() * 15) + 1 ;
-    var view = null;
-
-    var b = Math.floor(Math.random() * 3) + 1;
-    var hardness = null;
-
-
-    if (b == 1) {
-         hardness = <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: Forehand </Text>
-        </View>
-    } else if (b == 2) {
-         hardness = <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: Backhand </Text>
-        </View>
-    } else {
-        hardness = <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: Serve </Text>
-        </View>
-
-    }
-
-    var targetLocations = [];
-
-
-    if (this.state.target == 1) {
-      view = <View style={styles.target}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 2) {
-            view = <View style={styles.target2}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-
-    } else if (this.state.target == 3) {
-            view = <View style={styles.target3}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 4) {
-            view = <View style={styles.target4}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 5) {
-            view = <View style={styles.target5}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    }  else if (this.state.target == 6) {
-            view = <View style={styles.target6}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 7) {
-            view = <View style={styles.target7}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 8) {
-            view = <View style={styles.target8}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 9) {
-            view = <View style={styles.target9}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 10) {
-            view = <View style={styles.target10}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 11) {
-            view = <View style={styles.target11}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 12) {
-            view = <View style={styles.target12}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 13) {
-            view = <View style={styles.target13}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else if (this.state.target == 14) {
-            view = <View style={styles.target14}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    } else {
-      view = <View style={styles.target15}>
-            <Text style={styles.targetText}>TARGET</Text>
-          </View>
-    }
-    var counter = 1;
-    var anotherCount = 0;
-    const onPress = () => {
-
-        
-        var animation;
-    console.log("--------diff: "+ global.difficulty);
-    if (global.difficulty == 1) {
-       animation = Animated.parallel([
-      Animated.timing(this.state.translateX, {
-          toValue: -171,
-          duration: 12000,
-          easing: Easing.bounce,
-      }),
-      Animated.timing(this.state.translateY, {
-          toValue: 800,
-          duration: 12000,
-          easing: Easing.bounce,
-      })
-      ]);
-    } else if (global.difficulty == 2) {
-         animation = Animated.parallel([
-        Animated.timing(this.state.translateX, {
-          toValue: -171,
-          duration: 7000,
-          easing: Easing.bounce,
-      }),
-        Animated.timing(this.state.translateY, {
-          toValue: 800,
-          duration: 7000,
-          easing: Easing.bounce,
-      })
-      ]);
-    } else {
-        console.log("easy");
-        animation = Animated.parallel([
-        Animated.timing(this.state.translateX, {
-          toValue: -171,
-          duration: 20000,
-          easing: Easing.bounce,
-      }),
-        Animated.timing(this.state.translateY, {
-          toValue: 800,
-          duration: 20000,
-          easing: Easing.bounce,
-      })
-      ]);
-
-    }
-
-
-    if (counter ==1) {
-      console.log("im about to start");
-      animation.start();
-      counter = counter+1;
-    } else {
-      console.log(counter);
-      animation.stop();
-
-      //animation2.start();
-    }
-    console.log("temp", anotherCount);
-    };
-
 
     return (
       <Container style={styles.container}>
@@ -501,8 +358,10 @@ export default class TrainingMode extends Component {
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <View contentContainerStyle={styles.content}>
-         {hardness}
-          <TouchableWithoutFeedback onPressIn ={onPress}>
+        <View style={styles.textContainer}>
+          <Text style={styles.text}> Shot: forehand </Text>
+        </View>
+          <TouchableWithoutFeedback onPressIn={ () => { if(this.gamephase == 0) { this.gamephase = 1;} }} >
           <Image style={styles.court}
             source={require('../assets/images/tenniscourt.png')}
           />
@@ -510,12 +369,14 @@ export default class TrainingMode extends Component {
 
           <Animated.Image
             {...this.imagePanResponder.panHandlers}
-            style = {[styles.ball, {transform:[{translateX: this.state.translateX},{translateY: this.state.translateY}] }]}
+            style = {[styles.ball, {transform:[{translateX: this.state.ballXpx},{translateY: this.state.ballYpx}] }]}
             source={require('../assets/images/tennisball.png')}
 
           />
 
-          {view}
+          <View style={[styles.target, {width: this.state.targetWidth, height: this.state.targetHeight, top: this.state.targetYpx, left: this.state.targetXpx}]} >
+            <Text style={styles.targetText}>TARGET</Text>
+          </View>
           <Button style={styles.button}
            label='End the game'
            onPress={() => this.props.navigation.navigate("EndGameScreen")}
@@ -587,167 +448,6 @@ const styles = StyleSheet.create({
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
-    top: 90+ 100/3,
-    left: 121 + 140/3
-
-  },
-  target2: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 130+ 100/3,
-    left: 121 + 140/3
-
-  },
-  target3: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 260+ 100/3,
-    left: 121 + 140/3
-
-  },
-  target4: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 260+ 100/3,
-    left: 50 + 140/3
-
-  },
-  target5: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 90+ 100/3,
-    left: 50 + 140/3
-  },
-  target6: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 130+ 100/3,
-    left: 50 + 140/3
-  },
-  target7: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 90+ 100/3,
-    left: 215 + 140/3
-  },
-  target8: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 130+ 100/3,
-    left: 215 + 140/3
-  },
-  target9: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 260+ 100/3,
-    left: 215 + 140/3
-  },
-  target10: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 195+ 100/3,
-    left: 75 + 140/3
-  },
-  target11: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 195+ 100/3,
-    left: 97 + 140/3
-
-  },
-  target12: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 195+ 100/3,
-    left: 120 + 140/3
-  },
-    target13: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 195+ 100/3,
-    left: 147 + 140/3
-  },
-  target14: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 195+ 100/3,
-    left: 170 + 140/3
-  },
-  target15: {
-    width: 140/3,
-    height: 100/3,
-    backgroundColor: 'red',
-    zIndex: 1,
-    position: 'absolute',
-    alignItems: 'center',
-    justifyContent: 'center',
-    top: 195+ 100/3,
-    left: 192+ 140/3
   },
   targetText: {
     color: '#ffffff',
