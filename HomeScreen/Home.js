@@ -12,11 +12,13 @@ export default class Home extends React.Component {
   constructor(props) {
     super(props);
     const {state} = this.props.navigation;
+    window.currUser = state.params.key;
     this.state = {
       fontLoaded: false,
       sound: state.params.sound,
       difficulty: state.params.difficulty,
-      handedness: state.params.handedness
+      handedness: state.params.handedness,
+      key: state.params.key
     };
   }
 

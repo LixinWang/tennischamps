@@ -179,7 +179,7 @@ export default class TrainingMode extends Component {
       let [xCoord, yCoord] = shotCoordinate
       let [xCoordTar, yCoordTar] = shotTarget
       console.log("coord", shotCoordinate);
-      console.log("target", shotTarget);
+      console.log("target2", shotTarget);
       console.log("velocity", gs.vx);
       console.log("velocity", gs.vy);
        // gs.vx and gs.vy give the x/y velocity upon
@@ -231,8 +231,26 @@ export default class TrainingMode extends Component {
     if (!this.state.fontLoaded) { return null;}
 
     var a = Math.floor(Math.random() * 15) + 1 ;
-    var view = null
+    var view = null;
 
+    var b = Math.floor(Math.random() * 3) + 1;
+    var hardness = null;
+
+
+    if (b == 1) {
+         hardness = <View style={styles.textContainer}>
+          <Text style={styles.text}> Shot: Forehand </Text>
+        </View>
+    } else if (b == 2) {
+         hardness = <View style={styles.textContainer}>
+          <Text style={styles.text}> Shot: Backhand </Text>
+        </View>
+    } else {
+        hardness = <View style={styles.textContainer}>
+          <Text style={styles.text}> Shot: Serve </Text>
+        </View>
+
+    }
 
     var targetLocations = [];
 
@@ -357,6 +375,7 @@ export default class TrainingMode extends Component {
     } else {
       console.log(counter);
       animation.stop();
+
       //animation2.start();
     }
     console.log("temp", anotherCount);
@@ -371,9 +390,7 @@ export default class TrainingMode extends Component {
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <View contentContainerStyle={styles.content}>
-        <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: forehand </Text>
-        </View>
+         {hardness}
           <TouchableWithoutFeedback onPressIn ={onPress}>
           <Image style={styles.court}
             source={require('../assets/images/tenniscourt.png')}
