@@ -74,7 +74,7 @@ export default class Mode extends React.Component {
 
           <Button style={styles.button}
             label='Next'
-            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key, selected: this.state.selected})}/>
+            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {selected: this.state.selected})}/>
 
 
         </Container>

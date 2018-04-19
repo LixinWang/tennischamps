@@ -23,7 +23,8 @@ export default class TrainingMode extends Component {
       key: window.currUser,
       hand: 'backhand',
       moves: [],
-      selected: state.params.selected
+      selected: state.params.selected, 
+      numBalls: state.params.numBalls
     };
   }
 
@@ -66,6 +67,10 @@ export default class TrainingMode extends Component {
         console.log(value[midpt]);
         var val = value[midpt].split(",");
         var initial = value[1].split(",");
+        var balls = this.state.numBalls + 1
+        if (balls >= this.state.selected) {
+          this.props.navigation.navigate("EndGameScreen")
+        }
         if (!(val[0] < initial[0])) {
           alert("Not backhand!");
           var arr = [];
@@ -86,6 +91,9 @@ export default class TrainingMode extends Component {
             promise.then((arr) => {
               alert(arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+
+              this.props.navigation.navigate("Training", {numBalls: balls});
+
             });
         } else if (!(val[1] < initial[1])) {
           alert("Oops, shot in the wrong direction!");
@@ -108,6 +116,7 @@ export default class TrainingMode extends Component {
             promise.then((arr) => {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
               });
         } else {
             console.log(endDistance);
@@ -131,6 +140,7 @@ export default class TrainingMode extends Component {
             promise.then((arr) => {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
             });
           }
           else if (endDistance < 50 && endDistance >= 30) {
@@ -153,6 +163,7 @@ export default class TrainingMode extends Component {
             promise.then((arr) => {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
             });
 
             }
@@ -179,6 +190,7 @@ export default class TrainingMode extends Component {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({hits: arr[0]});
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[1]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
               
             });
           }
@@ -202,6 +214,7 @@ export default class TrainingMode extends Component {
             promise.then((arr) => {
               console.log("arr", arr);
               firebaseApp.database().ref('/users2/').child(currUser).child("stats").child(this.state.hand).child(this.state.target).set({shots: arr[0]});
+              this.props.navigation.navigate("Training", {numBalls: balls});
             });
           }
         }
@@ -460,8 +473,7 @@ export default class TrainingMode extends Component {
 
     }
 
-
-    if (counter ==1) {
+    if (counter == 1) {
       console.log("im about to start");
       animation.start();
       counter = counter+1;

@@ -17,7 +17,8 @@ export default class TrainingTutorial4 extends Component {
     const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
-      key: state.params.key
+      key: state.params.key, 
+      selected: state.params.selected
     };
   }
 
@@ -42,7 +43,7 @@ export default class TrainingTutorial4 extends Component {
           source={require('../assets/images/Tutorial4.png')}/>
         <Button style={styles.button}
          label='Start Training'
-         onPress={() => this.props.navigation.navigate("Training", {selected: this.state.selected})}/>
+         onPress={() => this.props.navigation.navigate("Training", {selected: this.state.selected, numBalls: 0})}/>
       </Container>
 
     );

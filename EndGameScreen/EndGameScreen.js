@@ -18,7 +18,6 @@ export default class Instructions extends React.Component {
     const {state} = this.props.navigation;
     this.state = {
       fontLoaded: false,
-      key: state.params.key
     };
   }
 
@@ -60,11 +59,11 @@ export default class Instructions extends React.Component {
 
           <Button style={styles.button}
            label='Train Again'
-           onPress={() => this.props.navigation.navigate("Training", {key: this.state.key})}
+           onPress={() => this.props.navigation.navigate("Training")}
           />
           <Button style={styles.button}
            label='End Training'
-           onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}
+           onPress={() => this.props.navigation.navigate("Mode")}
           />
         </Container>
       </Container>
