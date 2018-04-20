@@ -99,8 +99,7 @@ export default class LogIn extends Component {
 
             <TouchableOpacity
               style={styles.textLink}
-               onPress={() => this.handleClickForgot()}
-             >
+              onPress={() => this.handleClickForgot()}>
              <Text style={styles.text}> Forgot your password? </Text>
             </TouchableOpacity>
           </View>
@@ -109,10 +108,10 @@ export default class LogIn extends Component {
         <Button style={styles.button}
          label='Log In'
          onPress={(e) => this.handleClick(e)}/>
+
           <TouchableOpacity
             style={styles.textLink}
-             onPress={() => navigation.navigate("Registration")}
-           >
+            onPress={() => navigation.navigate("Registration")}>
            <Text style={styles.text}> Don&#8217;t have an account? </Text>
           </TouchableOpacity>
 
@@ -156,6 +155,6 @@ const styles = StyleSheet.create({
   },
   textLink: {
     width: 250,
-    margin: 6
+    margin: 7
   }
 });

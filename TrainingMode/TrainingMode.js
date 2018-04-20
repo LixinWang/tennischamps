@@ -219,7 +219,7 @@ putTrainingDB = (value) => {
   targetName = '';
   getTargetName() {
     if (this.randTargetIndex == 0) {
-      this.targetName = "Left Baseline (1)";
+      this.targetName = "Left Baseline";
     } else if (this.randTargetIndex == 1) {
       this.targetName = "Centre Mark";
     } else if (this.randTargetIndex == 2) {
@@ -334,7 +334,7 @@ putTrainingDB = (value) => {
     }
 
     this.placeBall(this.ballX, this.ballY);
-    
+
     // only reschedule if we didn't get
     // unmounted yet (ie user is still on this page)
     if(!this.isDead) setTimeout(() => this.foo(), 16.6667);
