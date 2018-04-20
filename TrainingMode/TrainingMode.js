@@ -334,7 +334,10 @@ putTrainingDB = (value) => {
     }
 
     this.placeBall(this.ballX, this.ballY);
-    setTimeout(() => this.foo(), 16.6667);
+    
+    // only reschedule if we didn't get
+    // unmounted yet (ie user is still on this page)
+    if(!this.isDead) setTimeout(() => this.foo(), 16.6667);
   }
 
   relAngle(x0, y0, x1, y1) {
@@ -408,9 +411,7 @@ putTrainingDB = (value) => {
     this.setState({ fontLoaded: true, stopAnimation: false });
 
     // start off the periodic UI updates
-    // only reschedule if we didn't get
-    // unmounted yet (ie user is still on this page)
-    if(!this.isDead) setTimeout(() => this.foo(), 16.6667);
+    setTimeout(() => this.foo(), 16.6667);
   }
 
   async componentWillUnmount() {
