@@ -61,11 +61,11 @@ export default class Instructions extends React.Component {
 
           <Button style={styles.button}
            label='Train Again'
-           onPress={() => this.props.navigation.navigate("Training", {key: this.state.key})}
+           onPress={() => this.props.navigation.navigate("Training", {selected: 1})}
           />
           <Button style={styles.button}
            label='End Training'
-           onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}
+           onPress={() => this.props.navigation.navigate("Home", {key: this.state.key})}
           />
         </Container>
       </Container>
@@ -120,8 +120,7 @@ const styles = StyleSheet.create({
   },
     button: {
     backgroundColor: '#ffffff',
-    marginTop: 20,
-    fontSize: 28
+    marginTop: 20
 
   }
 });

@@ -70,14 +70,12 @@ export default class Mode extends React.Component {
                 return (<Picker.Item label={item} value={index} key={index}/>)
             })}
           </Picker>
-
-
-          <Button style={styles.button}
-            label='Next'
-            onPress={() => this.props.navigation.navigate("TrainingTutorial1", {key: this.state.key, selected: this.state.selected})}/>
-
-
         </Container>
+
+        <Button style={styles.button}
+          label='Next'
+          onPress={() => this.props.navigation.navigate("TrainingTutorial1",
+          {key: this.state.key, selected: this.state.selected})}/>
       </Container>
     );
   }
@@ -95,8 +93,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#ffffff',
-    margin: 18,
-    marginTop: 250
+    alignSelf: 'center',
+    bottom: '10%'
   },
   text: {
     justifyContent: 'center',
@@ -107,7 +105,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 24,
     color: "white",
-    marginTop: 60,
+    marginTop: '10%',
     textAlign: 'center'
   },
   picker: {

@@ -41,7 +41,9 @@ export default class Instructions extends React.Component {
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <Container style={styles.content}>
-          <Text style={styles.firsttext}>1. Select 'play' to begin</Text>
+          <Text style={styles.firsttext}>The Basics:</Text>
+
+          <Text style={styles.text}>1. Select 'play' to begin</Text>
 
           <Text style={styles.text}>2. Tap the screen to launch the ball</Text>
 
@@ -74,7 +76,7 @@ const styles = StyleSheet.create({
     margin: 20,
     fontFamily: 'bungee-inline',
     marginLeft: 40,
-    fontSize: 22
+    fontSize: 18
   },
   firsttext: {
     color: '#ffffff',
@@ -82,12 +84,12 @@ const styles = StyleSheet.create({
     fontFamily: 'bungee-inline',
     marginLeft: 40,
     marginTop: 60,
-    fontSize: 22
+    fontSize: 24
   },
   button: {
     backgroundColor: '#ffffff',
     alignSelf: 'center',
-    bottom: '5%',
+    bottom: '10%',
     zIndex: 3,
   },
 });

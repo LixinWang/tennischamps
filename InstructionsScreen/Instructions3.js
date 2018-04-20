@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
     alignSelf: 'center',
     zIndex: 3,
+    bottom: '10%'
   },
   court: {
     width: '100%',
     alignSelf: 'center',
     zIndex: 0,
+    top: 18
   },
 });

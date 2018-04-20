@@ -304,9 +304,10 @@ const styles = StyleSheet.create({
     color: '#ffffff'
   },
   tableHand: {
-    width: 135,
-    marginLeft: '34%',
-    marginTop: '14.5%'
+    width: 139,
+    alignSelf: 'center',
+    marginTop: '14.5%',
+    backgroundColor: '#295b37'
   },
   tableServe: {
     width: 135,

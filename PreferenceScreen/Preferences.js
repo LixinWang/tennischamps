@@ -147,7 +147,7 @@ componentWillMount = async() => {
             initial={this.state.difficultyTypes}
             formHorizontal={false}
             labelHorizontal={true}
-            labelStyle={{fontFamily: 'bungee-inline', fontSize: 20, color: '#ffffff'}}
+            labelStyle={{fontFamily: 'bungee-inline', fontSize: 18, color: '#ffffff'}}
             buttonColor={'#ffffff'}
             buttonSize= {18}
             onPress={(value) => {this.handleDifficulty(value)}}
@@ -162,7 +162,7 @@ componentWillMount = async() => {
             initial={this.state.handedness}
             formHorizontal={false}
             labelHorizontal={true}
-            labelStyle={{fontFamily: 'bungee-inline', fontSize: 20, color: '#ffffff'}}
+            labelStyle={{fontFamily: 'bungee-inline', fontSize: 18, color: '#ffffff'}}
             buttonColor={'#ffffff'}
             buttonSize= {18}
             onPress={(value) => {this.handleHandedness(value)}}
