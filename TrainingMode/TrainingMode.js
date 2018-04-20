@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Font } from 'expo';
 import * as firebase from 'firebase';
-import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
+import { TouchableOpacity, Easing, StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
@@ -26,7 +26,7 @@ export default class TrainingMode extends Component {
       moves: [],
       ballXpx: 0,
       ballYpx: 0,
-      targetXpx: 90+ 100/3,
+      targetXpx: 90 + 100/3,
       targetYpx: 121 + 140/3,
       targetWidth: 45,
       targetHeight: 30,
@@ -116,7 +116,7 @@ putTrainingDB = (value) => {
             });
     }
   }
-  
+
   getTrainingResult = (endDistance) => {
     if (this.state.hand == 'backhand') {
         if (this.state.shotTypeMade != this.state.hand) {
@@ -200,7 +200,7 @@ putTrainingDB = (value) => {
     tgt = this.targetPositions[idx];
     this.setState({targetWidth: tgt.w});
     this.setState({targetHeight: tgt.h});
-    
+
     this.targetX = tgt.x;
     this.targetY = tgt.y;
 
@@ -212,13 +212,13 @@ putTrainingDB = (value) => {
   stepcnt = 0;
 
   foo() {
+    var a = Math.floor(Math.random() * 15) + 1;
     // Here's where we move the ball
     switch(this.gamephase) {
       case 0: // before shot fired
         this.ballX = 5.5;
         this.ballY = 0;
         this.stepcnt = 120;
-        
         this.configTarget(0);
         break;
       case 1: // shot is flying thru air
@@ -275,7 +275,7 @@ putTrainingDB = (value) => {
     }
 
     this.placeBall(this.ballX, this.ballY);
-    setTimeout(() => this.foo(), 16.6667);    
+    setTimeout(() => this.foo(), 16.6667);
   }
 
   relAngle(x0, y0, x1, y1) {
@@ -328,7 +328,7 @@ putTrainingDB = (value) => {
     onPanResponderRelease: (evt, gs) => {
       // Upon release, we transition to the 3rd state
       //debugger;
-      
+
       if(this.gamephase == 2)
       {
         this.gamephase = 3;
@@ -371,7 +371,7 @@ putTrainingDB = (value) => {
       <Container style={styles.container}>
         <Navbar
           title='TRAINING'
-          onPressBack={() => navigation.navigate("Home")}
+          onPressBack={() => navigation.navigate("Home", {selected: this.state.selected})}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <View contentContainerStyle={styles.content}>
@@ -424,7 +424,6 @@ const styles = StyleSheet.create({
     left: 60
 
   },
-
   text: {
     fontFamily: 'bungee-inline',
     color: '#ffffff',
