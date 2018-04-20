@@ -266,9 +266,12 @@ putTrainingDB = (value) => {
     }
   }
 
+  isDead = false;
 
   stepcnt = 0;
   foo() {
+    if(this.isDead) return;
+
     // Here's where we move the ball
     switch(this.gamephase) {
       case 0: // before shot fired
@@ -310,10 +313,8 @@ putTrainingDB = (value) => {
         dist = dist ** (1/2);
         //this.getTrainingResult(dist);
         this.gamephase = 5;
-        debugger;
         break;
       case 5:
-        debugger;
         this.state.selected--;
 
         // If there are more rounds to play, go back to state 0
@@ -407,8 +408,13 @@ putTrainingDB = (value) => {
     this.setState({ fontLoaded: true, stopAnimation: false });
 
     // start off the periodic UI updates
-    // this gets re-called at the end of
-    setTimeout(() => this.foo(), 16.6667);
+    // only reschedule if we didn't get
+    // unmounted yet (ie user is still on this page)
+    if(!this.isDead) setTimeout(() => this.foo(), 16.6667);
+  }
+
+  async componentWillUnmount() {
+    this.isDead = true;
   }
 
   get(value) {
