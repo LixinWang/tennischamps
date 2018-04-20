@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Font } from 'expo';
 import * as firebase from 'firebase';
-import { TouchableOpacity, Easing,StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
+import { TouchableOpacity, Easing, StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
@@ -26,7 +26,7 @@ export default class TrainingMode extends Component {
       moves: [],
       ballXpx: 0,
       ballYpx: 0,
-      targetXpx: 90+ 100/3,
+      targetXpx: 90 + 100/3,
       targetYpx: 121 + 140/3,
       targetWidth: 45,
       targetHeight: 30,
@@ -35,21 +35,25 @@ export default class TrainingMode extends Component {
   }
 
 targetPositions = [
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
-    { x: 0, y: 0, w: 45, h: 30},
+    { x: 3.985, y: 1.2, w: 139/3, h: 98.5/2}, // 1
+    { x: 3.985 + 2.71, y: 1.2, w: 139/3, h: 98.5/2}, // 2
+    { x: 3.985 + 2.71*2, y: 1.2, w: 139/3, h: 98.5/2}, // 3
+
+    { x: 3.985, y: 1.2 + 2.92, w: 139/3, h: 98.5/2}, // 4
+    { x: 3.985 + 2.71, y: 1.2 + 2.92, w: 139/3, h: 98.5/2}, // 5
+    { x: 3.985 + 2.71*2, y: 1.2 + 2.92, w: 139/3, h: 98.5/2}, // 6
+
+    { x: 3.985, y: 7.2, w: 139/6, h: 98.5/2}, // 7
+    { x: 3.985 + 1.355, y: 7.2, w: 139/6, h: 98.5/2}, // 8
+    { x: 3.985 + 1.355*2, y: 7.2, w: 139/6, h: 98.5/2}, // 9
+
+    { x: 3.985 + 1.355*3 + 0.1, y: 7.2, w: 139/6, h: 98.5/2}, // 10
+    { x: 3.985 + 1.355*4 + 0.1, y: 7.2, w: 139/6, h: 98.5/2}, // 11
+    { x: 3.985 + 1.355*5 + 0.1, y: 7.2, w: 139/6, h: 98.5/2}, // 12
+
+    { x: 3.985, y: 10.245, w: 139/3, h: 98.5/2}, // 13
+    { x: 3.985 + 2.71, y: 10.245, w: 139/3, h: 98.5/2}, // 14
+    { x: 3.985 + 2.71*2, y: 10.245, w: 139/3, h: 98.5/2}, // 15
   ];
 
 putTrainingDB = (value) => {
@@ -116,7 +120,7 @@ putTrainingDB = (value) => {
             });
     }
   }
-  
+
   getTrainingResult = (endDistance) => {
     if (this.state.hand == 'backhand') {
         if (this.state.shotTypeMade != this.state.hand) {
@@ -190,8 +194,8 @@ putTrainingDB = (value) => {
     y = this.courtToPxY(y);
 
     // Correct from center to top left corner
-    x = x + this.state.targetWidth / 2;
-    y = y - this.state.targetHeight / 2;
+    // x = x + this.state.targetWidth / 2;
+    // y = y - this.state.targetHeight / 2;
 
     this.setState({targetXpx: 320 + x, targetYpx: y});
   }
@@ -200,7 +204,7 @@ putTrainingDB = (value) => {
     tgt = this.targetPositions[idx];
     this.setState({targetWidth: tgt.w});
     this.setState({targetHeight: tgt.h});
-    
+
     this.targetX = tgt.x;
     this.targetY = tgt.y;
 
@@ -209,8 +213,61 @@ putTrainingDB = (value) => {
     this.setState({target: idx + 1});
   }
 
-  stepcnt = 0;
 
+  // Randomly Generate Target:
+  randTargetIndex = Math.floor(Math.random() * 15);
+  targetName = '';
+  getTargetName() {
+    if (this.randTargetIndex == 0) {
+      this.targetName = "Left Baseline (1)";
+    } else if (this.randTargetIndex == 1) {
+      this.targetName = "Centre Mark";
+    } else if (this.randTargetIndex == 2) {
+      this.targetName = "Right Baseline";
+    } else if (this.randTargetIndex == 3) {
+      this.targetName = "Left Baseline";
+    } else if (this.randTargetIndex == 4) {
+      this.targetName = "T Serviceline";
+    } else if (this.randTargetIndex == 5) {
+      this.targetName = "Right Serviceline";
+    } else if (this.randTargetIndex == 6) {
+      this.targetName = "Deuce Left";
+    } else if (this.randTargetIndex == 7) {
+      this.targetName = "Deuce Middle";
+    } else if (this.randTargetIndex == 8) {
+      this.targetName = "Deuce Right";
+    } else if (this.randTargetIndex == 9) {
+      this.targetName = "Advantage Left";
+    } else if (this.randTargetIndex == 10) {
+      this.targetName = "Advantage Middle";
+    } else if (this.randTargetIndex == 11) {
+      this.targetName = "Advantage Right";
+    } else if (this.randTargetIndex == 12) {
+      this.targetName = "Beyond Left Net Area";
+    } else if (this.randTargetIndex == 13) {
+      this.targetName = "Beyond Middle Net Area";
+    } else if (this.randTargetIndex == 14) {
+      this.targetName = "Beyond Right Net Area";
+    } else {
+      this.targetName = "error error";
+    }
+  }
+
+  // Randomly Generate Shot Type:
+  shotType = '';
+  randShot = Math.floor(Math.random() * 3);
+  getShotType() {
+    if (this.randShot == 0) {
+      this.shotType = "Forehand";
+    } else if (this.randShot == 1) {
+      this.shotType = "Backhand";
+    } else {
+      this.shotType = "Serve";
+    }
+  }
+
+
+  stepcnt = 0;
   foo() {
     // Here's where we move the ball
     switch(this.gamephase) {
@@ -218,8 +275,9 @@ putTrainingDB = (value) => {
         this.ballX = 5.5;
         this.ballY = 0;
         this.stepcnt = 120;
-        
-        this.configTarget(0);
+        this.configTarget(this.randTargetIndex);
+        this.getTargetName();
+        this.getShotType();
         break;
       case 1: // shot is flying thru air
         this.ballY += 8 / 60;  // move at 3 m/s
@@ -275,7 +333,7 @@ putTrainingDB = (value) => {
     }
 
     this.placeBall(this.ballX, this.ballY);
-    setTimeout(() => this.foo(), 16.6667);    
+    setTimeout(() => this.foo(), 16.6667);
   }
 
   relAngle(x0, y0, x1, y1) {
@@ -328,7 +386,7 @@ putTrainingDB = (value) => {
     onPanResponderRelease: (evt, gs) => {
       // Upon release, we transition to the 3rd state
       //debugger;
-      
+
       if(this.gamephase == 2)
       {
         this.gamephase = 3;
@@ -347,7 +405,6 @@ putTrainingDB = (value) => {
       'Roboto_medium': require("native-base/Fonts/Roboto_medium.ttf")
     });
     this.setState({ fontLoaded: true, stopAnimation: false });
-    //var a = Math.floor(Math.random() * 15) + 1 ;
 
     // start off the periodic UI updates
     // this gets re-called at the end of
@@ -371,12 +428,13 @@ putTrainingDB = (value) => {
       <Container style={styles.container}>
         <Navbar
           title='TRAINING'
-          onPressBack={() => navigation.navigate("Home")}
+          onPressBack={() => navigation.navigate("Home", {selected: this.state.selected})}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <View contentContainerStyle={styles.content}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: forehand </Text>
+          <Text style={styles.text}> Shot: {this.shotType} </Text>
+          <Text style={styles.text}> Target: {this.targetName} </Text>
         </View>
           <TouchableWithoutFeedback onPressIn={ () => { if(this.gamephase == 0) { this.gamephase = 1;} }} >
           <Image style={styles.court}
@@ -392,7 +450,7 @@ putTrainingDB = (value) => {
 
 
           <View style={[styles.target, {width: this.state.targetWidth, height: this.state.targetHeight, top: this.state.targetYpx, left: this.state.targetXpx}]} >
-            <Text style={styles.targetText}>TARGET</Text>
+            <Text style={styles.targetText}>{this.randTargetIndex + 1}</Text>
           </View>
           <Button style={styles.button}
            label='End the game'
@@ -424,13 +482,11 @@ const styles = StyleSheet.create({
     left: 60
 
   },
-
   text: {
     fontFamily: 'bungee-inline',
     color: '#ffffff',
     fontSize: 18,
     fontWeight: 'bold',
-    marginVertical: 1,
     textAlign: 'center'
   },
   textContainer: {
@@ -458,13 +514,13 @@ const styles = StyleSheet.create({
     width: 25
   },
   target: {
-    width: 140/3,
-    height: 100/3,
     backgroundColor: 'red',
     zIndex: 1,
     position: 'absolute',
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 3,
+    borderColor: '#FDFEFC'
   },
   targetText: {
     color: '#ffffff',
