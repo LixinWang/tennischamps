@@ -254,15 +254,14 @@ putTrainingDB = (value) => {
   }
 
   // Randomly Generate Shot Type:
-  shotType = '';
   randShot = Math.floor(Math.random() * 3);
   getShotType() {
     if (this.randShot == 0) {
-      this.shotType = "Forehand";
+      this.state.hand = "forehand";
     } else if (this.randShot == 1) {
-      this.shotType = "Backhand";
+      this.state.hand = "backhand";
     } else {
-      this.shotType = "Serve";
+      this.state.hand = "serve";
     }
   }
 
@@ -311,7 +310,7 @@ putTrainingDB = (value) => {
         // pythagorus
         dist = ((this.ballX - this.targetX)**2 + (this.ballY - this.targetY)**2);
         dist = dist ** (1/2);
-        //this.getTrainingResult(dist);
+        this.getTrainingResult(dist);
         this.gamephase = 5;
         break;
       case 5:
@@ -440,7 +439,7 @@ putTrainingDB = (value) => {
 
         <View contentContainerStyle={styles.content}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: {this.shotType} </Text>
+          <Text style={styles.text}> Shot: {this.state.hand} </Text>
           <Text style={styles.text}> Target: {this.targetName} </Text>
         </View>
           <TouchableWithoutFeedback onPressIn={ () => { if(this.gamephase == 0) { this.gamephase = 1;} }} >
