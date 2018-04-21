@@ -5,7 +5,7 @@ import { Font } from 'expo';
 import firebase from 'firebase';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarNoBurger from '../Components/NavBarNoBurger';
 
 export default class Home extends React.Component {
 
@@ -43,7 +43,7 @@ export default class Home extends React.Component {
 
     return (
       <Container>
-        <Navbar
+        <NavBarNoBurger
           title='HOME'
           onPressBack={() => this.props.navigation.goBack(null, {key: this.state.key})}
         />

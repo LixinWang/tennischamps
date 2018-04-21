@@ -4,7 +4,7 @@ import { Container} from 'native-base';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 
 export default class Instructions extends React.Component {
   constructor(props) {
@@ -35,7 +35,7 @@ export default class Instructions extends React.Component {
     if (!this.state.fontLoaded) { return null;}
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarWithBurger
           title='How To Play'
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>

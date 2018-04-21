@@ -4,7 +4,7 @@ import { Alert, StyleSheet, View, Image, TouchableOpacity, Easing, PanResponder,
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 import Hidden from '../Components/Hidden';
 
 export default class GameMode extends Component {
@@ -86,7 +86,7 @@ export default class GameMode extends Component {
 
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarWithBurger
           title='GAME'
           onPressBack={() => navigation.goBack("Home")}/>
 

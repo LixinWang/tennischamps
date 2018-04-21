@@ -5,7 +5,7 @@ import { TouchableOpacity, Easing, StyleSheet, View, Image,PanResponder,Touchabl
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
@@ -432,7 +432,7 @@ putTrainingDB = (value) => {
 
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarWithBurger
           title='TRAINING'
           onPressBack={() => navigation.navigate("Home", {selected: this.state.selected})}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>

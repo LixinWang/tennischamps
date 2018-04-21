@@ -5,7 +5,7 @@ import { StyleSheet, TextInput, View, TouchableOpacity } from 'react-native';
 import { Container, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarNoBurger from '../Components/NavBarNoBurger';
 import Hidden from '../Components/Hidden';
 
 export default class LogIn extends Component {
@@ -78,10 +78,9 @@ export default class LogIn extends Component {
 
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarNoBurger
           title='LOG IN'
-          onPressBack={() => navigation.goBack(null)}
-          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
+          onPressBack={() => navigation.goBack(null)}/>
 
         <Container style={styles.content}>
           <View style={styles.loginFields}>
