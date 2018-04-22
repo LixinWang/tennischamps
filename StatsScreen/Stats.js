@@ -62,24 +62,54 @@ export default class Stats extends React.Component {
     forehandBackhandDisplay = (hand) => {
       var promise = new Promise((resolve, reject) => {
         arr = []
+        var counter = 1
         firebaseApp.database().ref('/users2/' + currUser + "/stats/" + hand).once("value").then(snapshot => {
         snapshot.forEach(function(childSnapshot) {
-          var hits = childSnapshot.val() && childSnapshot.val().hits;
-          var shots = childSnapshot.val() && childSnapshot.val().shots;
-          console.log("hi" + hits/shots);
-          arr.push(Math.ceil((hits/shots) * 100));
+            var hits = childSnapshot.val() && childSnapshot.val().hits;
+            var shots = childSnapshot.val() && childSnapshot.val().shots;
+            if (!hits) {
+              arr.push([childSnapshot.key, 0]);
+            } else {
+              arr.push([childSnapshot.key, Math.ceil((hits/shots) * 100)]);
+            }
+            console.log(arr);
+            counter++;
+        });
+        if (arr.length > 0) {
           console.log(arr);
-          });
-         if (arr.length > 0) {
           resolve(arr);
         }
-          else {
-          console.log("arr" + arr.length);
-          reject(Error("It broke"));
-        }
-        });
+      });
       });
       promise.then((arr) => {
+        return new Promise((resolve, reject) => {
+          var counter = 0;
+          var arr2 = []
+          for (var i = 1; i < 7; i++) {
+              console.log("test", arr[counter][0], " ", i);
+              if (parseInt(arr[counter][0]) == i) {
+                console.log("hey", arr[counter][1]);
+                  arr2.push(arr[counter][1] + "%");
+                  counter++;
+              } else {
+                arr2.push("N/A")
+              }
+          }
+          for (var i = 13; i < 16; i++) {
+              console.log("test", arr[counter][0], " ", i);
+              if (parseInt(arr[counter][0]) == i) {
+                  arr2.push(arr[counter][1] + "%");
+                  counter++;
+              } else {
+                arr2.push("N/A")
+              }
+          }
+          if (arr2.length > 0) {
+            console.log("fin", arr2);
+            resolve(arr2);
+          }
+        });
+      }).then((arr) => {
       return new Promise((resolve, reject) => {
       tempArr = []
       finalArr = []
@@ -88,32 +118,30 @@ export default class Stats extends React.Component {
           if (x == 1 || x == 3 || x == 6 || x==8) {
             tempArr.push(" ");
           } else if (x == 0 || x == 2 || x == 4|| x == 7 || x == 9){
-            tempArr.push(arr[arrCounter] + "%");
+            tempArr.push(arr[arrCounter]);
             arrCounter++;
           } else {
             finalArr.push(tempArr)
             tempArr = []
             if (x == 5) {
-              tempArr.push(arr[arrCounter] + "%");
+              tempArr.push(arr[arrCounter]);
               arrCounter++;
             }
           }
       }
-        console.log("final" + x + finalArr);
       tempArr = []
       finalArr2 = []
       for (var x = 0; x < 6; x++) {
           if (x == 1 || x == 3) {
             tempArr.push(" ");
           } else if (x == 0 || x == 2 || x ==4){
-            tempArr.push(arr[arrCounter] + "%");
+            tempArr.push(arr[arrCounter]);
             arrCounter++;
           }
          else {
           finalArr2.push(tempArr)
           tempArr = []
         }
-        console.log("final" + x + finalArr);
         if (x == 5) {
           resolve([finalArr, finalArr2]);
         }

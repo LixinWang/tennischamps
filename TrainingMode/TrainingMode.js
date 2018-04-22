@@ -127,16 +127,16 @@ putTrainingDB = (value) => {
           alert("Not the right shot type!");
           this.putTrainingDB(false);
         } else {
-          if (endDistance < 30 && endDistance >= 20){
+          if (endDistance < 20 && endDistance >= 10){
               alert("ok");
              this.putTrainingDB(false);
           }
-          else if (endDistance < 20 && endDistance >= 10) {
+          else if (endDistance < 10 && endDistance >= 5) {
               alert("close");
               this.putTrainingDB(false);
 
             }
-          else if (endDistance < 10){
+          else if (endDistance < 5){
             alert("on target!");
             this.putTrainingDB(true);
           }
