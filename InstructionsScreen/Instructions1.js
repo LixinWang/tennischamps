@@ -4,7 +4,6 @@ import { TouchableOpacity, StyleSheet, View, Image } from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
 import Hidden from '../Components/Hidden';
 
 export default class Instructions1 extends Component {

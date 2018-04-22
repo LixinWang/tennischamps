@@ -3,7 +3,7 @@ import { StyleSheet, TextInput, View } from 'react-native';
 import { Container, Left, Right, Text, ListItem, Radio } from 'native-base';
 import * as firebase from 'firebase';
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 import { Switch } from 'react-native';
 import RadioForm, {RadioButton, RadioButtonInput, RadioButtonLabel} from 'react-native-simple-radio-button';
 
@@ -134,9 +134,10 @@ componentWillMount = async() => {
 
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarWithBurger
           title='PREFERENCES'
-          onPressBack={() => navigation.navigate("Home", {difficulty: this.state.difficultyTypes, handedness: this.state.handedness})}/>
+          onPressBack={() => navigation.navigate("Home", {difficulty: this.state.difficultyTypes, handedness: this.state.handedness})}
+          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
         <Container style={styles.content}>
 
         <View style={styles.contentButtons}>

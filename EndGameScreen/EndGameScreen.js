@@ -4,7 +4,7 @@ import { Container } from 'native-base';
 import { Font } from 'expo';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 import Hidden from '../Components/Hidden';
 
 
@@ -44,6 +44,10 @@ export default class Instructions extends React.Component {
     if (!this.state.fontLoaded) { return null;}
     return (
       <Container style={styles.container}>
+        <NavBarWithBurger
+          title='TRAINING'
+          onPressBack={() => navigation.navigate("Home", {selected: this.state.selected})}
+          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
         <Container style={styles.content}>
           <Text style={styles.firsttext}>Training</Text>
           <Text style={styles.firsttext}>Session</Text>

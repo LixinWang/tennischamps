@@ -4,7 +4,7 @@ import { Header, Title, Left, Right, Body, Text, Button} from 'native-base';
 import { Font } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
 
-class Navbar extends Component {
+class NavBarWithBurger extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -56,4 +56,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Navbar;
+export default NavBarWithBurger;

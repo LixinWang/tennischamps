@@ -5,7 +5,7 @@ import { TouchableOpacity, Easing, StyleSheet, View, Image,PanResponder,Touchabl
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 import Hidden from '../Components/Hidden';
 
 export default class TrainingMode extends Component {
@@ -213,56 +213,68 @@ putTrainingDB = (value) => {
     this.setState({target: idx + 1});
   }
 
-
-  // Randomly Generate Target:
-  randTargetIndex = Math.floor(Math.random() * 15);
-  targetName = '';
-  getTargetName() {
-    if (this.randTargetIndex == 0) {
-      this.targetName = "Left Baseline";
-    } else if (this.randTargetIndex == 1) {
-      this.targetName = "Centre Mark";
-    } else if (this.randTargetIndex == 2) {
-      this.targetName = "Right Baseline";
-    } else if (this.randTargetIndex == 3) {
-      this.targetName = "Left Baseline";
-    } else if (this.randTargetIndex == 4) {
-      this.targetName = "T Serviceline";
-    } else if (this.randTargetIndex == 5) {
-      this.targetName = "Right Serviceline";
-    } else if (this.randTargetIndex == 6) {
-      this.targetName = "Deuce Left";
-    } else if (this.randTargetIndex == 7) {
-      this.targetName = "Deuce Middle";
-    } else if (this.randTargetIndex == 8) {
-      this.targetName = "Deuce Right";
-    } else if (this.randTargetIndex == 9) {
-      this.targetName = "Advantage Left";
-    } else if (this.randTargetIndex == 10) {
-      this.targetName = "Advantage Middle";
-    } else if (this.randTargetIndex == 11) {
-      this.targetName = "Advantage Right";
-    } else if (this.randTargetIndex == 12) {
-      this.targetName = "Beyond Left Net Area";
-    } else if (this.randTargetIndex == 13) {
-      this.targetName = "Beyond Middle Net Area";
-    } else if (this.randTargetIndex == 14) {
-      this.targetName = "Beyond Right Net Area";
-    } else {
-      this.targetName = "error error";
-    }
-  }
-
   // Randomly Generate Shot Type:
-  shotType = '';
   randShot = Math.floor(Math.random() * 3);
   getShotType() {
     if (this.randShot == 0) {
-      this.shotType = "Forehand";
+      this.state.hand = "forehand";
     } else if (this.randShot == 1) {
-      this.shotType = "Backhand";
+      this.state.hand = "backhand";
     } else {
-      this.shotType = "Serve";
+      this.state.hand = "serve";
+    }
+  }
+
+  // Randomly Generate Target:
+  getRandomTargetIndex() {
+    if (this.randShot == 2) {
+      min = Math.ceil(6);
+      max = Math.floor(12);
+      return (Math.floor(Math.random() * (max - min)) + min); //The maximum is exclusive and the minimum is inclusive
+    } else {
+      min = Math.ceil(0);
+      max = Math.floor(6);
+      min2 = Math.ceil(12);
+      max2 = Math.floor(15);
+      return ((Math.floor(Math.random() * (max - min)) + min) || (Math.floor(Math.random() * (max2 - min2)) + min2));
+    }
+  }
+
+  targetIndex = this.getRandomTargetIndex();
+  targetName = '';
+  getTargetName() {
+    if (this.targetIndex == 0) {
+      this.targetName = "Left Baseline";
+    } else if (this.targetIndex == 1) {
+      this.targetName = "Centre Mark";
+    } else if (this.targetIndex == 2) {
+      this.targetName = "Right Baseline";
+    } else if (this.targetIndex == 3) {
+      this.targetName = "Left Baseline";
+    } else if (this.targetIndex == 4) {
+      this.targetName = "T Serviceline";
+    } else if (this.targetIndex == 5) {
+      this.targetName = "Right Serviceline";
+    } else if (this.targetIndex == 6) {
+      this.targetName = "Deuce Left";
+    } else if (this.targetIndex == 7) {
+      this.targetName = "Deuce Middle";
+    } else if (this.targetIndex == 8) {
+      this.targetName = "Deuce Right";
+    } else if (this.targetIndex == 9) {
+      this.targetName = "Advantage Left";
+    } else if (this.targetIndex == 10) {
+      this.targetName = "Advantage Middle";
+    } else if (this.targetIndex == 11) {
+      this.targetName = "Advantage Right";
+    } else if (this.targetIndex == 12) {
+      this.targetName = "Beyond Left Net Area";
+    } else if (this.targetIndex == 13) {
+      this.targetName = "Beyond Middle Net Area";
+    } else if (this.targetIndex == 14) {
+      this.targetName = "Beyond Right Net Area";
+    } else {
+      this.targetName = "error error";
     }
   }
 
@@ -278,9 +290,7 @@ putTrainingDB = (value) => {
         this.ballX = 5.5;
         this.ballY = 0;
         this.stepcnt = 120;
-        this.configTarget(this.randTargetIndex);
-        this.getTargetName();
-        this.getShotType();
+        this.configTarget(this.targetIndex);
         break;
       case 1: // shot is flying thru air
         this.ballY += 8 / 60;  // move at 3 m/s
@@ -430,17 +440,20 @@ putTrainingDB = (value) => {
     const { navigation } = this.props;
 
     if (!this.state.fontLoaded) { return null;}
+    
+    this.getShotType();
+    this.getTargetName();
 
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarWithBurger
           title='TRAINING'
           onPressBack={() => navigation.navigate("Home", {selected: this.state.selected})}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
 
         <View contentContainerStyle={styles.content}>
         <View style={styles.textContainer}>
-          <Text style={styles.text}> Shot: {this.shotType} </Text>
+          <Text style={styles.text}> Shot: {this.state.hand} </Text>
           <Text style={styles.text}> Target: {this.targetName} </Text>
         </View>
           <TouchableWithoutFeedback onPressIn={ () => { if(this.gamephase == 0) { this.gamephase = 1;} }} >
@@ -457,7 +470,7 @@ putTrainingDB = (value) => {
 
 
           <View style={[styles.target, {width: this.state.targetWidth, height: this.state.targetHeight, top: this.state.targetYpx, left: this.state.targetXpx}]} >
-            <Text style={styles.targetText}>{this.randTargetIndex + 1}</Text>
+            <Text style={styles.targetText}>{this.targetIndex + 1}</Text>
           </View>
           <Button style={styles.button}
            label='End the game'

@@ -4,7 +4,7 @@ import { Container, Left, Right, Text, ListItem, Radio } from 'native-base';
 import * as firebase from 'firebase';
 
 import Button from '../Components/Button';
-import Navbar from '../Components/Navbar';
+import NavBarNoBurger from '../Components/NavBarNoBurger';
 import Hidden from '../Components/Hidden';
 
 export default class Registration extends Component {
@@ -84,10 +84,9 @@ export default class Registration extends Component {
 
     return (
       <Container style={styles.container}>
-        <Navbar
+        <NavBarNoBurger
           title='CREATE AN ACCOUNT'
-          onPressBack={() => navigation.goBack(null)}
-          handleHamburger={() => navigation.navigate('DrawerOpen')}/>
+          onPressBack={() => navigation.goBack(null)}/>
         <Container style={styles.content}>
           <TextInput style={styles.inputField}
             placeholder='Email'

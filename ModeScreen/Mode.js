@@ -5,7 +5,7 @@ import { Font } from 'expo';
 
 import Button from '../Components/Button';
 import SpecialButton from '../Components/SpecialButton'
-import Navbar from '../Components/Navbar';
+import NavBarWithBurger from '../Components/NavBarWithBurger';
 import Hidden from '../Components/Hidden';
 
 export default class Mode extends React.Component {
@@ -52,7 +52,7 @@ export default class Mode extends React.Component {
     return (
       <Container style={styles.container}>
 
-        <Navbar
+        <NavBarWithBurger
           title='Select Balls'
           onPressBack={() => navigation.navigate("Home")}
           handleHamburger={() => navigation.navigate('DrawerOpen')}/>
