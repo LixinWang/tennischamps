@@ -128,16 +128,16 @@ putTrainingDB = (value) => {
           //alert("Not the right shot type!");
           //this.putTrainingDB(false);
         //} else {
-          if (endDistance < 20 && endDistance >= 10){
+          if (endDistance < 7 && endDistance >= 5){
               alert("ok");
              this.putTrainingDB(false);
           }
-          else if (endDistance < 10 && endDistance >= 5) {
+          else if (endDistance < 5 && endDistance >= 3) {
               alert("close");
               this.putTrainingDB(false);
 
             }
-          else if (endDistance < 5){
+          else if (endDistance < 3){
             alert("on target!");
             this.putTrainingDB(true);
           }
@@ -292,12 +292,16 @@ putTrainingDB = (value) => {
         this.configTarget(this.targetIndex);
         break;
       case 1: // shot is flying thru air
-        // if (global.difficulty == ) {
-        //
-        // }
-        this.ballY += 8 / 60;  // move at 3 m/s
-
-        break;
+        if (global.difficulty == 0) {
+          this.ballY += 8 / 60;  // move at 3 m/s
+          break;
+        } else if (global.difficulty == 1) {
+          this.ballY += 16 / 60;
+          break;
+        } else {
+          this.ballY += 20 / 60;
+          break;
+        }
       case 2: // In the process of hitting it back
         this.ballX = this.pxToCourtX(this.fingerX);
         this.ballY = this.pxToCourtY(this.fingerY);

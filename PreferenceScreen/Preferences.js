@@ -18,7 +18,7 @@ export default class Preferences extends Component {
     this.state = {
       fontLoaded: false,
       handedness: state.params.handedness,
-      difficultyTypes: state.params.difficulty
+      difficultyTypes: 2
     }
 
     //console.log(this.state.difficultyTypes);
@@ -131,6 +131,7 @@ componentWillMount = async() => {
     console.log("true");
     console.log("false");
     global.difficulty = this.state.difficultyTypes;
+    console.log("global preferences:" + global.difficulty);
 
     return (
       <Container style={styles.container}>
