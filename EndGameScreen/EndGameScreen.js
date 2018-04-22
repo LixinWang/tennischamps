@@ -19,8 +19,8 @@ export default class Instructions extends React.Component {
     this.state = {
       fontLoaded: false,
       key: state.params.key,
-      targetsHit: 6,
-      selected: 10
+      targetsHit: ,
+      totalBalls: state.params.totalBalls
     };
   }
   getMath = () => {
@@ -60,7 +60,7 @@ export default class Instructions extends React.Component {
 
           <Text style={styles.texta}>TARGETS HIT:</Text>
 
-          <Text style={styles.textb}> {this.state.targetsHit} out of {this.state.selected} </Text>
+          <Text style={styles.textb}> {this.state.targetsHit} out of {this.state.totalBalls} </Text>
 
           <Text style={styles.textc}> Your ACCURACY:</Text>
 

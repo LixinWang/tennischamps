@@ -22,6 +22,7 @@ export default class TrainingMode extends Component {
       translateY: new Animated.Value(80),
       key: window.currUser,
       selected: state.params.selected,
+      totalBalls: state.params.selected,
       hand: 'backhand',
       moves: [],
       ballXpx: 0,
@@ -30,7 +31,8 @@ export default class TrainingMode extends Component {
       targetYpx: 121 + 140/3,
       targetWidth: 45,
       targetHeight: 30,
-      shotTypeMade: 'backhand'
+      shotTypeMade: 'backhand',
+      difficultyTypes: state.params.difficulty
     };
   }
 
@@ -143,7 +145,7 @@ putTrainingDB = (value) => {
             alert("far");
             this.putTrainingDB(false);
           }
-  } 
+  }
 
   gamephase = 0;
 
@@ -290,7 +292,11 @@ putTrainingDB = (value) => {
         this.configTarget(this.targetIndex);
         break;
       case 1: // shot is flying thru air
+        // if (global.difficulty == ) {
+        //
+        // }
         this.ballY += 8 / 60;  // move at 3 m/s
+
         break;
       case 2: // In the process of hitting it back
         this.ballX = this.pxToCourtX(this.fingerX);
@@ -331,7 +337,8 @@ putTrainingDB = (value) => {
         }
         else
         {
-          // what do?
+          // Go to end screen.
+          // this
         }
 
 
@@ -437,10 +444,12 @@ putTrainingDB = (value) => {
     const { navigation } = this.props;
 
     if (!this.state.fontLoaded) { return null;}
-    
+
     this.getShotType();
     this.getTargetName();
 
+    console.log("CASE", this.gamephase);
+    console.log("BALLZ LEFT", this.state.selected);
     return (
       <Container style={styles.container}>
         <NavBarWithBurger
@@ -471,7 +480,7 @@ putTrainingDB = (value) => {
           </View>
           <Button style={styles.button}
            label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen", {selected: this.state.selected})}
+           onPress={() => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls})}
           />
         </View>
 
