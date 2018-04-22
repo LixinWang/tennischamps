@@ -19,10 +19,13 @@ export default class Instructions extends React.Component {
     this.state = {
       fontLoaded: false,
       key: state.params.key,
-      selected: state.params.selected
+      targetsHit: 6,
+      selected: 10
     };
   }
-
+  getMath = () => {
+    return ((this.state.targetsHit/this.state.selected) * 100) + "%"
+  }
   async componentDidMount() {
     await Font.loadAsync({
       'bungee-inline': require('../assets/fonts/BungeeInline-Regular.ttf'),
@@ -57,11 +60,11 @@ export default class Instructions extends React.Component {
 
           <Text style={styles.texta}>TARGETS HIT:</Text>
 
-          <Text style={styles.textb}> 8 out of 10</Text>
+          <Text style={styles.textb}> {this.state.targetsHit} out of {this.state.selected} </Text>
 
           <Text style={styles.textc}> Your ACCURACY:</Text>
 
-          <Text style={styles.textd}> 84%</Text>
+          <Text style={styles.textd}> {this.getMath()}</Text>
 
           <Button style={styles.button}
            label='Train Again'

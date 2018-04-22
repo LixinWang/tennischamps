@@ -86,7 +86,6 @@ export default class Stats extends React.Component {
           var counter = 0;
           var arr2 = []
           for (var i = 1; i < 7; i++) {
-              console.log("test", arr[counter][0], " ", i);
               if (counter < arr.length) {
               if (parseInt(arr[counter][0]) == i) {
                 console.log("hey", arr[counter][1]);
@@ -100,7 +99,6 @@ export default class Stats extends React.Component {
             }
           }
           for (var i = 13; i < 16; i++) {
-              console.log("test", arr[counter][0], " ", i);
             if (counter < arr.length) {
               if (parseInt(arr[counter][0]) == i) {
                   arr2.push(arr[counter][1] + "%");
