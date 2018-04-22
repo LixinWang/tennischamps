@@ -122,11 +122,10 @@ putTrainingDB = (value) => {
   }
 
   getTrainingResult = (endDistance) => {
-    if (this.state.hand == 'backhand') {
-        if (this.state.shotTypeMade != this.state.hand) {
-          alert("Not the right shot type!");
-          this.putTrainingDB(false);
-        } else {
+        //if (this.state.shotTypeMade != this.state.hand) {
+          //alert("Not the right shot type!");
+          //this.putTrainingDB(false);
+        //} else {
           if (endDistance < 20 && endDistance >= 10){
               alert("ok");
              this.putTrainingDB(false);
@@ -144,9 +143,7 @@ putTrainingDB = (value) => {
             alert("far");
             this.putTrainingDB(false);
           }
-        }
-    }
-  }
+  } 
 
   gamephase = 0;
 

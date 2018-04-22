@@ -87,6 +87,7 @@ export default class Stats extends React.Component {
           var arr2 = []
           for (var i = 1; i < 7; i++) {
               console.log("test", arr[counter][0], " ", i);
+              if (counter < arr.length) {
               if (parseInt(arr[counter][0]) == i) {
                 console.log("hey", arr[counter][1]);
                   arr2.push(arr[counter][1] + "%");
@@ -94,15 +95,22 @@ export default class Stats extends React.Component {
               } else {
                 arr2.push("N/A")
               }
+            } else {
+              arr2.push("N/A")
+            }
           }
           for (var i = 13; i < 16; i++) {
               console.log("test", arr[counter][0], " ", i);
+            if (counter < arr.length) {
               if (parseInt(arr[counter][0]) == i) {
                   arr2.push(arr[counter][1] + "%");
                   counter++;
               } else {
                 arr2.push("N/A")
               }
+            } else {
+              arr2.push("N/A")
+            }
           }
           if (arr2.length > 0) {
             console.log("fin", arr2);
@@ -163,36 +171,45 @@ export default class Stats extends React.Component {
           var hits = childSnapshot.val() && childSnapshot.val().hits;
           var shots = childSnapshot.val() && childSnapshot.val().shots;
           console.log("hi" + hits/shots);
-          arr.push(Math.ceil((hits/shots) * 100));
-          console.log(arr);
+          if (!hits) {
+              arr.push([childSnapshot.key, 0]);
+            } else {
+              arr.push([childSnapshot.key, Math.ceil((hits/shots) * 100)]);
+            }
+            console.log(arr);
           });
          if (arr.length > 0) {
           resolve(arr);
-        }
-          else {
-          console.log("arr" + arr.length);
-          reject(Error("It broke"));
-        }
+          }
+        })
         });
-      });
       promise.then((arr) => {
       return new Promise((resolve, reject) => {
-      tempArr = []
-      finalArr = []
-      arrCounter = 0
-      for (var x = 0; x < 7; x++) {
-        if (x < 6) {
-          tempArr.push(arr[arrCounter] + "%");
-            arrCounter++;
-        } else {
-          finalArr.push(tempArr)
+      var counter = 0;
+      tempArr = [];
+      finalArr = [];
+      arrCounter = 0;
+      console.log("AYYYYYYY");
+      for (var i = 7; i < 13; i++) {
+          if (counter < arr.length) {
+            console.log("t", arr[counter]);
+            if (parseInt(arr[counter][0]) == i) {
+                console.log("hey", arr[counter][1]);
+                  tempArr.push(arr[counter][1] + "%");
+                  counter++;
+              } else {
+                tempArr.push("N/A")
+              }
+          } else {
+            tempArr.push("N/A")
           }
-        console.log("final" + x + finalArr);
-        if (x == 6) {
-            resolve(finalArr);
-        }
+         
       }
-      reject(Error("it broke again"))
+      finalArr.push(tempArr)
+       
+      if (finalArr.length > 0) {
+          resolve(finalArr);
+        }
     })
       }).then((finalArray) => {
           this.setState({tableDataHand2: finalArray[0]});
