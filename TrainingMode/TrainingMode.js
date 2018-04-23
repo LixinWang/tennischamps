@@ -21,8 +21,8 @@ export default class TrainingMode extends Component {
       translateX: new Animated.Value(-177),
       translateY: new Animated.Value(80),
       key: window.currUser,
-      selected: state.params.selected,
-      totalBalls: state.params.selected,
+      selected: state.params.selected + 1,
+      totalBalls: state.params.selected + 1,
       hand: 'backhand',
       moves: [],
       ballXpx: 0,
@@ -32,7 +32,8 @@ export default class TrainingMode extends Component {
       targetWidth: 45,
       targetHeight: 30,
       shotTypeMade: 'backhand',
-      difficultyTypes: state.params.difficulty
+      difficultyTypes: state.params.difficulty,
+      ballsHit: 0
     };
   }
 
@@ -139,6 +140,7 @@ putTrainingDB = (value) => {
             }
           else if (endDistance < 3){
             alert("on target!");
+            this.setState({ballsHit: this.state.ballsHit+1});
             this.putTrainingDB(true);
           }
           else {
@@ -484,7 +486,7 @@ putTrainingDB = (value) => {
           </View>
           <Button style={styles.button}
            label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls})}
+           onPress={() => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls, targetsHit: this.state.ballsHit})}
           />
         </View>
 

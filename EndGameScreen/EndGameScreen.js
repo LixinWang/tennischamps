@@ -19,12 +19,12 @@ export default class Instructions extends React.Component {
     this.state = {
       fontLoaded: false,
       key: state.params.key,
-      targetsHit: ,
+      targetsHit: state.params.targetsHit,
       totalBalls: state.params.totalBalls
     };
   }
   getMath = () => {
-    return ((this.state.targetsHit/this.state.selected) * 100) + "%"
+    return ((this.state.targetsHit/this.state.totalBalls) * 100) + "%"
   }
   async componentDidMount() {
     await Font.loadAsync({
