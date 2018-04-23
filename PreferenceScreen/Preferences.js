@@ -18,10 +18,10 @@ export default class Preferences extends Component {
     this.state = {
       fontLoaded: false,
       handedness: state.params.handedness,
-      difficultyTypes: 2
+      difficultyTypes: state.params.difficultyTypes
     }
 
-    //console.log(this.state.difficultyTypes);
+    console.log("DIFFFFF", this.state.difficultyTypes);
   }
 
   handleDifficulty = (value) => {

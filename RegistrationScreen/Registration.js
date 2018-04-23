@@ -41,7 +41,7 @@ export default class Registration extends Component {
         this.itemsRef.child(uid).set({
           righty: righty,
           lefty: lefty,
-          difficulty: 0,
+          difficulty: 2,
           email: email,
         });
 
