@@ -322,26 +322,39 @@ putTrainingDB = (value) => {
   foo() {
     if(this.isDead) return;
 
-    // Here's where we move the ball
+    // Here's where we move the ball (5.5, 0)
     switch(this.gamephase) {
       case 0: // before shot fired
-        // if (this.randShot == 'serve') {}
-        this.ballX = 5.5;
-        this.ballY = 0;
+        if (this.randShot == 2 && (this.targetIndex == 6 || this.targetIndex == 7 || this.targetIndex == 8)) {
+          this.ballX = 6.5;
+          this.ballY = 26;
+          // this.gamephase = 2;
+        } else if (this.randShot == 2 && (this.targetIndex == 9 || this.targetIndex == 10 || this.targetIndex == 11)) {
+          this.ballX = 4.5;
+          this.ballY = 26;
+          // this.gamephase = 2;
+        } else {
+          this.ballX = 5.5;
+          this.ballY = 0;
+        }
         this.stepcnt = 120;
         this.configTarget(this.targetIndex);
         break;
       case 1: // shot is flying thru air
-        if (global.difficulty == 0) {
-          this.ballY += 8 / 60;  // move at 3 m/s
-          break;
-        } else if (global.difficulty == 1) {
-          this.ballY += 16 / 60;
-          break;
-        } else {
-          this.ballY += 20 / 60;
+        if (this.randShot != 2) { //as long as it's not a serve
+          if (global.difficulty == 0) {
+            this.ballY += 8 / 60;  // move at 3 m/s
+            break;
+          } else if (global.difficulty == 1) {
+            this.ballY += 16 / 60;
+            break;
+          } else {
+            this.ballY += 20 / 60;
+            break;
+          }
           break;
         }
+        break;
       case 2: // In the process of hitting it back
         this.ballX = this.pxToCourtX(this.fingerX);
         this.ballY = this.pxToCourtY(this.fingerY);
