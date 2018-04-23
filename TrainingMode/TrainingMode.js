@@ -129,29 +129,57 @@ putTrainingDB = (value) => {
           //alert("Not the right shot type!");
           //this.putTrainingDB(false);
         //} else {
-
+        ballsLeft = this.state.selected - 1;
         if (endDistance < 7 && endDistance >= 5){
           if (this.state.selected > 0) {
-            alert("ok");
+            Alert.alert(
+                'Accuracy',
+                'That was okay. Balls left: ' + ballsLeft,
+                [
+                  {text: 'Ok', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
           }
            this.putTrainingDB(false);
         }
         else if (endDistance < 5 && endDistance >= 3) {
           if (this.state.selected > 0) {
-            alert("close");
+            Alert.alert(
+                'Accuracy',
+                'Ohh... so close! Balls left: ' + ballsLeft,
+                [
+                  {text: 'Ok', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
           }
             this.putTrainingDB(false);
           }
         else if (endDistance < 3){
           if (this.state.selected > 0) {
-            alert("on target!");
+            Alert.alert(
+                'Accuracy',
+                'Target hit! Balls left: ' + ballsLeft,
+                [
+                  {text: 'Ok', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
           }
           this.setState({ballsHit: this.state.ballsHit+1});
           this.putTrainingDB(true);
         }
         else {
           if (this.state.selected > 0) {
-            alert("far");
+            Alert.alert(
+                'Accuracy',
+                'Oops! Too far. Balls left: ' + ballsLeft,
+                [
+                  {text: 'Ok', onPress: () => console.log('OK Pressed')},
+                ],
+                { cancelable: false }
+              )
           }
           this.putTrainingDB(false);
         }
@@ -297,6 +325,7 @@ putTrainingDB = (value) => {
     // Here's where we move the ball
     switch(this.gamephase) {
       case 0: // before shot fired
+        // if (this.randShot == 'serve') {}
         this.ballX = 5.5;
         this.ballY = 0;
         this.stepcnt = 120;
