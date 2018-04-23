@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Font } from 'expo';
 import * as firebase from 'firebase';
-import { TouchableOpacity, Easing, StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated} from 'react-native';
+import { TouchableOpacity, Easing, StyleSheet, View, Image,PanResponder,TouchableWithoutFeedback, Animated, Alert} from 'react-native';
 import { Container, Content, Left, Right, Text, ListItem, Radio } from 'native-base';
 
 import Button from '../Components/Button';
@@ -21,8 +21,8 @@ export default class TrainingMode extends Component {
       translateX: new Animated.Value(-177),
       translateY: new Animated.Value(80),
       key: window.currUser,
-      selected: state.params.selected + 1,
-      totalBalls: state.params.selected + 1,
+      selected: parseInt(state.params.selected) + 1,
+      totalBalls: parseInt(state.params.selected) + 1,
       hand: 'backhand',
       moves: [],
       ballXpx: 0,
@@ -129,24 +129,33 @@ putTrainingDB = (value) => {
           //alert("Not the right shot type!");
           //this.putTrainingDB(false);
         //} else {
-          if (endDistance < 7 && endDistance >= 5){
-              alert("ok");
-             this.putTrainingDB(false);
-          }
-          else if (endDistance < 5 && endDistance >= 3) {
-              alert("close");
-              this.putTrainingDB(false);
 
-            }
-          else if (endDistance < 3){
-            alert("on target!");
-            this.setState({ballsHit: this.state.ballsHit+1});
-            this.putTrainingDB(true);
+        if (endDistance < 7 && endDistance >= 5){
+          if (this.state.selected <= 0) {
+            alert("ok");
           }
-          else {
-            alert("far");
+           this.putTrainingDB(false);
+        }
+        else if (endDistance < 5 && endDistance >= 3) {
+          if (this.state.selected <= 0) {
+            alert("close");
+          }
             this.putTrainingDB(false);
           }
+        else if (endDistance < 3){
+          if (this.state.selected <= 0) {
+            alert("on target!");
+          }
+          this.setState({ballsHit: this.state.ballsHit+1});
+          this.putTrainingDB(true);
+        }
+        else {
+          if (this.state.selected <= 0) {
+            alert("far");
+          }
+          this.putTrainingDB(false);
+        }
+
   }
 
   gamephase = 0;
@@ -345,8 +354,19 @@ putTrainingDB = (value) => {
         {
           // Go to end screen.
           // this
+          //alert("End of training", "nice job dude", )
+          //onPress={() => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls})}
+          Alert.alert(
+              'Ur done with training!!',
+              'wow gr8 u should join the varsity team',
+              [
+                {text: 'View Results', onPress: () => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls, targetsHit: this.state.ballsHit})},
+              ],
+              { cancelable: false }
+            )
+          // doThisThing: () => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls, targetsHit: this.state.ballsHit});
+          this.isDead = true;
         }
-
 
         // nothing to do here, we're done!
         // TODO: we should
@@ -484,10 +504,6 @@ putTrainingDB = (value) => {
           <View style={[styles.target, {width: this.state.targetWidth, height: this.state.targetHeight, top: this.state.targetYpx, left: this.state.targetXpx}]} >
             <Text style={styles.targetText}>{this.targetIndex + 1}</Text>
           </View>
-          <Button style={styles.button}
-           label='End the game'
-           onPress={() => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls, targetsHit: this.state.ballsHit})}
-          />
         </View>
 
 

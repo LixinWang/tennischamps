@@ -19,7 +19,7 @@ export default class Mode extends React.Component {
     this.state = {
       fontLoaded: false,
       key: state.params.key,
-      selected: '1',
+      selected: 0,
     };
   }
 
