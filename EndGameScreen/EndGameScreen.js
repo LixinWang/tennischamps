@@ -24,7 +24,7 @@ export default class Instructions extends React.Component {
     };
   }
   getMath = () => {
-    return ((this.state.targetsHit/this.state.totalBalls) * 100) + "%"
+    return ((this.state.targetsHit/this.state.totalBalls) * 100).toFixed(2) + "%"
   }
   async componentDidMount() {
     await Font.loadAsync({

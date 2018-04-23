@@ -131,26 +131,26 @@ putTrainingDB = (value) => {
         //} else {
 
         if (endDistance < 7 && endDistance >= 5){
-          if (this.state.selected <= 0) {
+          if (this.state.selected > 0) {
             alert("ok");
           }
            this.putTrainingDB(false);
         }
         else if (endDistance < 5 && endDistance >= 3) {
-          if (this.state.selected <= 0) {
+          if (this.state.selected > 0) {
             alert("close");
           }
             this.putTrainingDB(false);
           }
         else if (endDistance < 3){
-          if (this.state.selected <= 0) {
+          if (this.state.selected > 0) {
             alert("on target!");
           }
           this.setState({ballsHit: this.state.ballsHit+1});
           this.putTrainingDB(true);
         }
         else {
-          if (this.state.selected <= 0) {
+          if (this.state.selected > 0) {
             alert("far");
           }
           this.putTrainingDB(false);
@@ -357,8 +357,8 @@ putTrainingDB = (value) => {
           //alert("End of training", "nice job dude", )
           //onPress={() => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls})}
           Alert.alert(
-              'Ur done with training!!',
-              'wow gr8 u should join the varsity team',
+              'Training Finished',
+              'See how you did!',
               [
                 {text: 'View Results', onPress: () => this.props.navigation.navigate("EndGameScreen", {totalBalls: this.state.totalBalls, targetsHit: this.state.ballsHit})},
               ],
