@@ -68,7 +68,7 @@ export default class Instructions extends React.Component {
 
           <Button style={styles.button}
            label='Train Again'
-           onPress={() => this.props.navigation.navigate("Training", {selected: 1})}
+           onPress={() => this.props.navigation.navigate("Mode", {key: this.state.key})}
           />
           <Button style={styles.button}
            label='End Training'
