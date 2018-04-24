@@ -1,11 +1,11 @@
 # tennischamps
 A cross-platform mobile app game for tennis players to supplement practice when off the court.
 
-====================================================================
+
 Tennis Champs Application
 Version: Tennis Champs 1.0
 Author: Team 7314 (Sara Norris, Jeremy Paul, Yili Hui, Lixin Wang, Matthew Kennedy)
-====================================================================
+
 RELEASE NOTES
 ====================================================================
 NEW FEATURES:
@@ -25,7 +25,7 @@ KNOWN BUGS:
 - Navigation bar and hamburger menu navigation are partially broken
 - If the user swipes too hard, the ball may fly off the court. If this happens, the user must go back and restart the training session
 
-====================================================================
+
 INSTALLATION GUIDE
 ====================================================================
 Prerequisite:  
