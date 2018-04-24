@@ -44,7 +44,9 @@ Build:
 
 Running the Application:
 1. Open Expo
-2. Sign in or sign up with a new account
+2. Sign in with the following account:
+    Username: lixinwang
+    Password: 200282668
 3. Open the following link in the web browser of your phone (Safari, Google Chrome, etc.)
     https://expo.io/@lixinwang/demo-project
-4. The link should then automatically launch the Tennis Champs application
+4. The link should then navigate you to the Expo app and from there you can launch the Tennis Champs application
