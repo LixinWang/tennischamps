@@ -1,10 +1,12 @@
-# tennischamps
+# TennisChamps
 A cross-platform mobile app game for tennis players to supplement practice when off the court.
 
 
 Tennis Champs Application
-Version: Tennis Champs 1.0
-Author: Team 7314 (Sara Norris, Jeremy Paul, Yili Hui, Lixin Wang, Matthew Kennedy)
+
+- Version: Tennis Champs 1.0
+
+- Author: Team 7314 (Sara Norris, Jeremy Paul, Yili Hui, Lixin Wang, Matthew Kennedy)
 
 RELEASE NOTES
 ====================================================================
