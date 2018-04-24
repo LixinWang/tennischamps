@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "demo-project",
-    "description": "An empty new project",
+    "name": "Tennis Champs",
+    "description": "A cross-platform mobile app game for tennis players to supplement practice when off the court.",
     "slug": "demo-project",
     "privacy": "public",
     "sdkVersion": "22.0.0",
