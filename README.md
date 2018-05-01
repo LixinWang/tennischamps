@@ -25,13 +25,13 @@ BUG FIXES:
 KNOWN BUGS:
 - Differentiating hand dominance has not been implemented
 - Navigation bar and hamburger menu navigation are partially broken
-- If the user swipes too hard, the ball may fly off the court. If this happens, the user must go back and restart the training session
+- If the user swipes too hard, the ball may fly off the court. (If this happens, the user should go back and restart the training session)
 
 
 INSTALLATION GUIDE
 ====================================================================
 Prerequisite:  
-- Preferred but not required: use an iPhone 6 or iPhone 7
+- Preferred but not required: use an iPhone 6 or iPhone 7 (or an android with the same screen size)
 
 Dependencies:
 - No necessary dependencies to install besides the Expo app (see below)
@@ -45,8 +45,9 @@ Build:
 Running the Application:
 1. Open Expo
 2. Sign in with the following account:
-    Username: lixinwang
-    Password: 200282668
+    Username: snorris
+    Password: eddieluby123
 3. Open the following link in the web browser of your phone (Safari, Google Chrome, etc.)
     https://expo.io/@lixinwang/demo-project
 4. The link should then navigate you to the Expo app and from there you can launch the Tennis Champs application
+5. Once you are in the Tennis Champs app, click “Create an Account” to make a new account or “Log In” if you have a pre-existing account.
